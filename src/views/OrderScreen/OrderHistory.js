@@ -9,14 +9,15 @@ import {
   ListItem,
   Rating,
 } from 'react-native-elements';
-import { container, header } from '../../styles/layoutStyle';
+import { container, header, shadowCard } from '../../styles/layoutStyle';
 import Loading from '../../components/Loading';
 import Header from '../../components/Header';
 import { danger, primary, success, warning } from '../../styles/color';
 import { FONTS } from '../../styles';
+import OrderIndicator from '../../components/StepIndicator/OrderIndicator';
 
 export default function OrderHistory({ navigation }) {
-  const [data, setData] = useState([
+  const [deliveredList, setDelivered] = useState([
     {
       carId: '#afoqijfoasdada'.toLocaleUpperCase(),
       dateTime: '12/20/2019 3:36 PM',
@@ -30,20 +31,21 @@ export default function OrderHistory({ navigation }) {
       dateTime: '12/20/2019 3:36 PM',
     },
   ]);
+  const [deliveringList, setDelivering] = useState([
+    {
+      carId: '#afoqijfoasdada'.toLocaleUpperCase(),
+      dateTime: '12/20/2019 3:36 PM',
+    },
+    {
+      carId: '#bmiweopkrejgoi'.toLocaleUpperCase(),
+      dateTime: '12/20/2019 3:36 PM',
+    },
+  ]);
   const [index, setIndex] = useState(0);
 
   const renderDeliveredItem = ({ item, index }) => (
     <TouchableOpacity>
-      <ListItem
-        containerStyle={{
-          padding: 20,
-          marginHorizontal: 20,
-          borderRadius: 12,
-          borderColor: 'rgba(0,0,0,0.5)',
-          backgroundColor: '#F0F1F5',
-          marginVertical: 15,
-          display: 'flex',
-        }}>
+      <ListItem containerStyle={styles.deliveredContainer}>
         <ListItem.Content style={{ flex: 2 }}>
           <ListItem.Title>{item.carId}</ListItem.Title>
           <ListItem.Subtitle style={{ flex: 1 }}>
@@ -64,24 +66,14 @@ export default function OrderHistory({ navigation }) {
             display: 'flex',
             alignItems: 'flex-end',
           }}>
-          <View
-            style={{
-              backgroundColor: 'rgba(255,255,255,0.6)',
-              padding: 10,
-              borderRadius: 15,
-              marginBottom: 5,
-            }}>
+          <View>
             <Icon
               size={30}
               name="inventory"
               iconStyle={{
                 color: '#FFF',
               }}
-              containerStyle={{
-                backgroundColor: primary,
-                padding: 10,
-                borderRadius: 25,
-              }}
+              containerStyle={styles.wrapperIcon}
             />
           </View>
           <View
@@ -104,6 +96,62 @@ export default function OrderHistory({ navigation }) {
     </TouchableOpacity>
   );
 
+  const renderDeliveringItem = ({ item, index }) => (
+    <TouchableOpacity activeOpacity={0.9}>
+      <ListItem containerStyle={styles.deliveringContainer}>
+        <ListItem.Content
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            marginBottom: 20,
+            alignItems: 'flex-start',
+          }}>
+          <View>
+            <Icon
+              size={30}
+              name="inventory"
+              iconStyle={{
+                color: '#FFF',
+              }}
+              containerStyle={[
+                styles.wrapperIcon,
+                {
+                  marginRight: 10,
+                },
+              ]}
+            />
+          </View>
+          <ListItem.Content style={{ flex: 1 }}>
+            <Text style={[FONTS.BigBold]}>#CSGO112200</Text>
+            <Text style={[FONTS.SmolBold, { color: success }]}>
+              Đang vận chuyển
+            </Text>
+          </ListItem.Content>
+          <View>
+            <Icon
+              size={30}
+              name="more-horiz"
+              iconStyle={{
+                color: '#FFF',
+              }}
+              containerStyle={[
+                styles.wrapperIcon,
+                {
+                  marginRight: 10,
+                  borderRadius: 10,
+                },
+              ]}
+            />
+          </View>
+        </ListItem.Content>
+
+        <View style={{ width: '110%', alignSelf: 'center' }}>
+          <OrderIndicator current={3} name={'Hà Nội'} />
+        </View>
+      </ListItem>
+    </TouchableOpacity>
+  );
+
   return (
     <View style={styles.container}>
       <Header headerText="Lịch sử gửi hàng"></Header>
@@ -117,10 +165,6 @@ export default function OrderHistory({ navigation }) {
         <Tab.Item
           title="Đang vận chuyển"
           titleStyle={{ fontSize: 12, color: primary }}
-          // icon={{
-          //   name: 'vertical-align-bottom',
-          //   color: primary,
-          // }}
           containerStyle={{
             backgroundColor: '#FFF',
           }}
@@ -128,7 +172,6 @@ export default function OrderHistory({ navigation }) {
         <Tab.Item
           title="Đã vận chuyển"
           titleStyle={{ fontSize: 12, color: primary }}
-          // icon={{ name: 'vertical-align-top', color: primary }}
           containerStyle={{
             backgroundColor: '#FFF',
           }}
@@ -138,8 +181,9 @@ export default function OrderHistory({ navigation }) {
       <TabView value={index} onChange={setIndex} animationType="spring">
         <TabView.Item style={{ width: '100%' }}>
           <FlatList
-            data={[]}
-            renderItem={renderDeliveredItem}
+            contentContainerStyle={styles.flatContent}
+            data={deliveringList}
+            renderItem={renderDeliveringItem}
             keyExtractor={item => `${item.carId}`}
             ListEmptyComponent={
               <View
@@ -158,7 +202,8 @@ export default function OrderHistory({ navigation }) {
         </TabView.Item>
         <TabView.Item style={{ width: '100%' }}>
           <FlatList
-            data={data}
+            contentContainerStyle={styles.flatContent}
+            data={deliveredList}
             renderItem={renderDeliveredItem}
             keyExtractor={item => `${item.carId}`}
             ListEmptyComponent={
@@ -178,7 +223,7 @@ export default function OrderHistory({ navigation }) {
         </TabView.Item>
       </TabView>
 
-      {data.length == 0 && <Loading />}
+      {/* {data.length == 0 && <Loading />} */}
     </View>
   );
 }
@@ -210,5 +255,34 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  flatContent: {
+    paddingVertical: 20,
+  },
+  wrapperIcon: {
+    backgroundColor: primary,
+    padding: 10,
+    borderRadius: 25,
+  },
+  deliveredContainer: {
+    padding: 20,
+    marginHorizontal: 20,
+    borderRadius: 12,
+    borderColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: '#F0F1F5',
+    marginVertical: 15,
+    display: 'flex',
+  },
+  deliveringContainer: {
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    marginHorizontal: 20,
+    borderRadius: 20,
+    backgroundColor: '#FFF',
+    marginVertical: 15,
+    display: 'flex',
+    flexDirection: 'column',
+    ...shadowCard,
+    elevation: 2,
   },
 });
