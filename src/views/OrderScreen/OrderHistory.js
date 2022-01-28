@@ -97,7 +97,9 @@ export default function OrderHistory({ navigation }) {
   );
 
   const renderDeliveringItem = ({ item, index }) => (
-    <TouchableOpacity activeOpacity={0.9}>
+    <TouchableOpacity
+      activeOpacity={0.9}
+      onPress={() => navigation.navigate('OrderDetail')}>
       <ListItem containerStyle={styles.deliveringContainer}>
         <ListItem.Content
           style={{
