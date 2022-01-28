@@ -10,7 +10,7 @@ import HomeStackScreen from '../StackNavigator/HomeStack';
 import ChatStackScreen from '../StackNavigator/ChatStack';
 import SettingStackScreen from '../StackNavigator/SettingStack';
 import VoucherScreen from '../../views/VoucherScreen/VoucherScreen';
-import OrderHistory from '../../views/OrderScreen/OrderHistory';
+import OrderStackScreen from '../StackNavigator/OrderStack';
 
 import { COLORS } from '../../styles';
 
@@ -90,6 +90,7 @@ const TabNavigatior = () => {
       screenOptions={({ route }) => {
         return {
           headerShown: false,
+          tabBarHideOnKeyboard: true,
           tabBarStyle: {
             ...style.container,
             display: getTabBarVisibility(route),
@@ -109,7 +110,7 @@ const TabNavigatior = () => {
                 iconName = 'dashboard';
                 name = 'Trang chủ';
                 break;
-              case 'OrderHistory':
+              case 'OrderStack':
                 iconName = 'history';
                 name = 'Lịch sử';
                 break;
@@ -127,7 +128,7 @@ const TabNavigatior = () => {
       <Tab.Screen name="Voucher" component={VoucherScreen} />
       <Tab.Screen name="ChatStack" component={ChatStackScreen} />
       <Tab.Screen name="HomeStack" component={HomeStackScreen} />
-      <Tab.Screen name="OrderHistory" component={OrderHistory} />
+      <Tab.Screen name="OrderStack" component={OrderStackScreen} />
       <Tab.Screen name="SettingStack" component={SettingStackScreen} />
     </Tab.Navigator>
   );
@@ -154,7 +155,7 @@ const style = StyleSheet.create({
     backgroundColor: COLORS.white,
     height: 100,
     marginHorizontal: 20,
-    bottom: 15,
+    bottom: 10,
     borderRadius: 10,
     alignItems: 'center',
     flexDirection: 'row',
