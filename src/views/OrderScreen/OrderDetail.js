@@ -15,19 +15,30 @@ import {
   Rating,
   Avatar,
   Divider,
+  Button,
+  Overlay,
 } from 'react-native-elements';
 import { container, header, shadowCard } from '../../styles/layoutStyle';
 import Loading from '../../components/Loading';
 import Header from '../../components/Header';
-import { danger, primary, success, warning } from '../../styles/color';
+import {
+  backdropColor,
+  danger,
+  primary,
+  success,
+  warning,
+} from '../../styles/color';
 import { COLORS, FONTS } from '../../styles';
 import OrderIndicator from '../../components/StepIndicator/OrderIndicator';
 import { InfoField } from '../../components/InfoField';
+import OrderRating from './OrderRating';
 
 export default function OrderDetail({ navigation }) {
   const [stepExpand, setStepExpand] = useState(true);
   const [infoExpand, setInfoExpand] = useState(true);
-  const [packageExpand, setPackageExpand] = useState(true);
+  const [packageExpand, setPackageExpand] = useState(false);
+  const [option, setOption] = useState(false);
+  const [rating, setRating] = useState(false);
   const [data, setData] = useState([
     {
       id: '#FOIJOJOF123',
@@ -36,26 +47,6 @@ export default function OrderDetail({ navigation }) {
     },
     {
       id: '#FOIJOJOF121',
-      quantity: 10,
-      current_address: 'kho Hà Nội',
-    },
-    {
-      id: '#FOIJOJOF12f',
-      quantity: 10,
-      current_address: 'kho Hà Nội',
-    },
-    {
-      id: '#FOIJOJOF12zxz',
-      quantity: 10,
-      current_address: 'kho Hà Nội',
-    },
-    {
-      id: '#FOIJOJOF12aa',
-      quantity: 10,
-      current_address: 'kho Hà Nội',
-    },
-    {
-      id: '#FOIJOJOF12qqe',
       quantity: 10,
       current_address: 'kho Hà Nội',
     },
@@ -69,19 +60,22 @@ export default function OrderDetail({ navigation }) {
         }
         headerText="Chi tiết"
       />
-      <View style={[styles.rowContainer, { paddingHorizontal: 25 }]}>
+      <View
+        style={[
+          styles.rowContainer,
+          { paddingHorizontal: 25, position: 'relative' },
+        ]}>
         <Avatar
           size="medium"
-          avatarStyle={{
-            borderRadius: 15,
-          }}
+          rounded
           source={{
             uri: 'https://res.cloudinary.com/dfnoohdaw/image/upload/v1638692549/avatar_default_de42ce8b3d.png',
           }}
         />
-        <Text style={[FONTS.BigBold, { flex: 1, marginLeft: 10 }]}>
-          Nguyễn Anh Khoa
-        </Text>
+        <View style={{ flex: 1, marginLeft: 10 }}>
+          <Text style={[FONTS.BigBold]}>Nguyễn Anh Khoa</Text>
+          <Text style={[FONTS.Smol]}>SDT: 0909145830</Text>
+        </View>
         <Icon
           name="chat"
           color={COLORS.primary}
@@ -104,13 +98,53 @@ export default function OrderDetail({ navigation }) {
             elevation: 5,
             borderRadius: 15,
           }}
+          onPress={() => setOption(!option)}
         />
+        {/* {option && ( */}
+        <Overlay
+          overlayStyle={{
+            position: 'absolute',
+            right: 25,
+            top: 150,
+            zIndex: 9999,
+            backgroundColor: COLORS.white,
+            elevation: 8,
+            paddingHorizontal: 20,
+            paddingVertical: 10,
+            width: 220,
+            // borderRadius: 15,
+          }}
+          backdropStyle={{
+            backgroundColor: backdropColor,
+            opacity: 0.4,
+          }}
+          visible={option}
+          onBackdropPress={() => setOption(!option)}>
+          <Button
+            title="Đánh giá"
+            onPress={() => {
+              setRating(true);
+              setOption(false);
+            }}
+            containerStyle={[styles.btnOption]}
+            buttonStyle={[{ backgroundColor: COLORS.success }]}
+          />
+          <Button
+            title="Chỉnh sửa"
+            containerStyle={[styles.btnOption]}
+            buttonStyle={[{ backgroundColor: COLORS.warning }]}
+          />
+          <Button
+            title="Huỷ đơn hàng"
+            type="outline"
+            containerStyle={[styles.btnOption]}
+            titleStyle={[{ color: COLORS.danger }]}
+            buttonStyle={[{ borderColor: COLORS.danger, borderWidth: 2 }]}
+          />
+        </Overlay>
       </View>
 
-      <ScrollView
-        nestedScrollEnabled
-        contentContainerStyle={{ padding: 15, flexGrow: 1 }}
-        style={{ flexGrow: 1 }}>
+      <ScrollView nestedScrollEnabled contentContainerStyle={{ padding: 15 }}>
         <Divider width={2} color={COLORS.primary} />
         <ListItem.Accordion
           // bottomDivider
@@ -127,7 +161,11 @@ export default function OrderDetail({ navigation }) {
           onPress={() => {
             setInfoExpand(!infoExpand);
           }}>
-          <View style={[styles.columnContainer, { paddingHorizontal: 15 }]}>
+          <View
+            style={[
+              styles.columnContainer,
+              { paddingHorizontal: 15, paddingBottom: 15 },
+            ]}>
             <View style={[styles.rowContainer, { paddingRight: 10 }]}>
               <InfoField
                 title="Dự kiến"
@@ -320,72 +358,74 @@ export default function OrderDetail({ navigation }) {
           activeOpacity={0.95}
           content={
             <ListItem.Content>
-              <Text style={{ ...FONTS.BigBold }}>Danh sách kiện hàng</Text>
+              <Text style={{ ...FONTS.BigBold }}>Kiện hàng của bạn</Text>
             </ListItem.Content>
           }
           isExpanded={packageExpand}
           onPress={() => {
             setPackageExpand(!packageExpand);
           }}>
-          <ScrollView
+          {/* <ScrollView
             nestedScrollEnabled
-            contentContainerStyle={{ padding: 10 }}>
-            {data.map((item, index) => (
-              <TouchableOpacity
-                activeOpacity={0.9}
+            contentContainerStyle={{ padding: 10 }}> */}
+          {data.map((item, index) => (
+            <TouchableOpacity
+              activeOpacity={0.96}
+              key={item.id}
+              onPress={() => navigation.navigate('EditPackage')}>
+              <View
                 key={item.id}
-                onPress={() => navigation.navigate('EditPackage')}>
-                <View
-                  key={item.id}
-                  style={{
-                    paddingVertical: 15,
-                    paddingHorizontal: 15,
-                    marginVertical: 15,
-                    borderRadius: 20,
-                    backgroundColor: '#FFF',
-                    elevation: 2,
-                  }}>
-                  <View style={{ ...styles.vehicle }}>
-                    <Icon
-                      containerStyle={{
-                        margin: 0,
-                        marginRight: 5,
-                        backgroundColor: '#FFF',
-                        padding: 15,
-                        elevation: 5,
-                        borderRadius: 20,
-                      }}
-                      name="archive"
-                      type="font-awesome"
-                      color={COLORS.primary}
-                    />
-                    <View
-                      style={{
-                        flex: 1,
-                        marginLeft: 10,
-                        alignItems: 'flex-start',
-                      }}>
-                      <Text style={{ ...FONTS.BigBold }}>ID: {item.id}</Text>
-                      <Text style={{ ...FONTS.Medium }}>
-                        Số lượng:{' '}
-                        <Text style={{ ...styles.info }}>
-                          {item.quantity}/100
-                        </Text>
+                style={{
+                  paddingVertical: 15,
+                  paddingHorizontal: 15,
+                  marginVertical: 15,
+                  borderRadius: 20,
+                  backgroundColor: '#FFF',
+                  elevation: 2,
+                }}>
+                <View style={{ ...styles.vehicle }}>
+                  <Icon
+                    containerStyle={{
+                      margin: 0,
+                      marginRight: 5,
+                      backgroundColor: '#FFF',
+                      padding: 15,
+                      elevation: 5,
+                      borderRadius: 20,
+                    }}
+                    name="archive"
+                    type="font-awesome"
+                    color={COLORS.primary}
+                  />
+                  <View
+                    style={{
+                      flex: 1,
+                      marginLeft: 10,
+                      alignItems: 'flex-start',
+                    }}>
+                    <Text style={{ ...FONTS.BigBold }}>ID: {item.id}</Text>
+                    <Text style={{ ...FONTS.Medium }}>
+                      Số lượng:{' '}
+                      <Text style={{ ...styles.info }}>
+                        {item.quantity}/100
                       </Text>
-                      <Text style={{ ...FONTS.Medium }}>
-                        Địa điểm hiện tại:{' '}
-                        <Text style={{ ...styles.info }}>
-                          {item.current_address}
-                        </Text>
+                    </Text>
+                    <Text style={{ ...FONTS.Medium }}>
+                      Địa điểm hiện tại:{' '}
+                      <Text style={{ ...styles.info }}>
+                        {item.current_address}
                       </Text>
-                    </View>
+                    </Text>
                   </View>
                 </View>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
+              </View>
+            </TouchableOpacity>
+          ))}
+          {/* </ScrollView> */}
         </ListItem.Accordion>
       </ScrollView>
+
+      <OrderRating visible={rating} onSwipeComplete={() => setRating(false)} />
     </SafeAreaView>
   );
 }
@@ -409,5 +449,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 15,
+  },
+  btnOption: {
+    marginVertical: 5,
   },
 });
