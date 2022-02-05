@@ -17,8 +17,11 @@ import { COLORS } from '../../styles';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 import MaskedView from '@react-native-community/masked-view';
+import PillButton from '../../components/CustomButton/PillButton';
 
-const VoucherScreen = ({ navigation }) => {
+const VoucherScreen = ({ route, navigation }) => {
+  const order = route?.params?.order;
+  console.log(order);
   const [data, setData] = useState([
     {
       id: '#afoqijfoasdada'.toLocaleUpperCase(),
@@ -101,15 +104,42 @@ const VoucherScreen = ({ navigation }) => {
               }}
             />
           </ListItem.Content>
-          <ListItem.Subtitle
+          <View
             style={{
-              alignSelf: 'flex-end',
-              marginTop: 5,
-              color: primary,
-              fontWeight: 'bold',
+              display: 'flex',
+              flexDirection: 'row',
+              marginTop: 10,
             }}>
-            Đến {item.expire}
-          </ListItem.Subtitle>
+            <View style={{ flex: 1 }}>
+              {order && (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('OrderSummary', {
+                      voucher: 'Giảm phí vận chuyển ' + item.discount,
+                    })
+                  }>
+                  <Text
+                    style={[
+                      {
+                        color: COLORS.primary,
+                        fontWeight: 'bold',
+                        fontSize: 20,
+                      },
+                    ]}>
+                    Dùng ngay
+                  </Text>
+                </TouchableOpacity>
+              )}
+            </View>
+            <ListItem.Subtitle
+              style={{
+                alignSelf: 'flex-end',
+                color: primary,
+                fontWeight: 'bold',
+              }}>
+              Đến {item.expire}
+            </ListItem.Subtitle>
+          </View>
         </ListItem>
       </TouchableWithoutFeedback>
     </Animatable.View>
@@ -124,7 +154,7 @@ const VoucherScreen = ({ navigation }) => {
       </View>
 
       <FlatList
-        contentContainerStyle={{ paddingVertical: 20 }}
+        contentContainerStyle={{ paddingBottom: 10 }}
         style={{
           alignSelf: 'stretch',
         }}
@@ -145,12 +175,17 @@ const VoucherScreen = ({ navigation }) => {
           </View>
         }
       />
+      {/* {order && (
+        <View style={{ margin: 20 }}>
+          <PillButton title="Chọn" />
+        </View>
+      )} */}
     </SafeAreaView>
   );
 };
 
 const style = StyleSheet.create({
-  container: { ...container },
+  container: { ...container, alignItems: 'stretch' },
   storeItem: {
     display: 'flex',
     flexDirection: 'column',

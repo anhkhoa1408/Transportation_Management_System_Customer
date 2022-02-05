@@ -8,6 +8,12 @@ import EditPackage from '../../views/TemplateScreen/PackageScreen/EditPackage';
 import OrderTemplateList from '../../views/TemplateScreen/OrderScreen/OrderTemplateList';
 import EditOrderInfo from '../../views/TemplateScreen/OrderScreen/EditOrderInfo';
 import EditOrderAddress from '../../views/TemplateScreen/OrderScreen/EditOrderAddress';
+import InputInfo from '../../views/OrderScreen/InputInfo';
+import InputReceiver from '../../views/OrderScreen/InputReceiver';
+import InputAddress from '../../views/OrderScreen/InputAddress';
+import OrderSummary from '../../views/OrderScreen/OrderSummary';
+import Payment from '../../views/OrderScreen/Payment';
+import VoucherScreen from '../../views/VoucherScreen/VoucherScreen';
 
 const HomeStack = createStackNavigator();
 
@@ -31,6 +37,12 @@ const HomeStackScreen = () => {
       />
       <HomeStack.Screen name="EditOrderInfo" component={EditOrderInfo} />
       <HomeStack.Screen name="EditOrderAddress" component={EditOrderAddress} />
+      <HomeStack.Screen name="InputInfo" component={InputInfo} />
+      <HomeStack.Screen name="InputReceiver" component={InputReceiver} />
+      <HomeStack.Screen name="InputAddress" component={InputAddress} />
+      <HomeStack.Screen name="OrderSummary" component={OrderSummary} />
+      <HomeStack.Screen name="Payment" component={Payment} />
+      <HomeStack.Screen name="VoucherScreen" component={VoucherScreen} />
     </HomeStack.Navigator>
   );
 };

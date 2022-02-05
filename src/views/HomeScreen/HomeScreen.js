@@ -21,7 +21,7 @@ function HomeScreen({ navigation, ...props }) {
     {
       icon: 'add',
       title: 'Đặt hàng',
-      navigate: 'VehicleList',
+      navigate: 'InputInfo',
     },
     {
       icon: 'event-available',

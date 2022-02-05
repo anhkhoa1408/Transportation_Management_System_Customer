@@ -66,7 +66,7 @@ export default function OrderHistory({ navigation }) {
             display: 'flex',
             alignItems: 'flex-end',
           }}>
-          <View>
+          <View style={{ flex: 1 }}>
             <Icon
               size={30}
               name="inventory"
@@ -268,6 +268,7 @@ const styles = StyleSheet.create({
   },
   deliveredContainer: {
     padding: 20,
+    height: 120,
     marginHorizontal: 20,
     borderRadius: 12,
     borderColor: 'rgba(0,0,0,0.5)',
