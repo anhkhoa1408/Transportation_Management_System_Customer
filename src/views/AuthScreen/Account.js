@@ -7,14 +7,22 @@ import {
   Text,
   View,
 } from 'react-native';
-import { Avatar, Icon, ListItem, Switch } from 'react-native-elements';
+import {
+  Avatar,
+  Icon,
+  LinearProgress,
+  Slider,
+  ListItem,
+  Switch,
+} from 'react-native-elements';
 import { container } from '../../styles/layoutStyle';
-import { COLORS } from '../../styles';
+import { COLORS, FONTS } from '../../styles';
 import { useDispatch } from 'react-redux';
-import { success, danger } from '../../styles/color';
+import color, { success, danger } from '../../styles/color';
 import { connect } from 'react-redux';
 
 const Account = ({ navigation, userInfo }) => {
+  const [progress, setProgress] = useState(50);
   const dispatch = useDispatch();
   const [toggle, setToggle] = useState({
     language: true,
@@ -159,6 +167,66 @@ const Account = ({ navigation, userInfo }) => {
 
   const footerComponent = (
     <>
+      <View style={{ padding: 30 }}>
+        <Text style={[styles.smallText, { marginBottom: 5 }]}>
+          Điểm thành viên của bạn
+        </Text>
+        <Text style={[FONTS.Big, { marginBottom: 35, fontSize: 19 }]}>
+          Bạn chỉ còn{' '}
+          <Text style={[{ color: COLORS.primary, fontSize: 30 }]}>
+            {100 - progress}
+          </Text>{' '}
+          điểm nữa để tăng lên vị trí thành viên bạc
+        </Text>
+        <View
+          style={{
+            padding: 18,
+            paddingHorizontal: 25,
+            elevation: 5,
+            backgroundColor: '#FFF',
+            borderRadius: 12,
+          }}>
+          <Slider
+            maximumValue={100}
+            minimumValue={0}
+            minimumTrackTintColor={COLORS.header}
+            maximumTrackTintColor="#F0F0F0"
+            step={1}
+            value={progress}
+            onValueChange={setProgress}
+            allowTouchTrack
+            trackStyle={{
+              height: 10,
+              backgroundColor: 'transparent',
+              borderRadius: 20,
+            }}
+            thumbStyle={{
+              height: 50,
+              backgroundColor: 'transparent',
+            }}
+            thumbProps={{
+              children: (
+                <View style={{ position: 'relative', alignItems: 'center' }}>
+                  <Icon
+                    name="room"
+                    size={15}
+                    reverse
+                    containerStyle={{ bottom: 30 }}
+                    color={COLORS.header}
+                  />
+                  {progress !== 100 && (
+                    <Text
+                      style={{ position: 'absolute', top: 45, ...FONTS.Big }}>
+                      {progress}
+                    </Text>
+                  )}
+                </View>
+              ),
+            }}
+          />
+          <Text style={{ alignSelf: 'flex-end', ...FONTS.Big }}>{100}</Text>
+        </View>
+      </View>
       <Text style={styles.sectionText}>Tài khoản</Text>
       <FlatList
         listKey="A"
@@ -201,14 +269,17 @@ const Account = ({ navigation, userInfo }) => {
           }}
         />
         <View style={{ marginLeft: 20, flex: 1 }}>
-          <Text style={styles.smallText}>Nhân viên</Text>
+          <Text style={styles.smallText}>Xin chào</Text>
           <Text style={styles.bigText}>{userInfo?.user?.name}</Text>
-          <Text style={styles.statusText}>Đang làm việc</Text>
+          <Text style={[styles.statusText, { color: COLORS.warning }]}>
+            Thành viên đồng
+          </Text>
         </View>
         <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
           <Icon name="edit" size={28} color={COLORS.primary} />
         </TouchableOpacity>
       </View>
+
       <FlatList
         style={styles.scrollContainer}
         data={[]}
@@ -230,6 +301,7 @@ export default connect(mapStateToProps, null)(Account);
 const styles = StyleSheet.create({
   container: {
     ...container,
+    alignItems: 'stretch',
   },
   scrollContainer: {
     width: '100%',
@@ -238,10 +310,13 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    width: '100%',
     paddingHorizontal: 30,
-    marginBottom: 45,
+    paddingVertical: 20,
     marginTop: 30,
+    marginHorizontal: 15,
+    elevation: 10,
+    backgroundColor: COLORS.white,
+    borderRadius: 18,
   },
   bigText: {
     fontWeight: 'bold',
