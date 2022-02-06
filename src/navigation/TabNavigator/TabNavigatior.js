@@ -48,7 +48,7 @@ const TabNavigatior = () => {
     });
     return (
       <TouchableOpacity {...props}>
-        <Animatable.View ref={viewRef}>
+        <Animatable.View ref={viewRef} duration={600}>
           <View
             style={{
               display: 'flex',
