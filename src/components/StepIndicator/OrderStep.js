@@ -37,15 +37,15 @@ const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
   };
   switch (position) {
     case 0: {
-      iconConfig.name = 'shopping-cart';
+      iconConfig.name = 'person';
       break;
     }
     case 1: {
-      iconConfig.name = 'location-on';
+      iconConfig.name = 'verified-user';
       break;
     }
     case 2: {
-      iconConfig.name = 'assessment';
+      iconConfig.name = 'shopping-cart';
       break;
     }
     default: {
