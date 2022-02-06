@@ -15,12 +15,14 @@ import Header from '../../components/Header';
 import TextField from '../../components/TextField';
 import PillButton from '../../components/CustomButton/PillButton';
 import Loading from '../../components/Loading';
+import { DatePicker } from '../../components/DatePicker';
 
 const EditProfile = ({ navigation }) => {
   const [data, setData] = useState({
     name: '',
     email: '',
     phone: '',
+    address: '183/14 Bui Vien',
   });
   const [avatar, setAvatar] = useState(
     'https://res.cloudinary.com/dfnoohdaw/image/upload/v1638692549/avatar_default_de42ce8b3d.png',
@@ -161,12 +163,22 @@ const EditProfile = ({ navigation }) => {
           </Text>
         ) : null}
 
+        <DatePicker title="Ngày sinh của bạn" />
+
+        <TextField
+          title="Địa chỉ"
+          style={styles.fsize}
+          value={formik.values.address}
+          onChangeText={text => formik.setFieldValue('address', text)}
+        />
+      </ScrollView>
+      <View style={{ padding: 20 }}>
         <PillButton
           title="Cập nhật"
           buttonStyle={{ backgroundColor: success }}
           onPress={formik.submitForm}
         />
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };
