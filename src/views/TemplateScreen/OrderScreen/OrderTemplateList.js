@@ -14,10 +14,10 @@ import img from '../../../assets/images/download.jpg';
 import { store } from '../../../config/configureStore';
 import Header from '../../../components/Header';
 import { primary, danger } from '../../../styles/color';
-import { COLORS } from '../../../styles';
+import { COLORS, FONTS } from '../../../styles';
 import PillButton from '../../../components/CustomButton/PillButton';
 
-const OrderTemplateList = ({ navigation }) => {
+const OrderTemplateList = ({ route, navigation }) => {
   const [data, setData] = useState([
     {
       id: '#afoqijfoasdada'.toLocaleUpperCase(),
@@ -51,38 +51,48 @@ const OrderTemplateList = ({ navigation }) => {
           : navigation.navigate('EditOrderInfo')
       }>
       <ListItem containerStyle={style.reportItem}>
-        <View
-          style={{
-            backgroundColor: 'rgba(255,255,255,0.6)',
-            padding: 10,
-            borderRadius: 15,
-          }}>
-          <Icon
-            size={30}
-            name="archive"
-            iconStyle={{
-              color: '#FFF',
-            }}
-            containerStyle={{
-              backgroundColor: COLORS.header,
+        <View style={{ flexDirection: 'row' }}>
+          <View
+            style={{
+              backgroundColor: 'rgba(255,255,255,0.6)',
               padding: 10,
-              borderRadius: 25,
-            }}
-          />
+              borderRadius: 15,
+              marginRight: 10,
+            }}>
+            <Icon
+              size={30}
+              name="archive"
+              iconStyle={{
+                color: '#FFF',
+              }}
+              containerStyle={{
+                backgroundColor: COLORS.header,
+                padding: 10,
+                borderRadius: 25,
+              }}
+            />
+          </View>
+          <ListItem.Content>
+            <ListItem.Title>{item.id}</ListItem.Title>
+            <ListItem.Subtitle>{item.dateTime}</ListItem.Subtitle>
+          </ListItem.Content>
+          {check.some(item => item === true) ? (
+            <ListItem.CheckBox
+              checkedIcon="dot-circle-o"
+              uncheckedIcon="circle-o"
+              checked={check[index]}
+              checkedColor={primary}
+            />
+          ) : (
+            <ListItem.Chevron size={30} />
+          )}
         </View>
-        <ListItem.Content>
-          <ListItem.Title>{item.id}</ListItem.Title>
-          <ListItem.Subtitle>{item.dateTime}</ListItem.Subtitle>
-        </ListItem.Content>
-        {check.some(item => item === true) ? (
-          <ListItem.CheckBox
-            checkedIcon="dot-circle-o"
-            uncheckedIcon="circle-o"
-            checked={check[index]}
-            checkedColor={primary}
-          />
-        ) : (
-          <ListItem.Chevron size={30} />
+        {route.params?.useTemplate && (
+          <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
+            <Text style={[FONTS.BigBold, { color: COLORS.primary }]}>
+              Sử dụng
+            </Text>
+          </TouchableOpacity>
         )}
       </ListItem>
     </TouchableOpacity>
@@ -160,58 +170,56 @@ const OrderTemplateList = ({ navigation }) => {
         }
       />
       {check.some(item => item === true) ? (
-        <PillButton
-          title="Xoá"
-          buttonStyle={{
-            backgroundColor: COLORS.danger,
-          }}
-          containerStyle={{
-            marginHorizontal: 20,
-            alignSelf: 'stretch',
-          }}
-        />
+        <View style={{ padding: 20 }}>
+          <PillButton
+            title="Xoá"
+            buttonStyle={{
+              backgroundColor: COLORS.danger,
+            }}
+          />
+        </View>
       ) : (
-        <PillButton
-          ViewComponent={() => (
-            <View
-              style={{
-                backgroundColor: COLORS.primary,
-                height: 55,
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingHorizontal: 100,
-                paddingVertical: 20,
-              }}>
-              <Icon
-                size={20}
-                name="add"
-                color={COLORS.primary}
-                reverse
-                reverseColor={COLORS.white}
-                containerStyle={{
-                  opacity: 0.5,
-                  backgroundColor: '#f2fbff',
-                }}
-              />
-            </View>
-          )}
-          title="Xoá"
-          buttonStyle={{
-            backgroundColor: COLORS.primary,
-          }}
-          containerStyle={{
-            marginHorizontal: 20,
-          }}
-        />
+        <View style={{ padding: 20 }}>
+          <PillButton
+            // ViewComponent={() => (
+            //   <View
+            //     style={{
+            //       backgroundColor: COLORS.primary,
+            //       height: 55,
+            //       display: 'flex',
+            //       flexDirection: 'row',
+            //       justifyContent: 'center',
+            //       alignItems: 'center',
+            //       paddingHorizontal: 100,
+            //       paddingVertical: 20,
+            //     }}>
+            //     <Icon
+            //       size={20}
+            //       name="add"
+            //       color={COLORS.primary}
+            //       reverse
+            //       reverseColor={COLORS.white}
+            //       containerStyle={{
+            //         opacity: 0.5,
+            //         backgroundColor: '#f2fbff',
+            //       }}
+            //     />
+            //   </View>
+            // )}
+            title="Thêm mẫu đơn hàng"
+            buttonStyle={{
+              backgroundColor: COLORS.primary,
+            }}
+            onPress={() => navigation.navigate('EditOrderInfo')}
+          />
+        </View>
       )}
     </SafeAreaView>
   );
 };
 
 const style = StyleSheet.create({
-  container: { ...container },
+  container: { ...container, alignItems: 'stretch' },
   header: { ...header },
   reportItem: {
     padding: 20,
@@ -220,6 +228,7 @@ const style = StyleSheet.create({
     borderColor: 'rgba(0,0,0,0.5)',
     backgroundColor: '#F0F1F5',
     marginVertical: 15,
+    flexDirection: 'column',
   },
   time: {
     alignSelf: 'flex-end',

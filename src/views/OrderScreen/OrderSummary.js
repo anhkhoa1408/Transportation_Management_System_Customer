@@ -16,6 +16,8 @@ import { InfoField } from '../../components/InfoField';
 
 const OrderSummary = ({ route, navigation }) => {
   const voucher = route?.params?.voucher;
+  const payment = route?.params?.payment;
+
   return (
     <SafeAreaView style={style.container}>
       <Header
@@ -24,7 +26,7 @@ const OrderSummary = ({ route, navigation }) => {
         }
         headerText={'Vận chuyển'}
       />
-      <OrderStep current={route.params && route.params.title ? 2 : 1} />
+      <OrderStep current={payment ? 2 : 1} />
       <Text
         style={[
           {
@@ -100,9 +102,7 @@ const OrderSummary = ({ route, navigation }) => {
                   { alignItems: 'center' },
                 ]}>
                 <Text style={[{ flex: 1 }]}>
-                  {route.params && route.params.title
-                    ? route.params.title
-                    : 'Nhấn để chọn'}
+                  {payment ? payment : 'Nhấn để chọn'}
                 </Text>
                 <ListItem.Chevron size={30} />
               </View>
@@ -113,7 +113,8 @@ const OrderSummary = ({ route, navigation }) => {
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('VoucherScreen', {
-                  order: true,
+                  ...route.params,
+                  useVoucher: true,
                 })
               }>
               <View
@@ -143,7 +144,7 @@ const OrderSummary = ({ route, navigation }) => {
         </View>
         <PillButton
           title="Xác nhận"
-          disabled={route.params && route.params.title ? false : true}
+          disabled={payment ? false : true}
           buttonStyle={{ backgroundColor: COLORS.primary }}
           onPress={() => navigation.navigate('HomeScreen')}
         />

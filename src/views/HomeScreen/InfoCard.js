@@ -25,7 +25,10 @@ const InfoCard = ({ item, navigation }) => {
         scale: 1,
       },
     });
-    navigation.navigate(navigate);
+    navigation.navigate(
+      navigate,
+      item.useTemplate ? { useTemplate: true } : null,
+    );
   };
   return (
     <Animatable.View ref={ref} duration={500} easing="ease">

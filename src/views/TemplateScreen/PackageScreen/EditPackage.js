@@ -11,7 +11,15 @@ import Select from '../../../components/Select/Select';
 import { success } from '../../../styles/color';
 import { COLORS } from '../../../styles';
 
-const EditPackage = ({ navigation }) => {
+const EditPackage = ({ route, navigation }) => {
+  const order = route?.params?.order;
+  const listPackage = [
+    {
+      id: Math.floor(Math.random() * 100) + 1,
+      title: 'Shobe of justice ' + Math.floor(Math.random() * 100) + 1,
+      count: 203,
+    },
+  ];
   const packageType = [
     {
       label: 'Thường',
@@ -32,13 +40,18 @@ const EditPackage = ({ navigation }) => {
         leftElement={
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
         }
-        headerText={'Chỉnh sửa'}
+        headerText={order ? 'Thêm kiện hàng' : 'Chỉnh sửa'}
         rightElement={
           <Icon
             name="check"
             size={30}
             color={COLORS.primary}
-            onPress={() => navigation.goBack()}
+            onPress={() =>
+              navigation.navigate('InputPackage', {
+                ...route.params,
+                listPackage: listPackage,
+              })
+            }
           />
         }
       />
@@ -51,12 +64,6 @@ const EditPackage = ({ navigation }) => {
         <TextField title="Số lượng" keyboardType="numeric" />
         <Select title="Loại hàng hoá" data={packageType} />
         <CustomInput title="Ghi chú" placeholder="Ghi chú của bạn..." />
-        {/* <PillButton
-          title="Lưu"
-          buttonStyle={{
-            backgroundColor: success,
-          }}
-        /> */}
       </ScrollView>
     </SafeAreaView>
   );

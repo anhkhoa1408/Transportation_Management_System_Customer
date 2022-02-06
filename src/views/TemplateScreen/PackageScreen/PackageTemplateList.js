@@ -17,7 +17,7 @@ import { primary, danger } from '../../../styles/color';
 import { COLORS } from '../../../styles';
 import PillButton from '../../../components/CustomButton/PillButton';
 
-const PackageTemplateList = ({ navigation }) => {
+const PackageTemplateList = ({ route, navigation }) => {
   const [data, setData] = useState([
     {
       id: '#afoqijfoasdada'.toLocaleUpperCase(),
@@ -164,58 +164,56 @@ const PackageTemplateList = ({ navigation }) => {
         }
       />
       {check.some(item => item === true) ? (
-        <PillButton
-          title="Xoá"
-          buttonStyle={{
-            backgroundColor: COLORS.danger,
-          }}
-          containerStyle={{
-            marginHorizontal: 20,
-            alignSelf: 'stretch',
-          }}
-        />
+        <View style={{ padding: 20 }}>
+          <PillButton
+            title="Xoá"
+            buttonStyle={{
+              backgroundColor: COLORS.danger,
+            }}
+          />
+        </View>
       ) : (
-        <PillButton
-          ViewComponent={() => (
-            <View
-              style={{
-                backgroundColor: COLORS.primary,
-                height: 55,
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingHorizontal: 100,
-                paddingVertical: 20,
-              }}>
-              <Icon
-                size={20}
-                name="add"
-                color={COLORS.primary}
-                reverse
-                reverseColor={COLORS.white}
-                containerStyle={{
-                  opacity: 0.5,
-                  backgroundColor: '#f2fbff',
-                }}
-              />
-            </View>
-          )}
-          title="Xoá"
-          buttonStyle={{
-            backgroundColor: COLORS.primary,
-          }}
-          containerStyle={{
-            marginHorizontal: 20,
-          }}
-        />
+        <View style={{ padding: 20 }}>
+          <PillButton
+            // ViewComponent={() => (
+            //   <View
+            //     style={{
+            //       backgroundColor: COLORS.primary,
+            //       height: 55,
+            //       display: 'flex',
+            //       flexDirection: 'row',
+            //       justifyContent: 'center',
+            //       alignItems: 'center',
+            //       paddingHorizontal: 100,
+            //       paddingVertical: 20,
+            //     }}>
+            //     <Icon
+            //       size={20}
+            //       name="add"
+            //       color={COLORS.primary}
+            //       reverse
+            //       reverseColor={COLORS.white}
+            //       containerStyle={{
+            //         opacity: 0.5,
+            //         backgroundColor: '#f2fbff',
+            //       }}
+            //     />
+            //   </View>
+            // )}
+            title="Thêm mẫu kiện hàng"
+            buttonStyle={{
+              backgroundColor: COLORS.primary,
+            }}
+            onPress={() => navigation.navigate('EditPackage', route.params)}
+          />
+        </View>
       )}
     </SafeAreaView>
   );
 };
 
 const style = StyleSheet.create({
-  container: { ...container },
+  container: { ...container, alignItems: 'stretch' },
   header: { ...header },
   reportItem: {
     padding: 20,

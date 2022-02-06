@@ -60,7 +60,7 @@ const Payment = ({ navigation }) => {
             title = 'Thẻ Visa';
             break;
         }
-        acc['title'] = title;
+        acc['payment'] = title;
       }
       return acc;
     }, {});

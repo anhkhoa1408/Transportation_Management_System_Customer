@@ -53,8 +53,8 @@ const InputReceiver = ({ navigation }) => {
           <TextField title="Số điện thoại" keyboardType="numeric" />
         </View>
         <PillButton
-          title="Tiếp tục"
-          onPress={() => navigation.navigate('OrderSummary')}
+          title="Thêm kiện hàng"
+          onPress={() => navigation.navigate('InputPackage')}
           buttonStyle={{ backgroundColor: COLORS.primary }}
           containerStyle={{ marginTop: '50%' }}
         />

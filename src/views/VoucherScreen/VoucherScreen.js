@@ -20,8 +20,8 @@ import MaskedView from '@react-native-community/masked-view';
 import PillButton from '../../components/CustomButton/PillButton';
 
 const VoucherScreen = ({ route, navigation }) => {
-  const order = route?.params?.order;
-  console.log(order);
+  const useVoucher = route?.params?.useVoucher;
+
   const [data, setData] = useState([
     {
       id: '#afoqijfoasdada'.toLocaleUpperCase(),
@@ -31,20 +31,20 @@ const VoucherScreen = ({ route, navigation }) => {
     },
     {
       id: '#bmiweopkrejgoi'.toLocaleUpperCase(),
-      discount: '10%',
-      title: 'Cho kiện hàng có khối lượng trên 1000kg',
+      discount: '12%',
+      title: 'Cho kiện hàng có khối lượng trên 3000kg',
       expire: '20/12/2022',
     },
     {
       id: '#opkopjqwoiasdd'.toLocaleUpperCase(),
-      discount: '10%',
-      title: 'Cho kiện hàng có khối lượng trên 1000kg',
+      discount: '18%',
+      title: 'Cho khách hàng có hạng vàng',
       expire: '20/12/2022',
     },
     {
       id: '#fmppoekpokrope'.toLocaleUpperCase(),
-      discount: '10%',
-      title: 'Cho kiện hàng có khối lượng trên 1000kg',
+      discount: '20%',
+      title: 'Sinh nhật khách hàng',
       expire: '20/12/2022',
     },
   ]);
@@ -111,10 +111,11 @@ const VoucherScreen = ({ route, navigation }) => {
               marginTop: 10,
             }}>
             <View style={{ flex: 1 }}>
-              {order && (
+              {useVoucher && (
                 <TouchableOpacity
                   onPress={() =>
                     navigation.navigate('OrderSummary', {
+                      ...route.params,
                       voucher: 'Giảm phí vận chuyển ' + item.discount,
                     })
                   }>
@@ -147,7 +148,14 @@ const VoucherScreen = ({ route, navigation }) => {
 
   return (
     <SafeAreaView style={style.container}>
-      <Header headerText={'Voucher của bạn'} />
+      <Header
+        headerText={'Voucher của bạn'}
+        leftElement={
+          useVoucher && (
+            <Icon name="west" size={30} onPress={() => navigation.goBack()} />
+          )
+        }
+      />
 
       <View style={{ width: '100%', paddingHorizontal: 10, display: 'flex' }}>
         <CustomSearch />

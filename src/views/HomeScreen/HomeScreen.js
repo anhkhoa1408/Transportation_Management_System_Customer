@@ -26,7 +26,8 @@ function HomeScreen({ navigation, ...props }) {
     {
       icon: 'event-available',
       title: 'Dùng mẫu đơn hàng',
-      navigate: 'VehicleList',
+      navigate: 'OrderTemplateList',
+      useTemplate: true,
     },
     {
       icon: 'assignment',

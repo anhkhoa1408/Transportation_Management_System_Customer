@@ -10,11 +10,8 @@ import { Avatar, Text, Icon } from 'react-native-elements';
 import { container } from '../../../styles/layoutStyle';
 import Header from '../../../components/Header';
 import TextField from '../../../components/TextField';
-import { DatePicker } from '../../../components/DatePicker';
-import CustomInput from '../../../components/CustomInput/CustomInput';
 import PillButton from '../../../components/CustomButton/PillButton';
 import Select from '../../../components/Select/Select';
-import { success } from '../../../styles/color';
 import { COLORS, FONTS } from '../../../styles';
 
 const EditOrderInfo = ({ navigation }) => {
@@ -39,14 +36,14 @@ const EditOrderInfo = ({ navigation }) => {
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
         }
         headerText={'Mẫu đơn hàng'}
-        // rightElement={
-        //   <Icon
-        //     name="check"
-        //     size={30}
-        //     color={COLORS.primary}
-        //     onPress={() => navigation.goBack()}
-        //   />
-        // }
+        rightElement={
+          <Icon
+            name="check"
+            size={30}
+            color={COLORS.primary}
+            onPress={() => navigation.goBack()}
+          />
+        }
       />
       <ScrollView contentContainerStyle={style.form}>
         <Text style={[FONTS.BigBold, { marginBottom: 10 }]}>
@@ -56,22 +53,30 @@ const EditOrderInfo = ({ navigation }) => {
         <TouchableOpacity
           activeOpacity={0.9}
           onPress={() => navigation.navigate('EditOrderAddress')}>
-          <TextField editable={false} title="Nơi gửi hàng" />
+          <TextField
+            editable={false}
+            title="Nơi gửi hàng"
+            placeholder="Nhấn để thêm"
+          />
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.9}
           onPress={() => navigation.navigate('EditOrderAddress')}>
-          <TextField editable={false} title="Nơi nhận hàng" />
+          <TextField
+            editable={false}
+            title="Nơi nhận hàng"
+            placeholder="Nhấn để thêm"
+          />
         </TouchableOpacity>
         <TextField title="Tên người nhận" />
         <TextField title="SDT người nhận" keyboardType="numeric" />
         <Select title="Loại hàng hoá" data={packageType} />
-        <PillButton
+        {/* <PillButton
           title="Lưu"
           buttonStyle={{
             backgroundColor: success,
           }}
-        />
+        /> */}
       </ScrollView>
     </SafeAreaView>
   );
