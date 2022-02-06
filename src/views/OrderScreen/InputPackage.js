@@ -90,7 +90,7 @@ const InputPackage = ({ route, navigation }) => {
               title="Chọn mẫu"
               onPress={() =>
                 navigation.navigate('PackageTemplateList', {
-                  order: true,
+                  useTemplate: true,
                   ...route.params,
                 })
               }

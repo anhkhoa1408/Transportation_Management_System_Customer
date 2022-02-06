@@ -14,7 +14,7 @@ import img from '../../../assets/images/download.jpg';
 import { store } from '../../../config/configureStore';
 import Header from '../../../components/Header';
 import { primary, danger } from '../../../styles/color';
-import { COLORS } from '../../../styles';
+import { COLORS, FONTS } from '../../../styles';
 import PillButton from '../../../components/CustomButton/PillButton';
 
 const PackageTemplateList = ({ route, navigation }) => {
@@ -55,38 +55,48 @@ const PackageTemplateList = ({ route, navigation }) => {
           : navigation.navigate('EditPackage')
       }>
       <ListItem containerStyle={style.reportItem}>
-        <View
-          style={{
-            backgroundColor: 'rgba(255,255,255,0.6)',
-            padding: 10,
-            borderRadius: 15,
-          }}>
-          <Icon
-            size={30}
-            name="archive"
-            iconStyle={{
-              color: '#FFF',
-            }}
-            containerStyle={{
-              backgroundColor: COLORS.header,
+        <View style={{ flexDirection: 'row' }}>
+          <View
+            style={{
+              backgroundColor: 'rgba(255,255,255,0.6)',
               padding: 10,
-              borderRadius: 25,
-            }}
-          />
+              borderRadius: 15,
+              marginRight: 10,
+            }}>
+            <Icon
+              size={30}
+              name="archive"
+              iconStyle={{
+                color: '#FFF',
+              }}
+              containerStyle={{
+                backgroundColor: COLORS.header,
+                padding: 10,
+                borderRadius: 25,
+              }}
+            />
+          </View>
+          <ListItem.Content>
+            <ListItem.Title>{item.id}</ListItem.Title>
+            <ListItem.Subtitle>{item.dateTime}</ListItem.Subtitle>
+          </ListItem.Content>
+          {check.some(item => item === true) ? (
+            <ListItem.CheckBox
+              checkedIcon="dot-circle-o"
+              uncheckedIcon="circle-o"
+              checked={check[index]}
+              checkedColor={primary}
+            />
+          ) : (
+            <ListItem.Chevron size={30} />
+          )}
         </View>
-        <ListItem.Content>
-          <ListItem.Title>{item.id}</ListItem.Title>
-          <ListItem.Subtitle>{item.dateTime}</ListItem.Subtitle>
-        </ListItem.Content>
-        {check.some(item => item === true) ? (
-          <ListItem.CheckBox
-            checkedIcon="dot-circle-o"
-            uncheckedIcon="circle-o"
-            checked={check[index]}
-            checkedColor={primary}
-          />
-        ) : (
-          <ListItem.Chevron size={30} />
+        {route.params?.useTemplate && (
+          <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
+            <Text style={[FONTS.BigBold, { color: COLORS.primary }]}>
+              Sử dụng
+            </Text>
+          </TouchableOpacity>
         )}
       </ListItem>
     </TouchableOpacity>
@@ -222,6 +232,7 @@ const style = StyleSheet.create({
     borderColor: 'rgba(0,0,0,0.5)',
     backgroundColor: '#F0F1F5',
     marginVertical: 15,
+    flexDirection: 'column',
   },
   time: {
     alignSelf: 'flex-end',
