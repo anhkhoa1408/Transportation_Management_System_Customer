@@ -11,7 +11,7 @@ import ModalMess from '../../components/ModalMess';
 import ratingApi from '../../api/ratingApi';
 const OrderRating = ({ visible, onSwipeComplete, ...props }) => {
   const [height, setHeight] = useState(200);
-  const [point, setPoint] = useState(0);
+  const [point, setPoint] = useState(2);
   const [comment, setComment] = useState('');
   const [alert, setAlert] = useState(null);
   const id_order = "61a982b712c1a7001641524f";
