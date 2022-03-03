@@ -8,6 +8,10 @@ export const white = '#fff';
 export const red = '#BF3B3B';
 export const background1 = '#F0F1F5';
 export const header = '#39b2f7';
+export const neutralPrimary = '#d1f3ff';
+export const neutralSuccess = '#bfffcc';
+export const neutralWarning = '#ffeecc';
+export const neutralDanger = '#ffd4d9';
 
 export default {
   primary,
@@ -20,4 +24,8 @@ export default {
   red,
   background1,
   header,
+  neutralPrimary,
+  neutralSuccess,
+  neutralWarning,
+  neutralDanger,
 };

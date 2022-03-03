@@ -18,16 +18,16 @@ const ModalMess = props => {
       type: 'success',
       name: 'check-circle',
       color: success,
-      title: 'Thành công'
+      title: 'Thành công',
     },
     {
       type: 'danger',
       name: 'cancel',
       color: danger,
-      title: 'Thất bại'
+      title: 'Thất bại',
     },
   ];
-  const modalType = iconStyle.find((element) => element.type === props.type)
+  const modalType = iconStyle.find(element => element.type === props.type);
   return (
     <View style={style.container}>
       <Modal
@@ -42,7 +42,13 @@ const ModalMess = props => {
         backdropTransitionInTiming={600}
         backdropTransitionOutTiming={600}>
         <View style={{ flex: 1, marginBottom: 10 }}>
-          <Icon type="material" name={modalType.name} size={50} color={modalType.color} style={{marginBottom: 10}} />
+          <Icon
+            type="material"
+            name={modalType.name}
+            size={50}
+            color={modalType.color}
+            style={{ marginBottom: 10 }}
+          />
           <Text h4 h4Style={{ textAlign: 'center', marginBottom: 10 }}>
             {modalType.title}
           </Text>
@@ -51,9 +57,9 @@ const ModalMess = props => {
           </Text>
         </View>
         <Button
-        buttonStyle={{backgroundColor: modalType.color}}
+          buttonStyle={{ backgroundColor: modalType.color }}
           containerStyle={style.buttonContainer}
-          title="Close"
+          title="ĐÓNG"
           type="solid"
           onPress={() => setAlert(null)}
         />
@@ -75,11 +81,11 @@ const style = StyleSheet.create({
     alignSelf: 'center',
     padding: 20,
     top: '30%',
-    borderRadius: 20,
+    borderRadius: 7,
   },
-  buttonContainer: {
-    borderRadius: 20,
-  },
+  // buttonContainer: {
+  //   borderRadius: 20,
+  // },
 });
 
 export default ModalMess;
