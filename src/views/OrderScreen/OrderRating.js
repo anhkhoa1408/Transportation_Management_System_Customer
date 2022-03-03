@@ -6,9 +6,15 @@ import { backdropColor } from '../../styles/color';
 import CustomInput from '../../components/CustomInput/CustomInput';
 import PillButton from '../../components/CustomButton/PillButton';
 import { COLORS } from '../../styles';
-
+import { Value } from 'react-native-reanimated';
+import ModalMess from '../../components/ModalMess';
+import ratingApi from '../../api/ratingApi';
 const OrderRating = ({ visible, onSwipeComplete, ...props }) => {
   const [height, setHeight] = useState(200);
+  const [point, setPoint] = useState(0);
+  const [comment, setComment] = useState('');
+  const [alert, setAlert] = useState(null);
+  const id_order = "61a982b712c1a7001641524f";
   const handleSubmit = () => {
     setHeight(200);
     Keyboard.dismiss();
@@ -18,6 +24,16 @@ const OrderRating = ({ visible, onSwipeComplete, ...props }) => {
     setHeight(200);
     Keyboard.dismiss();
     onSwipeComplete();
+  };
+  const alertType = {
+    error: {
+      type: 'danger',
+      message: 'Đánh giá thất bại',
+    },
+    success: {
+      type: 'success',
+      message: 'Đánh giá thành công',
+    },
   };
   return (
     <Modal
@@ -32,6 +48,14 @@ const OrderRating = ({ visible, onSwipeComplete, ...props }) => {
       onSwipeComplete={handleClosed}
       swipeDirection={['up', 'down']}>
       <View style={[styles.container]}>
+        {alert && (
+          <ModalMess
+            type={alert.type}
+            message={alert.message}
+            setAlert={setAlert}
+            alert={alert}
+          />
+        )}
         <Icon
           name="close"
           containerStyle={{
@@ -60,16 +84,29 @@ const OrderRating = ({ visible, onSwipeComplete, ...props }) => {
           Bạn đánh giá thế nào về dịch vụ của chúng tôi :)
         </Text>
         <View style={{ marginVertical: 30 }}>
-          <Rating />
+          <Rating 
+          onFinishRating = {(Value)=>setPoint(Value)}
+          />
         </View>
         <CustomInput
           placeholder="Cảm nhận của bạn"
           onFocus={() => setHeight(0)}
           onSubmitEditing={handleSubmit}
+          onChangeText={text => setComment(text)}
         />
         <PillButton
           title="Gửi"
-          onPress={handleSubmit}
+          onPress={()=>
+            {
+              ratingApi
+              .ratingapi(id_order,{
+                rating_point: point,
+                rating_note: comment,
+              })
+              .then(data => setAlert(alertType.success))
+              .catch(error => setAlert(alertType.error));
+            }
+          }
           buttonStyle={{ backgroundColor: COLORS.header }}
         />
       </View>
