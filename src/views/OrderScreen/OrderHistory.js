@@ -19,7 +19,7 @@ import { container, header, shadowCard } from '../../styles/layoutStyle';
 import Loading from '../../components/Loading';
 import Header from '../../components/Header';
 import { danger, primary, success, warning } from '../../styles/color';
-import { FONTS } from '../../styles';
+import { COLORS, FONTS } from '../../styles';
 import OrderIndicator from '../../components/StepIndicator/OrderIndicator';
 
 export default function OrderHistory({ navigation }) {
@@ -28,22 +28,10 @@ export default function OrderHistory({ navigation }) {
       carId: '#afoqijfoasdada'.toLocaleUpperCase(),
       dateTime: '12/20/2019 3:36 PM',
     },
-    {
-      carId: '#bmiweopkrejgoi'.toLocaleUpperCase(),
-      dateTime: '12/20/2019 3:36 PM',
-    },
-    {
-      carId: '#opkopjqwoiasdd'.toLocaleUpperCase(),
-      dateTime: '12/20/2019 3:36 PM',
-    },
   ]);
   const [deliveringList, setDelivering] = useState([
     {
       carId: '#afoqijfoasdada'.toLocaleUpperCase(),
-      dateTime: '12/20/2019 3:36 PM',
-    },
-    {
-      carId: '#bmiweopkrejgoi'.toLocaleUpperCase(),
       dateTime: '12/20/2019 3:36 PM',
     },
   ]);
@@ -95,7 +83,7 @@ export default function OrderHistory({ navigation }) {
               ]}>
               Đánh giá
             </Text>
-            <Rating type="custom" imageSize={18} tintColor="#F0F1F5" />
+            <Rating type="custom" imageSize={18} tintColor={COLORS.gray} />
           </View>
         </ListItem.Content>
       </ListItem>
@@ -278,7 +266,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     borderRadius: 12,
     borderColor: 'rgba(0,0,0,0.5)',
-    backgroundColor: '#F0F1F5',
+    backgroundColor: COLORS.gray,
     marginVertical: 15,
     display: 'flex',
   },
@@ -286,7 +274,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 15,
     marginHorizontal: 20,
-    borderRadius: 20,
+    borderRadius: 12,
     backgroundColor: '#FFF',
     marginVertical: 15,
     display: 'flex',

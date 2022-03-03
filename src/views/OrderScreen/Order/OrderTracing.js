@@ -66,7 +66,7 @@ const OrderTracing = props => {
       {Array.from({ length: current }, (_, index) => (
         <>
           <Animatable.View
-            delay={index * 1500}
+            delay={index * 1300}
             animation="fadeIn"
             easing={'linear'}
             ref={ele => (stageRef[index] = ele)}

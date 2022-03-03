@@ -199,9 +199,9 @@ const style = StyleSheet.create({
     flexDirection: 'column',
     padding: 20,
     marginHorizontal: 20,
-    borderRadius: 20,
+    borderRadius: 12,
     borderColor: 'rgba(0,0,0,0.5)',
-    backgroundColor: '#F0F1F5',
+    backgroundColor: '#F3F3FA',
     marginVertical: 15,
   },
   chatList: {

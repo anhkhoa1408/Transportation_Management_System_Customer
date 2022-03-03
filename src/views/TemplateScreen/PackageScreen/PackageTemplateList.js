@@ -230,7 +230,7 @@ const style = StyleSheet.create({
     marginHorizontal: 20,
     borderRadius: 12,
     borderColor: 'rgba(0,0,0,0.5)',
-    backgroundColor: '#F0F1F5',
+    backgroundColor: COLORS.gray,
     marginVertical: 15,
     flexDirection: 'column',
   },

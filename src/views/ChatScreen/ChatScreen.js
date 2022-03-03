@@ -6,52 +6,11 @@ import { container, header } from '../../styles/layoutStyle';
 import img from '../../assets/images/download.jpg';
 import { ScrollView } from 'react-native-gesture-handler';
 import { store } from '../../config/configureStore';
+import { COLORS } from '../../styles';
 
 const ChatScreen = ({ navigation }) => {
   const { userInfo } = store.getState();
   const historyChatList = [
-    {
-      avatar: img,
-      name: 'Uchiha sasuker',
-      lastMessage: 'Bạn: hãy giao vào lúc 10h',
-      time: '10:30 PM',
-    },
-    {
-      avatar: img,
-      name: 'Uchiha sasuker',
-      lastMessage: 'Bạn: hãy giao vào lúc 10h',
-      time: '10:30 PM',
-    },
-    {
-      avatar: img,
-      name: 'Uchiha sasuker',
-      lastMessage: 'Bạn: hãy giao vào lúc 10h',
-      time: '10:30 PM',
-    },
-    {
-      avatar: img,
-      name: 'Uchiha sasuker',
-      lastMessage: 'Bạn: hãy giao vào lúc 10h',
-      time: '10:30 PM',
-    },
-    {
-      avatar: img,
-      name: 'Uchiha sasuker',
-      lastMessage: 'Bạn: hãy giao vào lúc 10h',
-      time: '10:30 PM',
-    },
-    {
-      avatar: img,
-      name: 'Uchiha sasuker',
-      lastMessage: 'Bạn: hãy giao vào lúc 10h',
-      time: '10:30 PM',
-    },
-    {
-      avatar: img,
-      name: 'Uchiha sasuker',
-      lastMessage: 'Bạn: hãy giao vào lúc 10h',
-      time: '10:30 PM',
-    },
     {
       avatar: img,
       name: 'Uchiha sasuker',
@@ -85,7 +44,7 @@ const ChatScreen = ({ navigation }) => {
               activeOpacity={0.5}
               onPress={() => navigation.navigate('SendMessageScreen')}>
               <ListItem
-                underlayColor="#F0F1F5"
+                underlayColor={COLORS.gray}
                 containerStyle={chatScreenStyle.chatItem}>
                 <Avatar
                   size="medium"
@@ -115,7 +74,7 @@ const chatScreenStyle = StyleSheet.create({
     paddingVertical: 25,
     paddingHorizontal: 25,
     marginVertical: 20,
-    backgroundColor: '#F0F1F5',
+    backgroundColor: COLORS.gray,
     borderRadius: 15,
   },
   chatList: {
