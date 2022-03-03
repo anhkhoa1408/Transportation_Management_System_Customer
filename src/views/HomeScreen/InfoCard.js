@@ -2,9 +2,9 @@ import React, { useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Icon, ListItem, Text } from 'react-native-elements';
 import { primary } from '../../styles/color';
-import { shadowCard } from '../../styles/layoutStyle';
 import * as Animatable from 'react-native-animatable';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { COLORS } from '../../styles';
 
 const InfoCard = ({ item, navigation }) => {
   const ref = useRef(null);
@@ -83,13 +83,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
-    backgroundColor: primary,
+    backgroundColor: COLORS.primary,
     borderColor: '#000',
     paddingVertical: 15,
     marginHorizontal: 15,
     marginVertical: 20,
-    borderRadius: 20,
-    ...shadowCard,
+    borderRadius: 12,
+    elevation: 4,
   },
   titleFont: {
     fontSize: 16,

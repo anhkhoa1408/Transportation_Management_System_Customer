@@ -316,7 +316,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     elevation: 10,
     backgroundColor: COLORS.white,
-    borderRadius: 18,
+    borderRadius: 10,
   },
   bigText: {
     fontWeight: 'bold',
