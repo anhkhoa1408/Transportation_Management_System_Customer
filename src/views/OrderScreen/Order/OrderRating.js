@@ -11,7 +11,7 @@ import orderApi from '../../../api/orderApi';
 
 const OrderRating = ({ visible, onSwipeComplete, ...props }) => {
   const [height, setHeight] = useState(220);
-  const [point, setPoint] = useState(2);
+  const [point, setPoint] = useState(0);
   const [comment, setComment] = useState('');
   const [alert, setAlert] = useState(null);
   const id_order = '61a982b712c1a7001641524f';
