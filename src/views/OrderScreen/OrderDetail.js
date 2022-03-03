@@ -8,35 +8,29 @@ import {
   ScrollView,
 } from 'react-native';
 import {
+  ListItem,
   Text,
   Icon,
-  CheckBox,
-  ListItem,
-  Rating,
   Avatar,
   Divider,
   Button,
   Overlay,
+  Tab,
+  TabView,
 } from 'react-native-elements';
 import { container, header, shadowCard } from '../../styles/layoutStyle';
 import Loading from '../../components/Loading';
 import Header from '../../components/Header';
-import {
-  backdropColor,
-  danger,
-  primary,
-  success,
-  warning,
-} from '../../styles/color';
 import { COLORS, FONTS } from '../../styles';
 import OrderIndicator from '../../components/StepIndicator/OrderIndicator';
 import { InfoField } from '../../components/InfoField';
-import OrderRating from './OrderRating';
+import OrderRating from './Order/OrderRating';
+import Detail from './Order/Detail';
+import PackageList from './Order/PakageList';
+import OrderTracing from './Order/OrderTracing';
 
 export default function OrderDetail({ navigation }) {
-  const [stepExpand, setStepExpand] = useState(true);
-  const [infoExpand, setInfoExpand] = useState(true);
-  const [packageExpand, setPackageExpand] = useState(false);
+  const [index, setIndex] = useState(0);
   const [option, setOption] = useState(false);
   const [rating, setRating] = useState(false);
   const [data, setData] = useState([
@@ -60,6 +54,8 @@ export default function OrderDetail({ navigation }) {
         }
         headerText="Chi tiết"
       />
+
+      {/* Customer info and option */}
       <View
         style={[
           styles.rowContainer,
@@ -100,7 +96,6 @@ export default function OrderDetail({ navigation }) {
           }}
           onPress={() => setOption(!option)}
         />
-        {/* {option && ( */}
         <Overlay
           overlayStyle={{
             position: 'absolute',
@@ -112,10 +107,9 @@ export default function OrderDetail({ navigation }) {
             paddingHorizontal: 20,
             paddingVertical: 10,
             width: 220,
-            // borderRadius: 15,
           }}
           backdropStyle={{
-            backgroundColor: backdropColor,
+            backgroundColor: COLORS.backdropColor,
             opacity: 0.4,
           }}
           visible={option}
@@ -144,287 +138,83 @@ export default function OrderDetail({ navigation }) {
         </Overlay>
       </View>
 
-      <ScrollView nestedScrollEnabled contentContainerStyle={{ padding: 15 }}>
-        <Divider width={2} color={COLORS.primary} />
-        <ListItem.Accordion
-          // bottomDivider
-          containerStyle={{
-            paddingVertical: 20,
+      <View style={{ padding: 20 }}>
+        <Tab
+          value={index}
+          onChange={e => {
+            setIndex(e);
           }}
-          activeOpacity={0.95}
-          content={
-            <ListItem.Content>
-              <Text style={{ ...FONTS.BigBold }}>Thông tin đơn hàng</Text>
-            </ListItem.Content>
-          }
-          isExpanded={infoExpand}
-          onPress={() => {
-            setInfoExpand(!infoExpand);
-          }}>
-          <View
-            style={[
-              styles.columnContainer,
-              { paddingHorizontal: 15, paddingBottom: 15 },
-            ]}>
-            <View style={[styles.rowContainer, { paddingRight: 10 }]}>
-              <InfoField
-                title="Dự kiến"
-                content="Thứ 6, 20 tháng 3"
-                style={{ flex: 1 }}
-              />
-              <InfoField
-                title="Trạng thái"
-                content={
-                  <Text style={{ color: COLORS.success, fontWeight: 'bold' }}>
-                    Đang vận chuyển
-                  </Text>
-                }
-                style={{ flex: 1 }}
-              />
-            </View>
-            <View style={[styles.rowContainer, { paddingRight: 10 }]}>
-              <InfoField
-                title="Từ"
-                content="183/14 Bùi Viện, Phạm Ngũ Lão, Quận 1"
-                style={{ flex: 1 }}
-              />
-              <InfoField
-                title="Người nhận"
-                content="Chonky shibe"
-                style={{ flex: 1 }}
-              />
-            </View>
-            <View style={[styles.rowContainer, { paddingRight: 10 }]}>
-              <InfoField
-                title="Đến"
-                content="823 Pham Van Dong, Thu Duc"
-                style={{ flex: 1 }}
-              />
-              <InfoField
-                title="SDT người nhận"
-                content="0909145830"
-                style={{ flex: 1 }}
-              />
-            </View>
-            <View style={[styles.rowContainer, { paddingRight: 10 }]}>
-              <InfoField
-                title="Phí cần trả"
-                content="1 000 000 VND"
-                style={{ flex: 1 }}
-              />
-              <InfoField
-                title="Tổng trọng lượng"
-                content="5000 kg"
-                style={{ flex: 1 }}
-              />
-            </View>
-          </View>
-        </ListItem.Accordion>
-
-        <Divider width={2} color={COLORS.primary} />
-
-        <ListItem.Accordion
-          bottomDivider
-          containerStyle={{
-            paddingVertical: 20,
+          indicatorStyle={{
+            height: 0,
           }}
-          activeOpacity={0.95}
-          content={
-            <ListItem.Content>
-              <Text style={{ ...FONTS.BigBold }}>Theo dõi đơn hàng</Text>
-            </ListItem.Content>
-          }
-          isExpanded={stepExpand}
-          onPress={() => {
-            setStepExpand(!stepExpand);
-          }}>
-          <View style={[styles.rowContainer, { padding: 10 }]}>
-            <View style={{ flex: 1 }}>
-              <OrderIndicator direction="vertical" current={3} />
-            </View>
-            <View
-              style={[
-                styles.columnContainer,
-                { alignItems: 'flex-start', marginLeft: 10, flex: 7 },
-              ]}>
-              <View
-                style={[
-                  styles.rowContainer,
-                  {
-                    alignItems: 'flex-start',
-                    flex: 1,
-                  },
-                ]}>
-                <Icon
-                  name="content-paste"
-                  size={40}
-                  containerStyle={{ marginRight: 10 }}
-                />
-                <View style={styles.columnContainer}>
-                  <Text style={[FONTS.BigBold, { fontSize: 19 }]}>
-                    Đặt hàng
-                  </Text>
-                  <Text style={FONTS.Smol}>Đơn hàng đã được nhận và xử lý</Text>
-                </View>
-              </View>
-              <View
-                style={[
-                  styles.rowContainer,
-                  { alignItems: 'flex-start', flex: 1 },
-                ]}>
-                <Icon
-                  name="truck"
-                  type="feather"
-                  size={40}
-                  containerStyle={{ marginRight: 10 }}
-                />
-                <View style={styles.columnContainer}>
-                  <Text style={[FONTS.BigBold, { fontSize: 19 }]}>
-                    Vận chuyển tới kho
-                  </Text>
-                  <Text style={FONTS.Smol}>
-                    Các kiện hàng đã được chuyển tới kho
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={[
-                  styles.rowContainer,
-                  { alignItems: 'flex-start', flex: 1 },
-                ]}>
-                <Icon
-                  name="truck"
-                  type="feather"
-                  size={40}
-                  containerStyle={{ marginRight: 10 }}
-                />
-                <View style={styles.columnContainer}>
-                  <Text style={[FONTS.BigBold, { fontSize: 19 }]}>
-                    Chuyển tới kho trung chuyển
-                  </Text>
-                  <Text style={[FONTS.Smol, { width: '80%' }]}>
-                    Các kiện hàng sẽ tới kho trung chuyển tại Bình Dương
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={[
-                  styles.rowContainer,
-                  { alignItems: 'flex-start', flex: 1 },
-                ]}>
-                <Icon
-                  name="truck"
-                  type="feather"
-                  size={40}
-                  containerStyle={{ marginRight: 10 }}
-                />
-                <View style={styles.columnContainer}>
-                  <Text style={[FONTS.BigBold, { fontSize: 19 }]}>
-                    Vận chuyển đến
-                  </Text>
-                  <Text style={FONTS.Smol}>
-                    Các kiện hàng sẽ đến kho tại Hà Nội
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={[
-                  styles.rowContainer,
-                  { alignItems: 'flex-start', flex: 1 },
-                ]}>
-                <Icon
-                  name="airport-shuttle"
-                  size={40}
-                  containerStyle={{ marginRight: 10 }}
-                />
-                <View style={styles.columnContainer}>
-                  <Text style={[FONTS.BigBold, { fontSize: 19 }]}>
-                    Giao hàng
-                  </Text>
-                  <Text style={FONTS.Smol}>
-                    Các kiện hàng sẽ được chuyển đến người nhận
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        </ListItem.Accordion>
+          variant="default">
+          <Tab.Item
+            title=" Theo dõi"
+            titleStyle={{
+              fontSize: 12,
+              color: COLORS.primary,
+              fontWeight: 'bold',
+            }}
+            containerStyle={{
+              backgroundColor: '#F3F3FA',
+              borderTopLeftRadius: 20,
+              borderBottomLeftRadius: 20,
+            }}
+            buttonStyle={
+              index === 0 ? [styles.activeTab] : [styles.inactiveTab]
+            }
+          />
+          <Tab.Item
+            title="Chi tiết"
+            titleStyle={{
+              fontSize: 12,
+              color: COLORS.primary,
+              fontWeight: 'bold',
+            }}
+            containerStyle={[
+              {
+                backgroundColor: '#F3F3FA',
+              },
+            ]}
+            buttonStyle={
+              index === 1 ? [styles.activeTab] : [styles.inactiveTab]
+            }
+          />
+          <Tab.Item
+            title="Kiện hàng"
+            titleStyle={{
+              fontSize: 12,
+              color: COLORS.primary,
+              fontWeight: 'bold',
+            }}
+            containerStyle={[
+              {
+                backgroundColor: '#F3F3FA',
+                borderTopRightRadius: 20,
+                borderBottomRightRadius: 20,
+              },
+            ]}
+            buttonStyle={
+              index === 2 ? [styles.activeTab] : [styles.inactiveTab]
+            }
+          />
+        </Tab>
+      </View>
 
-        <ListItem.Accordion
-          bottomDivider
-          containerStyle={{
-            paddingVertical: 20,
-          }}
-          activeOpacity={0.95}
-          content={
-            <ListItem.Content>
-              <Text style={{ ...FONTS.BigBold }}>Kiện hàng của bạn</Text>
-            </ListItem.Content>
-          }
-          isExpanded={packageExpand}
-          onPress={() => {
-            setPackageExpand(!packageExpand);
-          }}>
-          {/* <ScrollView
-            nestedScrollEnabled
-            contentContainerStyle={{ padding: 10 }}> */}
-          {data.map((item, index) => (
-            <TouchableOpacity
-              activeOpacity={0.96}
-              key={item.id}
-              onPress={() => navigation.navigate('EditPackage')}>
-              <View
-                key={item.id}
-                style={{
-                  paddingVertical: 15,
-                  paddingHorizontal: 15,
-                  marginVertical: 15,
-                  borderRadius: 20,
-                  backgroundColor: '#FFF',
-                  elevation: 2,
-                }}>
-                <View style={{ ...styles.vehicle }}>
-                  <Icon
-                    containerStyle={{
-                      margin: 0,
-                      marginRight: 5,
-                      backgroundColor: '#FFF',
-                      padding: 15,
-                      elevation: 5,
-                      borderRadius: 20,
-                    }}
-                    name="archive"
-                    type="font-awesome"
-                    color={COLORS.primary}
-                  />
-                  <View
-                    style={{
-                      flex: 1,
-                      marginLeft: 10,
-                      alignItems: 'flex-start',
-                    }}>
-                    <Text style={{ ...FONTS.BigBold }}>ID: {item.id}</Text>
-                    <Text style={{ ...FONTS.Medium }}>
-                      Số lượng:{' '}
-                      <Text style={{ ...styles.info }}>
-                        {item.quantity}/100
-                      </Text>
-                    </Text>
-                    <Text style={{ ...FONTS.Medium }}>
-                      Địa điểm hiện tại:{' '}
-                      <Text style={{ ...styles.info }}>
-                        {item.current_address}
-                      </Text>
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </TouchableOpacity>
-          ))}
-          {/* </ScrollView> */}
-        </ListItem.Accordion>
-      </ScrollView>
+      <TabView value={index} onChange={setIndex} animationType="spring">
+        <TabView.Item
+          style={{ width: '100%', paddingHorizontal: 20, paddingVertical: 10 }}>
+          <OrderTracing current={4} />
+        </TabView.Item>
+        <TabView.Item style={{ width: '100%', paddingHorizontal: 20 }}>
+          <Detail />
+        </TabView.Item>
+        <TabView.Item style={{ width: '100%', paddingHorizontal: 20 }}>
+          <PackageList />
+        </TabView.Item>
+      </TabView>
 
+      {/* Rating */}
       <OrderRating visible={rating} onSwipeComplete={() => setRating(false)} />
     </SafeAreaView>
   );
@@ -434,6 +224,7 @@ const styles = StyleSheet.create({
   container: {
     ...container,
     alignItems: 'stretch',
+    flex: 1,
   },
   rowContainer: {
     display: 'flex',
@@ -452,5 +243,17 @@ const styles = StyleSheet.create({
   },
   btnOption: {
     marginVertical: 5,
+  },
+  activeTab: {
+    backgroundColor: COLORS.white,
+    margin: 8,
+    marginHorizontal: 5,
+    borderRadius: 20,
+  },
+  inactiveTab: {
+    backgroundColor: '#F1F1FA',
+    margin: 8,
+    marginHorizontal: 5,
+    borderRadius: 20,
   },
 });

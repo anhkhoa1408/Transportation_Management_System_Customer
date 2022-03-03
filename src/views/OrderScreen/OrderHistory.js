@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  SafeAreaView,
+} from 'react-native';
 import {
   Text,
   Icon,
@@ -155,7 +161,7 @@ export default function OrderHistory({ navigation }) {
   );
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Header headerText="Lịch sử gửi hàng"></Header>
       <Tab
         value={index}
@@ -226,7 +232,7 @@ export default function OrderHistory({ navigation }) {
       </TabView>
 
       {/* {data.length == 0 && <Loading />} */}
-    </View>
+    </SafeAreaView>
   );
 }
 

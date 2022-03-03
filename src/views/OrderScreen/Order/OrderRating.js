@@ -2,13 +2,13 @@ import { Keyboard, StyleSheet, View } from 'react-native';
 import { Icon, Rating, Text } from 'react-native-elements';
 import React, { useState } from 'react';
 import Modal from 'react-native-modal';
-import { backdropColor } from '../../styles/color';
-import CustomInput from '../../components/CustomInput/CustomInput';
-import PillButton from '../../components/CustomButton/PillButton';
-import { COLORS } from '../../styles';
+import CustomInput from '../../../components/CustomInput/CustomInput';
+import PillButton from '../../../components/CustomButton/PillButton';
+import PrimaryButton from '../../../components/CustomButton/PrimaryButton';
+import { COLORS } from '../../../styles';
 
 const OrderRating = ({ visible, onSwipeComplete, ...props }) => {
-  const [height, setHeight] = useState(200);
+  const [height, setHeight] = useState(220);
   const handleSubmit = () => {
     setHeight(200);
     Keyboard.dismiss();
@@ -22,7 +22,7 @@ const OrderRating = ({ visible, onSwipeComplete, ...props }) => {
   return (
     <Modal
       onBackdropPress={onSwipeComplete}
-      backdropColor={backdropColor}
+      backdropColor={COLORS.backdropColor}
       backdropOpacity={0.4}
       style={{
         margin: 0,
@@ -39,9 +39,6 @@ const OrderRating = ({ visible, onSwipeComplete, ...props }) => {
             marginVertical: 15,
             marginRight: -15,
           }}
-          // reverse
-          // reverseColor="#000"
-          // color="#DDD"
           size={25}
           onPress={handleClosed}
         />
@@ -57,7 +54,7 @@ const OrderRating = ({ visible, onSwipeComplete, ...props }) => {
             alignSelf: 'center',
           }}>
           {' '}
-          Bạn đánh giá thế nào về dịch vụ của chúng tôi :)
+          Bạn đánh giá thế nào về dịch vụ của chúng tôi
         </Text>
         <View style={{ marginVertical: 30 }}>
           <Rating />
@@ -67,11 +64,7 @@ const OrderRating = ({ visible, onSwipeComplete, ...props }) => {
           onFocus={() => setHeight(0)}
           onSubmitEditing={handleSubmit}
         />
-        <PillButton
-          title="Gửi"
-          onPress={handleSubmit}
-          buttonStyle={{ backgroundColor: COLORS.header }}
-        />
+        <PrimaryButton title="Gửi" onPress={handleSubmit} />
       </View>
     </Modal>
   );
