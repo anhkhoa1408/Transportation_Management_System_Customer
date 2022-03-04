@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -28,11 +28,13 @@ import OrderRating from './Order/OrderRating';
 import Detail from './Order/Detail';
 import PackageList from './Order/PakageList';
 import OrderTracing from './Order/OrderTracing';
+import orderApi from '../../api/orderApi';
 
-export default function OrderDetail({ navigation }) {
+export default function OrderDetail({ navigation, route }) {
   const [index, setIndex] = useState(0);
   const [option, setOption] = useState(false);
   const [rating, setRating] = useState(false);
+  const [trace, setTrace] = useState(null);
   const [data, setData] = useState([
     {
       id: '#FOIJOJOF123',
@@ -45,6 +47,17 @@ export default function OrderDetail({ navigation }) {
       current_address: 'kho Hà Nội',
     },
   ]);
+
+  const { orderId } = route?.params || '61a982b712c1a7001641524f';
+
+  useEffect(() => {
+    // if (orderId) {
+    orderApi
+      .tracing('61a982b712c1a7001641524f')
+      .then(response => setTrace(response))
+      .catch(err => console.log(err));
+    // }
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -204,7 +217,7 @@ export default function OrderDetail({ navigation }) {
       <TabView value={index} onChange={setIndex} animationType="spring">
         <TabView.Item
           style={{ width: '100%', paddingHorizontal: 20, paddingVertical: 10 }}>
-          <OrderTracing current={4} />
+          <OrderTracing current={4} trace={trace} />
         </TabView.Item>
         <TabView.Item style={{ width: '100%', paddingHorizontal: 20 }}>
           <Detail />
