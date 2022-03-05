@@ -10,10 +10,14 @@ class OrderApi {
     const url = MAIN_URL.concat(`/orders/${id}`);
     return axiosClient.get(url);
   };
-  // orderList = () => {
-  //   const url = MAIN_URL.concat(`/orders/${id}`);
-  //   return axiosClient.get(url);
-  // };
+  deliveringOrders = () => {
+    const url = MAIN_URL.concat(`/orders`);
+    return axiosClient.get(url);
+  };
+  deliveredOrders = () => {
+    const url = MAIN_URL.concat(`/orders/delivered`);
+    return axiosClient.get(url);
+  };
   tracing = id => {
     const url = MAIN_URL.concat(`/orders/tracing/${id}`);
     return axiosClient.get(url);
