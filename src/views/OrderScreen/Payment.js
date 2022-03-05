@@ -1,24 +1,16 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   StyleSheet,
   SafeAreaView,
   ScrollView,
   TouchableOpacity,
-  TouchableHighlight,
 } from 'react-native';
-import { Avatar, Text, Icon, ListItem, Divider } from 'react-native-elements';
+import { Avatar, Text, Icon, ListItem } from 'react-native-elements';
 import { container, shadowCard } from '../../styles/layoutStyle';
 import Header from '../../components/Header';
-import TextField from '../../components/TextField';
-import { DatePicker } from '../../components/DatePicker';
-import CustomInput from '../../components/CustomInput/CustomInput';
 import PillButton from '../../components/CustomButton/PillButton';
-import Select from '../../components/Select/Select';
-import { success } from '../../styles/color';
 import { COLORS, FONTS } from '../../styles';
-import OrderStep from '../../components/StepIndicator/OrderStep';
-import { InfoField } from '../../components/InfoField';
 import momo from '../../assets/images/momo.png';
 import mastercard from '../../assets/images/mastercard.png';
 
@@ -64,7 +56,6 @@ const Payment = ({ navigation }) => {
       }
       return acc;
     }, {});
-    console.log(result);
     navigation.navigate('OrderSummary', result);
   };
 

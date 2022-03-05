@@ -1,17 +1,8 @@
 import React, { useState, useRef, useEffect, memo } from 'react';
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  SafeAreaView,
-  ScrollView,
-  ActivityIndicator,
-} from 'react-native';
-import { Text, Icon, Button } from 'react-native-elements';
+import { View, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
+import { Text, Icon } from 'react-native-elements';
 import { COLORS, FONTS } from './../../../styles';
 import { container } from '../../../styles/layoutStyle';
-import OrderIndicator from '../../../components/StepIndicator/OrderIndicator';
 import * as Animatable from 'react-native-animatable';
 import { convertTracingState } from '../../../utils/order';
 import moment from 'moment';
@@ -20,7 +11,7 @@ const OrderTracing = props => {
   const stageRef = useRef([]);
   const heightRef = useRef([]);
   const indiRef = useRef([]);
-  const { current = 0, trace } = props;
+  const { current = 1, trace } = props;
 
   const [data, setData] = useState([]);
 
@@ -115,6 +106,8 @@ const OrderTracing = props => {
         });
         setData([...step.slice(0, 2), ...temp, step[2]]);
       }
+    } else {
+      if (current <= 2) setData(step.slice(0, current));
     }
   }, [trace]);
 

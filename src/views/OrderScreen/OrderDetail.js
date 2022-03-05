@@ -48,15 +48,17 @@ export default function OrderDetail({ navigation, route }) {
     },
   ]);
 
-  const { orderId } = route?.params || '61a982b712c1a7001641524f';
+  const { id } = route?.params?.item;
+
+  const { item } = route?.params;
 
   useEffect(() => {
-    // if (orderId) {
-    orderApi
-      .tracing('61a982b712c1a7001641524f')
-      .then(response => setTrace(response))
-      .catch(err => console.log(err));
-    // }
+    if (item.id) {
+      orderApi
+        .tracing(item.id)
+        .then(response => setTrace(response))
+        .catch(err => console.log(err));
+    }
   }, []);
 
   return (
@@ -82,8 +84,8 @@ export default function OrderDetail({ navigation, route }) {
           }}
         />
         <View style={{ flex: 1, marginLeft: 10 }}>
-          <Text style={[FONTS.BigBold]}>Nguyễn Anh Khoa</Text>
-          <Text style={[FONTS.Smol]}>SDT: 0909145830</Text>
+          <Text style={[FONTS.BigBold]}>{item.sender_name}</Text>
+          <Text style={[FONTS.Smol]}>{item.sender_phone}</Text>
         </View>
         <Icon
           name="chat"
@@ -151,6 +153,7 @@ export default function OrderDetail({ navigation, route }) {
         </Overlay>
       </View>
 
+      {/* Tab view */}
       <View style={{ padding: 20 }}>
         <Tab
           value={index}
@@ -217,13 +220,13 @@ export default function OrderDetail({ navigation, route }) {
       <TabView value={index} onChange={setIndex} animationType="spring">
         <TabView.Item
           style={{ width: '100%', paddingHorizontal: 20, paddingVertical: 10 }}>
-          <OrderTracing current={4} trace={trace} />
+          <OrderTracing current={item.state} trace={trace} />
         </TabView.Item>
         <TabView.Item style={{ width: '100%', paddingHorizontal: 20 }}>
-          <Detail />
+          <Detail item={item} />
         </TabView.Item>
         <TabView.Item style={{ width: '100%', paddingHorizontal: 20 }}>
-          <PackageList />
+          <PackageList item={item} />
         </TabView.Item>
       </TabView>
 

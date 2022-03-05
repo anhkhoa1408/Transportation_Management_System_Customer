@@ -89,7 +89,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     marginVertical: 20,
     borderRadius: 12,
-    elevation: 4,
   },
   titleFont: {
     fontSize: 16,

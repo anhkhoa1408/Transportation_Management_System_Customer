@@ -1,12 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import {
-  View,
-  StyleSheet,
-  SafeAreaView,
-  ScrollView,
-  TouchableOpacity,
-  FlatList,
-} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, SafeAreaView, FlatList } from 'react-native';
 import { Avatar, Text, Icon, Divider, ListItem } from 'react-native-elements';
 import { container } from '../../styles/layoutStyle';
 import Header from '../../components/Header';
@@ -27,9 +20,7 @@ const InputPackage = ({ route, navigation }) => {
     }
   }, [route.params?.listPackage]);
 
-  console.log(listPackage);
   const renderItem = ({ item, index }) => (
-    // <TouchableOpacity>
     <ListItem style={style.item}>
       <Icon reverse name="archive" size={20} color={COLORS.primary} />
       <ListItem.Content>
@@ -42,7 +33,6 @@ const InputPackage = ({ route, navigation }) => {
         onPress={() => handleDelete(item.id)}
       />
     </ListItem>
-    // </TouchableOpacity>
   );
   return (
     <SafeAreaView style={style.container}>
