@@ -30,4 +30,14 @@ function convertTracingState(state) {
   }
 }
 
-export { convertOrderState, convertTracingState };
+function formatCash(cash) {
+  return cash
+    .split('')
+    .reverse()
+    .reduce((total, item, index) =>
+      !(index % 3) ? `${item},${total}` : `${item}${total}`,
+    )
+    .concat(' VND');
+}
+
+export { convertOrderState, convertTracingState, formatCash };
