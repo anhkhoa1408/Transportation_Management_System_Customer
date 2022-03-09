@@ -15,11 +15,9 @@ const InfoCard = ({ item, navigation }) => {
       },
       0.25: {
         scale: 1,
-        opacity: 0.9,
       },
       0.75: {
         scale: 0.8,
-        opacity: 1,
       },
       1: {
         scale: 1,
