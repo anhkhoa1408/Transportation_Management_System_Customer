@@ -40,7 +40,7 @@ const Detail = ({ navigation, item, ...props }) => {
       <View style={[styles.rowContainer, { paddingRight: 10 }]}>
         <InfoField
           title="Từ"
-          content={joinAddress(item?.from_address)}
+          content={item?.from_address && joinAddress(item?.from_address)}
           style={{ flex: 1 }}
         />
         <InfoField
@@ -52,7 +52,7 @@ const Detail = ({ navigation, item, ...props }) => {
       <View style={[styles.rowContainer, { paddingRight: 10 }]}>
         <InfoField
           title="Đến"
-          content={joinAddress(item?.to_address)}
+          content={item?.to_address && joinAddress(item?.to_address)}
           style={{ flex: 1 }}
         />
         <InfoField

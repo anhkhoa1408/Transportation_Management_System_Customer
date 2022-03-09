@@ -41,7 +41,8 @@ const PackageList = ({ navigation, item, ...props }) => {
                 <Text style={{ ...FONTS.Medium }}>
                   Địa điểm hiện tại:{' '}
                   <Text style={{ ...styles.info }}>
-                    {joinAddress(item?.current_address)}
+                    {item?.current_address &&
+                      joinAddress(item?.current_address)}
                   </Text>
                 </Text>
               </View>

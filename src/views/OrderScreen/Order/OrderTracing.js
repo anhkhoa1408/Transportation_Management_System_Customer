@@ -18,8 +18,8 @@ const OrderTracing = props => {
   const [step, setStep] = useState([
     {
       title: 'Đặt hàng',
-      subTitle: 'Đơn hàng đã được nhận và xử lý',
-      content: 'Tiến hành lấy hàng',
+      subTitle: 'Đơn hàng đang được tiếp nhận và chờ xử lý',
+      content: 'Đang xử lý đơn hàng',
     },
     {
       title: 'Chuyển tới kho nội thành',
@@ -107,7 +107,7 @@ const OrderTracing = props => {
         setData([...step.slice(0, 2), ...temp, step[2]]);
       }
     } else {
-      if (current <= 2) setData(step.slice(0, current));
+      if (current < 2) setData(step.slice(0, current + 1));
     }
   }, [trace]);
 
