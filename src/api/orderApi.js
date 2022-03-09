@@ -22,6 +22,10 @@ class OrderApi {
     const url = MAIN_URL.concat(`/orders/tracing/${id}`);
     return axiosClient.get(url);
   };
+  newOrder = data => {
+    const url = MAIN_URL.concat(`/orders`);
+    return axiosClient.post(url, data);
+  };
 }
 const orderApi = new OrderApi();
 export default orderApi;

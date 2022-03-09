@@ -3,54 +3,80 @@ import { StyleSheet, View, Text, TextInput, Image } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { COLORS } from '../../styles';
 
-export default function TextField(props) {
-  const ref = useRef(null);
-  const [focus, setFocus] = useState(null);
+export default function TextField({
+  afterText,
+  afterComponent,
+  disabled,
+  error,
+  errorMessage,
+  icon,
+  name,
+  onBlur,
+  onChangeText,
+  value,
+  title,
+  style,
+  ...props
+}) {
+  const [focus, setFocus] = useState(false);
 
   const handleFocus = () => {
-    setFocus({
-      borderColor: COLORS.primary,
-      borderWidth: 2,
-    });
+    setFocus(true);
   };
 
   const handleBlur = () => {
-    setFocus({
-      borderWidth: 0,
-    });
-    props.onBlur && props.onBlur();
+    setFocus(false);
+    onBlur && onBlur();
   };
 
   return (
-    <View>
-      {props.title && <Text style={styles.texttitle}>{props.title}</Text>}
-      <View style={[styles.inputView, focus]}>
-        {'icon' in props && (
+    <View style={{ marginBottom: 15 }}>
+      {title && <Text style={styles.texttitle}>{title}</Text>}
+      <View
+        style={[
+          styles.inputView,
+          {
+            borderColor: error
+              ? COLORS.danger
+              : focus
+              ? COLORS.primary
+              : COLORS.gray,
+          },
+        ]}>
+        {icon && (
           <Icon
-            name={props.icon}
-            iconStyle={
-              ref.current && ref.current.isFocused()
-                ? styles.textFocus
-                : {
-                    color: 'rgba(0,0,0,0.3)',
-                  }
-            }
+            name={icon}
+            iconStyle={[
+              {
+                color: error
+                  ? COLORS.danger
+                  : focus
+                  ? COLORS.primary
+                  : 'rgba(0,0,0,0.4)',
+              },
+            ]}
           />
         )}
         <TextInput
-          {...props}
-          name={props.name}
-          ref={ref}
-          style={[styles.fsize, { flex: 1 }, props.disabled && styles.disabled]}
+          name={name}
+          style={[
+            styles.fsize,
+            {
+              flex: 1,
+            },
+            disabled && styles.disabled,
+            style,
+          ]}
           placeholderTextColor={
-            ref.current && ref.current.isFocused()
-              ? COLORS.primary
-              : 'rgba(0,0,0,0.3)'
+            error ? COLORS.danger : focus ? COLORS.primary : 'rgba(0,0,0,0.4)'
           }
           onFocus={handleFocus}
           onBlur={handleBlur}
+          onChangeText={onChangeText}
+          value={value}
+          {...props}
         />
-        {props.afterText && (
+        {afterText && (
           <Text
             style={{
               ...styles.fsize,
@@ -58,11 +84,21 @@ export default function TextField(props) {
               marginRight: 10,
               textAlign: 'right',
             }}>
-            {props.afterText}
+            {afterText}
           </Text>
         )}
-        {props.afterComponent && props.afterComponent}
+        {afterComponent && afterComponent}
       </View>
+
+      {error ? (
+        <Text
+          style={{
+            color: COLORS.danger,
+            fontWeight: 'bold',
+          }}>
+          {errorMessage}
+        </Text>
+      ) : null}
     </View>
   );
 }
@@ -75,12 +111,13 @@ const styles = StyleSheet.create({
   inputView: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 10,
     marginBottom: 10,
-    backgroundColor: '#F3F3FA',
+    backgroundColor: COLORS.gray,
     borderRadius: 8,
     paddingVertical: 7,
     paddingHorizontal: 10,
+    borderWidth: 2,
   },
   fsize: {
     fontSize: 17,

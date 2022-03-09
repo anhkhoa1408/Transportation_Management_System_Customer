@@ -1,20 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  SafeAreaView,
-  TouchableHighlight,
-} from 'react-native';
-import {
-  Text,
-  Icon,
-  Tab,
-  TabView,
-  ListItem,
-  Rating,
-} from 'react-native-elements';
+import { View, StyleSheet, TouchableHighlight } from 'react-native';
+import { Text, Icon, ListItem } from 'react-native-elements';
 import { FONTS, COLORS } from '../../../styles';
 import { convertOrderState } from '../../../utils/order';
 import OrderIndicator from '../../../components/StepIndicator/OrderIndicator';

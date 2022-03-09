@@ -14,7 +14,7 @@ import { COLORS, FONTS } from '../../styles';
 import momo from '../../assets/images/momo.png';
 import mastercard from '../../assets/images/mastercard.png';
 
-const Payment = ({ navigation }) => {
+const Payment = ({ navigation, route }) => {
   const [offlineExpand, setOffline] = useState(true);
   const [onlineExpand, setOnline] = useState(true);
   const [check, setCheck] = useState({
@@ -37,26 +37,37 @@ const Payment = ({ navigation }) => {
   const handleSubmit = async () => {
     let result = Object.keys(check).reduce((acc, ele) => {
       if (check[ele]) {
-        let title = '';
+        let title = '',
+          value = '';
         switch (ele) {
           case 'sender':
             title = 'Thanh toán bởi người nhận';
+            value = 'direct';
             break;
           case 'receiver':
             title = 'Thanh toán bởi người gửi';
+            value = 'direct';
             break;
           case 'momo':
             title = 'Ví điện tử Momo';
+            value = 'momo';
             break;
           case 'visa':
-            title = 'Thẻ Visa';
+            title = 'Thẻ ngân hàng';
+            value = 'bank';
             break;
         }
-        acc['payment'] = title;
+        acc['payment'] = {
+          value,
+          title,
+        };
       }
       return acc;
     }, {});
-    navigation.navigate('OrderSummary', result);
+    navigation.navigate('OrderSummary', {
+      ...route.params,
+      ...result,
+    });
   };
 
   return (
@@ -103,13 +114,14 @@ const Payment = ({ navigation }) => {
                 color={COLORS.header}
                 containerStyle={{
                   backgroundColor: '#FFF',
-                  elevation: 5,
+                  shadowColor: COLORS.primary,
+                  elevation: 15,
                   padding: 10,
                   marginRight: 10,
                   borderRadius: 15,
                 }}
               />
-              <Text style={{ flex: 1 }}>Thanh toán bởi người gửi</Text>
+              <Text style={{ flex: 1 }}>Thanh toán bởi người nhận</Text>
               <ListItem.CheckBox
                 checked={check.sender}
                 checkedIcon={<Icon name="check-box" color={COLORS.primary} />}
@@ -124,13 +136,14 @@ const Payment = ({ navigation }) => {
                 color={COLORS.header}
                 containerStyle={{
                   backgroundColor: '#FFF',
-                  elevation: 5,
+                  shadowColor: COLORS.primary,
+                  elevation: 15,
                   padding: 10,
                   marginRight: 10,
                   borderRadius: 15,
                 }}
               />
-              <Text style={{ flex: 1 }}>Thanh toán bởi người nhận</Text>
+              <Text style={{ flex: 1 }}>Thanh toán bởi người gửi</Text>
               <ListItem.CheckBox
                 checked={check.receiver}
                 checkedIcon={<Icon name="check-box" color={COLORS.primary} />}
@@ -159,7 +172,8 @@ const Payment = ({ navigation }) => {
                 size="medium"
                 containerStyle={{
                   backgroundColor: '#FFF',
-                  elevation: 5,
+                  shadowColor: COLORS.primary,
+                  elevation: 15,
                   padding: 8,
                   marginRight: 10,
                   borderRadius: 15,
@@ -180,7 +194,8 @@ const Payment = ({ navigation }) => {
                 size="medium"
                 containerStyle={{
                   backgroundColor: '#FFF',
-                  elevation: 5,
+                  shadowColor: COLORS.primary,
+                  elevation: 15,
                   padding: 8,
                   marginRight: 10,
                   borderRadius: 15,
@@ -242,7 +257,6 @@ const style = StyleSheet.create({
     padding: 15,
     backgroundColor: COLORS.white,
     height: 90,
-    ...shadowCard,
   },
 });
 

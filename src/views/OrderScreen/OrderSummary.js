@@ -1,22 +1,97 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import {
   View,
   StyleSheet,
   SafeAreaView,
   ScrollView,
   TouchableOpacity,
+  TouchableHighlight,
+  Pressable,
 } from 'react-native';
 import { Text, Icon, ListItem, Divider } from 'react-native-elements';
 import { container } from '../../styles/layoutStyle';
 import Header from '../../components/Header';
-import PillButton from '../../components/CustomButton/PillButton';
+import PrimaryButton from '../../components/CustomButton/PrimaryButton';
 import { COLORS, FONTS } from '../../styles';
 import OrderStep from '../../components/StepIndicator/OrderStep';
 import { InfoField } from '../../components/InfoField';
+import { joinAddress, simplifyString } from './../../utils/address';
+import { store } from '../../config/configureStore';
+import orderApi from '../../api/orderApi';
 
 const OrderSummary = ({ route, navigation }) => {
-  const voucher = route?.params?.voucher;
-  const payment = route?.params?.payment;
+  const {
+    voucher,
+    payment,
+    from_address,
+    to_address,
+    receiver_name,
+    receiver_phone,
+    packages,
+    name,
+  } = route?.params;
+
+  const userInfo = store.getState().userInfo.user;
+
+  const total_weight = useMemo(() => {
+    return packages.reduce(
+      (total, item) => total + item.quantity * item.weight,
+      0,
+    );
+  }, [packages]);
+
+  const total_quantity = useMemo(() => {
+    return packages.reduce(
+      (total, item) => total + Number.parseInt(item.weight),
+      0,
+    );
+  }, [packages]);
+
+  const handleOrder = () => {
+    // TODO: - calculate shipment fee and handle payment by momo
+
+    let payer_name = '',
+      payer_phone = '';
+    switch (payment.title) {
+      case 'Thanh toán bởi người gửi':
+        payer_name = userInfo.name;
+        payer_phone = userInfo.phone;
+        break;
+      case 'Ví điện tử Momo':
+        payer_name = userInfo.name;
+        payer_phone = userInfo.phone;
+        break;
+      case 'Thẻ ngân hàng':
+        payer_name = userInfo.name;
+        payer_phone = userInfo.phone;
+        break;
+      case 'Thanh toán bởi người nhận':
+        payer_name = receiver_name;
+        payer_phone = receiver_phone;
+        break;
+    }
+
+    let order = {
+      sender_phone: userInfo.phone,
+      sender_name: userInfo.name,
+      receiver_phone,
+      receiver_name,
+      method: payment.value,
+      fee: 1000,
+      remain_fee: 1000,
+      from_address,
+      to_address,
+      name,
+      packages,
+      payer_name,
+      payer_phone,
+    };
+
+    orderApi
+      .newOrder(order)
+      .then(response => console.log(response))
+      .catch(error => console.log(error));
+  };
 
   return (
     <SafeAreaView style={style.container}>
@@ -27,24 +102,26 @@ const OrderSummary = ({ route, navigation }) => {
         headerText={'Vận chuyển'}
       />
       <OrderStep current={payment ? 2 : 1} />
-      <Text
-        style={[
-          {
-            textAlign: 'center',
-            paddingHorizontal: 20,
-            marginTop: 15,
-            opacity: 0.6,
-          },
-        ]}>
-        Xin hãy kiểm tra lại thông tin vận chuyển của đơn hàng và nhấn tiếp tục
-        để tiến hành thanh toán
-      </Text>
+
       <View style={[style.form, { flex: 1 }]}>
         <ScrollView
           persistentScrollbar
-          contentContainerStyle={{ paddingBottom: 20, paddingHorizontal: 10 }}
+          contentContainerStyle={{ paddingBottom: 20, paddingHorizontal: 18 }}
           style={[style.columnContainer, { flex: 1 }]}>
-          <View style={[style.rowContainer, { paddingRight: 10 }]}>
+          <Text
+            style={[
+              {
+                textAlign: 'center',
+                paddingHorizontal: 20,
+                marginTop: 15,
+                marginBottom: 25,
+                opacity: 0.6,
+              },
+            ]}>
+            Xin hãy kiểm tra lại thông tin vận chuyển của đơn hàng và nhấn xác
+            nhận để tiến hành thanh toán
+          </Text>
+          <View style={[style.rowContainer]}>
             <InfoField
               title="Dự kiến"
               content="Thứ 6, 20 tháng 3"
@@ -52,57 +129,53 @@ const OrderSummary = ({ route, navigation }) => {
             />
             <InfoField
               title="Người nhận"
-              content="Albert Shober"
+              content={receiver_name || 'Chưa có'}
               style={{ flex: 1 }}
             />
           </View>
-          <View style={[style.rowContainer, { paddingRight: 10 }]}>
+          <View style={[style.rowContainer]}>
             <InfoField
               title="Từ"
-              content="183/14 Bùi Viện, Phạm Ngũ Lão, Quận 1"
+              content={from_address && joinAddress(from_address)}
               style={{ flex: 1 }}
             />
             <InfoField
               title="SDT người nhận"
-              content="129090213"
+              content={receiver_phone}
               style={{ flex: 1 }}
             />
           </View>
-          <View style={[style.rowContainer, { paddingRight: 10 }]}>
+          <View style={[style.rowContainer]}>
             <InfoField
               title="Đến"
-              content="823 Pham Van Dong, Thu Duc"
+              content={to_address && joinAddress(to_address)}
               style={{ flex: 1 }}
             />
             <InfoField
               title="Tổng khối lượng"
-              content="5000 kg"
+              content={total_weight + ' kg'}
               style={{ flex: 1 }}
             />
           </View>
-          <View style={[style.rowContainer, { paddingRight: 10 }]}>
+          <View style={[style.rowContainer]}>
             <InfoField
               title="Tổng số loại hàng"
-              content="3"
+              content={packages.length}
               style={{ flex: 1 }}
             />
             <InfoField
               title="Tổng số lượng"
-              content="500"
+              content={total_quantity + ' kiện'}
               style={{ flex: 1 }}
             />
           </View>
           <View style={{ marginVertical: 8 }}>
             <Text style={[FONTS.BigBold]}>Phương thức thanh toán</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Payment')}>
-              <View
-                style={[
-                  style.select,
-                  style.rowContainer,
-                  { alignItems: 'center' },
-                ]}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Payment', route.params)}>
+              <View style={[style.select, style.rowContainer]}>
                 <Text style={[{ flex: 1 }]}>
-                  {payment ? payment : 'Nhấn để chọn'}
+                  {payment ? payment.title : 'Nhấn để chọn'}
                 </Text>
                 <ListItem.Chevron size={30} />
               </View>
@@ -117,12 +190,7 @@ const OrderSummary = ({ route, navigation }) => {
                   useVoucher: true,
                 })
               }>
-              <View
-                style={[
-                  style.select,
-                  style.rowContainer,
-                  { alignItems: 'center' },
-                ]}>
+              <View style={[style.select, style.rowContainer]}>
                 <Text style={[{ flex: 1 }]}>
                   {voucher ? voucher : 'Nhấn để chọn'}
                 </Text>
@@ -131,7 +199,7 @@ const OrderSummary = ({ route, navigation }) => {
             </TouchableOpacity>
           </View>
         </ScrollView>
-        <View>
+        <View style={{ paddingHorizontal: 15 }}>
           <Divider
             style={{ marginVertical: 15 }}
             color={COLORS.primary}
@@ -141,13 +209,16 @@ const OrderSummary = ({ route, navigation }) => {
             <Text style={[{ flex: 1 }, FONTS.Big]}>Tổng cộng</Text>
             <Text style={[FONTS.BigBold]}>1 000 000 VND</Text>
           </View>
+          <PrimaryButton
+            title="Xác nhận"
+            disabled={payment ? false : true}
+            disabledStyle={{
+              backgroundColor: COLORS.gray,
+              color: '#FFF',
+            }}
+            onPress={handleOrder}
+          />
         </View>
-        <PillButton
-          title="Xác nhận"
-          disabled={payment ? false : true}
-          buttonStyle={{ backgroundColor: COLORS.primary }}
-          onPress={() => navigation.navigate('HomeScreen')}
-        />
       </View>
     </SafeAreaView>
   );
@@ -163,7 +234,6 @@ const style = StyleSheet.create({
     backgroundColor: '#FFF',
   },
   form: {
-    paddingHorizontal: 20,
     paddingVertical: 15,
     display: 'flex',
     flexDirection: 'column',
@@ -179,10 +249,11 @@ const style = StyleSheet.create({
     flexDirection: 'column',
   },
   select: {
-    padding: 10,
-    borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0.1)',
-    borderRadius: 10,
+    padding: 15,
+    alignItems: 'center',
+    shadowColor: COLORS.primary,
+    borderRadius: 0,
+    backgroundColor: COLORS.gray,
   },
 });
 
