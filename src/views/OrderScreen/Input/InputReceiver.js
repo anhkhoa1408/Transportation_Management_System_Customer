@@ -11,7 +11,6 @@ import { useFormik } from 'formik';
 import * as Bonk from 'yup';
 
 const InputReceiver = ({ navigation, route }) => {
-  console.log(route);
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {

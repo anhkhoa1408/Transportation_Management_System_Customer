@@ -48,7 +48,7 @@ const TabNavigatior = () => {
     });
     return (
       <TouchableOpacity {...props}>
-        <Animatable.View ref={viewRef} duration={600}>
+        <Animatable.View ref={viewRef} duration={300} easing="linear">
           <View
             style={{
               display: 'flex',
@@ -60,25 +60,24 @@ const TabNavigatior = () => {
             <Icon
               reverse={focused}
               name={iconName}
-              size={28}
+              size={25}
               type="material"
               color={focused ? COLORS.header : '#CCC'}
               reverseColor={COLORS.white}
             />
-
-            {focused ? (
-              <Text
-                style={{
-                  fontSize: 14,
-                  fontWeight: '600',
-                  color: COLORS.header,
-                  marginBottom: 10,
-                }}>
-                {name}
-              </Text>
-            ) : null}
           </View>
         </Animatable.View>
+        {focused ? (
+          <Text
+            style={{
+              fontSize: 14,
+              fontWeight: '600',
+              color: COLORS.header,
+              marginBottom: 10,
+            }}>
+            {name}
+          </Text>
+        ) : null}
       </TouchableOpacity>
     );
   };
@@ -149,15 +148,17 @@ const getTabBarVisibility = route => {
 
 const style = StyleSheet.create({
   container: {
-    paddingHorizontal: 24,
+    paddingHorizontal: 10,
     paddingTop: 10,
     paddingBottom: 12,
     backgroundColor: COLORS.white,
-    height: 100,
+    height: 90,
     marginHorizontal: 20,
     bottom: 10,
     borderRadius: 10,
     alignItems: 'center',
+    shadowColor: COLORS.primary,
+    elevation: 25,
     flexDirection: 'row',
     display: 'flex',
     alignItems: 'center',

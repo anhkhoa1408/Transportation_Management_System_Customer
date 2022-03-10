@@ -8,13 +8,13 @@ import EditPackage from '../../views/TemplateScreen/PackageScreen/EditPackage';
 import OrderTemplateList from '../../views/TemplateScreen/OrderScreen/OrderTemplateList';
 import EditOrderInfo from '../../views/TemplateScreen/OrderScreen/EditOrderInfo';
 import EditOrderAddress from '../../views/TemplateScreen/OrderScreen/EditOrderAddress';
-import InputInfo from '../../views/OrderScreen/InputInfo';
-import InputReceiver from '../../views/OrderScreen/InputReceiver';
-import InputAddress from '../../views/OrderScreen/InputAddress';
+import InputInfo from '../../views/OrderScreen/Input/InputInfo';
+import InputReceiver from '../../views/OrderScreen/Input/InputReceiver';
+import InputAddress from '../../views/OrderScreen/Input/InputAddress';
 import OrderSummary from '../../views/OrderScreen/OrderSummary';
 import Payment from '../../views/OrderScreen/Payment';
 import VoucherScreen from '../../views/VoucherScreen/VoucherScreen';
-import InputPackage from '../../views/OrderScreen/InputPackage';
+import InputPackage from '../../views/OrderScreen/Input/InputPackage';
 
 const HomeStack = createStackNavigator();
 
