@@ -26,6 +26,14 @@ class OrderApi {
     const url = MAIN_URL.concat(`/orders`);
     return axiosClient.post(url, data);
   };
+  payment = data => {
+    const url = 'https://test-payment.momo.vn/v2/gateway/api/create';
+    return axiosClient.post(url, data, {
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    });
+  };
 }
 const orderApi = new OrderApi();
 export default orderApi;

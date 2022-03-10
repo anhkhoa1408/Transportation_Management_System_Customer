@@ -6,12 +6,13 @@ import { persistor, store } from './src/config/configureStore';
 import Routes from './src/navigation/Routes';
 import { StatusBar } from 'react-native';
 import { StyleSheet } from 'react-native';
+import linking from './src/navigation/linking';
 
 export default function App(props) {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <NavigationContainer>
+        <NavigationContainer linking={linking}>
           <StatusBar backgroundColor="white" barStyle="dark-content" />
           <Routes />
         </NavigationContainer>
