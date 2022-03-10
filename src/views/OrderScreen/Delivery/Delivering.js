@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { memo } from 'react';
 import { View, StyleSheet, TouchableHighlight } from 'react-native';
 import { Text, Icon, ListItem } from 'react-native-elements';
 import { FONTS, COLORS } from '../../../styles';
@@ -65,7 +65,7 @@ const Delivering = ({ item, navigation }) => {
   );
 };
 
-export default Delivering;
+export default memo(Delivering);
 
 const styles = StyleSheet.create({
   wrapperIcon: {

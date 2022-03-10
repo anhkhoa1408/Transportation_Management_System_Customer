@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState, useMemo } from 'react';
+import React, { useCallback, useEffect, useState, useMemo, memo } from 'react';
 import {
   View,
   StyleSheet,
@@ -18,6 +18,8 @@ import { InfoField } from '../../components/InfoField';
 import { joinAddress, simplifyString } from './../../utils/address';
 import { store } from '../../config/configureStore';
 import orderApi from '../../api/orderApi';
+import { v4 as uuidv4 } from 'uuid';
+import { handleRequestPayment } from '../../services/momo';
 
 const OrderSummary = ({ route, navigation }) => {
   const {
@@ -32,6 +34,10 @@ const OrderSummary = ({ route, navigation }) => {
   } = route?.params;
 
   const userInfo = store.getState().userInfo.user;
+
+  const orderIdForMomo = useMemo(() => {
+    return uuidv4();
+  }, []);
 
   const total_weight = useMemo(() => {
     return packages.reduce(
@@ -90,6 +96,11 @@ const OrderSummary = ({ route, navigation }) => {
     orderApi
       .newOrder(order)
       .then(response => console.log(response))
+      .then(() => {
+        if (payment.value === 'momo') {
+          return handleRequestPayment(1000, orderIdForMomo);
+        }
+      })
       .catch(error => console.log(error));
   };
 
@@ -257,4 +268,4 @@ const style = StyleSheet.create({
   },
 });
 
-export default OrderSummary;
+export default memo(OrderSummary);

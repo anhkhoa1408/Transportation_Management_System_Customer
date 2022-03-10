@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { memo } from 'react';
 import {
   View,
   StyleSheet,
@@ -73,7 +73,7 @@ const Delivered = ({ item, navigation }) => {
   );
 };
 
-export default Delivered;
+export default memo(Delivered);
 
 const styles = StyleSheet.create({
   wrapperIcon: {
