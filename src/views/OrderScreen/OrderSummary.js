@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   Pressable,
+  Linking,
 } from 'react-native';
 import { Text, Icon, ListItem, Divider } from 'react-native-elements';
 import { container } from '../../styles/layoutStyle';
@@ -20,8 +21,13 @@ import { store } from '../../config/configureStore';
 import orderApi from '../../api/orderApi';
 import { v4 as uuidv4 } from 'uuid';
 import { handleRequestPayment } from '../../services/momo';
+import Loading from './../../components/Loading';
+import ModalMess from './../../components/ModalMess';
 
 const OrderSummary = ({ route, navigation }) => {
+  const [loading, setLoading] = useState(null);
+  const [alert, setAlert] = useState(null);
+
   const {
     voucher,
     payment,
@@ -55,6 +61,7 @@ const OrderSummary = ({ route, navigation }) => {
 
   const handleOrder = () => {
     // TODO: - calculate shipment fee
+    setLoading(<Loading />);
 
     let payer_name = '',
       payer_phone = '';
@@ -97,18 +104,48 @@ const OrderSummary = ({ route, navigation }) => {
       .newOrder(order)
       .then(response => response)
       .then(response => {
-        let id = JSON.stringify({
-          id: response.id,
-        });
-        if (payment.value === 'momo') {
-          return handleRequestPayment(1000, orderIdForMomo, id);
+        if (response) {
+          let id = JSON.stringify({
+            id: response.id,
+          });
+          if (payment.value === 'momo') {
+            setLoading(null);
+            return handleRequestPayment(1000, orderIdForMomo, id);
+          } else {
+            setLoading(null);
+            setAlert({
+              type: 'success',
+              message: 'Đặt hàng thành công',
+            });
+            navigation.navigate('HomeScreen');
+          }
+        } else {
+          setAlert({
+            type: 'danger',
+            message: 'Đặt hàng thất bại',
+          });
         }
       })
-      .catch(error => console.log(error));
+      .catch(error => {
+        console.log(error);
+        setAlert({
+          type: 'danger',
+          message: 'Đặt hàng thất bại',
+        });
+      });
   };
 
   return (
     <SafeAreaView style={style.container}>
+      {loading}
+      {alert && (
+        <ModalMess
+          type={alert.type}
+          message={alert.message}
+          alert={alert}
+          setAlert={setAlert}
+        />
+      )}
       <Header
         leftElement={
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
