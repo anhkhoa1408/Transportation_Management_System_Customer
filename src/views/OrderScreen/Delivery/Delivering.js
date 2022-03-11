@@ -57,7 +57,7 @@ const Delivering = ({ item, navigation }) => {
         <View style={{ width: '110%', alignSelf: 'center' }}>
           <OrderIndicator
             current={item.state}
-            name={item?.packages[0]?.current_address?.city}
+            // name={item?.packages[0]?.current_address?.city}
           />
         </View>
       </ListItem>

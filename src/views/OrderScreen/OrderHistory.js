@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, FlatList, SafeAreaView } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  SafeAreaView,
+  VirtualizedList,
+} from 'react-native';
 import { Text, Tab, TabView } from 'react-native-elements';
 import { container } from '../../styles/layoutStyle';
 import Loading from '../../components/Loading';
@@ -42,68 +48,77 @@ export default function OrderHistory({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       {loading}
-      <Header headerText="Lịch sử gửi hàng"></Header>
-      <Tab
-        value={index}
-        onChange={e => setIndex(e)}
-        indicatorStyle={{
-          backgroundColor: COLORS.primary,
-          height: 3,
-        }}>
-        <Tab.Item
-          title="Đang vận chuyển"
-          titleStyle={{ fontSize: 12, color: COLORS.primary }}
-          containerStyle={{
-            backgroundColor: '#FFF',
-          }}
-        />
-        <Tab.Item
-          title="Đã vận chuyển"
-          titleStyle={{ fontSize: 12, color: COLORS.primary }}
-          containerStyle={{
-            backgroundColor: '#FFF',
-          }}
-        />
-      </Tab>
+      <Header headerText="Lịch sử gửi hàng" />
+      <View style={{ paddingHorizontal: 15, height: 62 }}>
+        <Tab
+          value={index}
+          onChange={e => setIndex(e)}
+          indicatorStyle={{
+            height: 0,
+          }}>
+          <Tab.Item
+            title="Đang vận chuyển"
+            titleStyle={{ fontSize: 12, color: COLORS.primary }}
+            containerStyle={{
+              backgroundColor: COLORS.gray,
+              borderTopLeftRadius: 20,
+              borderBottomLeftRadius: 20,
+            }}
+            buttonStyle={[
+              { padding: 3 },
+              index === 0 ? [styles.activeTab] : [styles.inactiveTab],
+            ]}
+          />
+          <Tab.Item
+            title="Đã vận chuyển"
+            titleStyle={{ fontSize: 12, color: COLORS.primary }}
+            containerStyle={[
+              {
+                backgroundColor: COLORS.gray,
+                borderTopRightRadius: 20,
+                borderBottomRightRadius: 20,
+              },
+            ]}
+            buttonStyle={[
+              { padding: 3 },
+              index === 1 ? [styles.activeTab] : [styles.inactiveTab],
+            ]}
+          />
+        </Tab>
+      </View>
 
       <TabView value={index} onChange={setIndex} animationType="spring">
         <TabView.Item style={{ width: '100%' }}>
-          <FlatList
-            contentContainerStyle={styles.flatContent}
+          <VirtualizedList
+            initialNumToRender={3}
             data={deliveringList}
-            renderItem={renderDeliveringItem}
+            contentContainerStyle={styles.flatContent}
             keyExtractor={item => `${item.id}`}
+            getItemCount={() => deliveringList.length}
+            getItem={(item, index) => {
+              return item[index];
+            }}
+            renderItem={renderDeliveringItem}
             ListEmptyComponent={
-              <View
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  paddingTop: '50%',
-                }}>
+              <View style={styles.noData}>
                 <Text>Chưa có lịch sử vận chuyển</Text>
               </View>
             }
           />
         </TabView.Item>
         <TabView.Item style={{ width: '100%' }}>
-          <FlatList
+          <VirtualizedList
+            initialNumToRender={3}
             contentContainerStyle={styles.flatContent}
             data={deliveredList}
             renderItem={renderDeliveredItem}
             keyExtractor={item => `${item.id}`}
+            getItemCount={() => deliveredList.length}
+            getItem={(item, index) => {
+              return item[index];
+            }}
             ListEmptyComponent={
-              <View
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  paddingTop: '50%',
-                }}>
+              <View style={styles.noData}>
                 <Text>Chưa có lịch sử vận chuyển</Text>
               </View>
             }
@@ -143,7 +158,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   flatContent: {
-    paddingVertical: 20,
+    paddingVertical: 12,
   },
   wrapperIcon: {
     backgroundColor: COLORS.primary,
@@ -171,5 +186,24 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     elevation: 10,
     shadowColor: COLORS.primary,
+  },
+  activeTab: {
+    backgroundColor: COLORS.white,
+    margin: 8,
+    marginHorizontal: 5,
+    borderRadius: 16,
+  },
+  inactiveTab: {
+    backgroundColor: '#F1F1FA',
+    margin: 8,
+    marginHorizontal: 5,
+  },
+  noData: {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: '50%',
   },
 });

@@ -54,7 +54,7 @@ const OrderSummary = ({ route, navigation }) => {
   }, [packages]);
 
   const handleOrder = () => {
-    // TODO: - calculate shipment fee and handle payment by momo
+    // TODO: - calculate shipment fee
 
     let payer_name = '',
       payer_phone = '';
@@ -95,10 +95,13 @@ const OrderSummary = ({ route, navigation }) => {
 
     orderApi
       .newOrder(order)
-      .then(response => console.log(response))
-      .then(() => {
+      .then(response => response)
+      .then(response => {
+        let id = JSON.stringify({
+          id: response.id,
+        });
         if (payment.value === 'momo') {
-          return handleRequestPayment(1000, orderIdForMomo);
+          return handleRequestPayment(1000, orderIdForMomo, id);
         }
       })
       .catch(error => console.log(error));
