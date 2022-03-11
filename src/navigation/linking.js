@@ -5,6 +5,12 @@ const config = {
         HomeScreen: {
           path: 'home',
         },
+        Success: {
+          path: 'order-success',
+        },
+        Error: {
+          path: 'order-error',
+        },
       },
     },
   },

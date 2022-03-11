@@ -15,6 +15,8 @@ import OrderSummary from '../../views/OrderScreen/OrderSummary';
 import Payment from '../../views/OrderScreen/Payment';
 import VoucherScreen from '../../views/VoucherScreen/VoucherScreen';
 import InputPackage from '../../views/OrderScreen/Input/InputPackage';
+import Success from '../../views/OrderScreen/Status/Success';
+import Error from '../../views/OrderScreen/Status/Error';
 
 const HomeStack = createStackNavigator();
 
@@ -45,6 +47,8 @@ const HomeStackScreen = () => {
       <HomeStack.Screen name="Payment" component={Payment} />
       <HomeStack.Screen name="VoucherScreen" component={VoucherScreen} />
       <HomeStack.Screen name="InputPackage" component={InputPackage} />
+      <HomeStack.Screen name="Success" component={Success} />
+      <HomeStack.Screen name="Error" component={Error} />
     </HomeStack.Navigator>
   );
 };
