@@ -1,51 +1,57 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import {
-  View,
-  StyleSheet,
-  SafeAreaView,
-  ScrollView,
-  TouchableOpacity,
-  FlatList,
-} from 'react-native';
-import { Avatar, Text, Icon, Divider, ListItem } from 'react-native-elements';
-import { container } from '../../styles/layoutStyle';
-import Header from '../../components/Header';
-import PillButton from '../../components/CustomButton/PillButton';
-import { COLORS, FONTS } from '../../styles';
-import OrderStep from '../../components/StepIndicator/OrderStep';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, SafeAreaView, FlatList } from 'react-native';
+import { Text, Icon, Divider, ListItem } from 'react-native-elements';
+import { container } from '../../../styles/layoutStyle';
+import Header from '../../../components/Header';
+import { COLORS, FONTS } from '../../../styles';
+import OrderStep from '../../../components/StepIndicator/OrderStep';
+import PrimaryButton from '../../../components/CustomButton/PrimaryButton';
+import ModalMess from '../../../components/ModalMess';
 
 const InputPackage = ({ route, navigation }) => {
+  const { pack } = route?.params;
   const [listPackage, setListPackage] = useState([]);
+  const [alert, setAlert] = useState(null);
 
-  const handleDelete = id => {
-    setListPackage([...listPackage.filter(item => item.id !== id)]);
+  const handleDelete = idx => {
+    setListPackage([...listPackage.filter((item, index) => index !== idx)]);
   };
 
   useEffect(() => {
-    if (route.params?.listPackage) {
-      setListPackage([...listPackage, ...route.params?.listPackage]);
+    if (
+      pack &&
+      !listPackage.some(item => {
+        return JSON.stringify(item) === JSON.stringify(pack);
+      })
+    ) {
+      setListPackage([...listPackage, pack]);
     }
-  }, [route.params?.listPackage]);
+  }, [pack]);
 
-  console.log(listPackage);
   const renderItem = ({ item, index }) => (
-    // <TouchableOpacity>
-    <ListItem style={style.item}>
-      <Icon reverse name="archive" size={20} color={COLORS.primary} />
+    <ListItem style={style.item} key={index}>
+      <Icon reverse name="inventory" size={20} color={COLORS.primary} />
       <ListItem.Content>
-        <ListItem.Title>{item.title}</ListItem.Title>
-        <ListItem.Subtitle>{'Số lượng: ' + item.count}</ListItem.Subtitle>
+        <ListItem.Title>{item.name || 'Chưa có tên'}</ListItem.Title>
+        <ListItem.Subtitle>{'Số lượng: ' + item.quantity}</ListItem.Subtitle>
       </ListItem.Content>
       <Icon
         name="delete"
         color={COLORS.danger}
-        onPress={() => handleDelete(item.id)}
+        onPress={() => handleDelete(index)}
       />
     </ListItem>
-    // </TouchableOpacity>
   );
   return (
     <SafeAreaView style={style.container}>
+      {alert && (
+        <ModalMess
+          type="warning"
+          message="Bạn chưa thêm kiện hàng nào"
+          alert={alert}
+          setAlert={setAlert}
+        />
+      )}
       <Header
         leftElement={
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
@@ -76,22 +82,24 @@ const InputPackage = ({ route, navigation }) => {
             style={{
               flexDirection: 'row',
             }}>
-            <PillButton
+            <PrimaryButton
               title="Thêm kiện hàng"
+              backgroundColor={COLORS.success}
               onPress={() =>
                 navigation.navigate('EditPackage', {
-                  order: true,
                   ...route.params,
+                  order: true,
                 })
               }
               containerStyle={{ flex: 1, marginRight: 5 }}
             />
-            <PillButton
+            <PrimaryButton
               title="Chọn mẫu"
+              backgroundColor={COLORS.warning}
               onPress={() =>
                 navigation.navigate('PackageTemplateList', {
-                  useTemplate: true,
                   ...route.params,
+                  useTemplate: true,
                 })
               }
               containerStyle={{ flex: 1, marginLeft: 5 }}
@@ -106,13 +114,20 @@ const InputPackage = ({ route, navigation }) => {
             }}>
             <Divider style={{ flex: 1 }} color={COLORS.primary} width={2} />
             <Text style={{ marginHorizontal: 10, color: COLORS.primary }}>
-              Hoặc
+              Để
             </Text>
             <Divider style={{ flex: 1 }} color={COLORS.primary} width={2} />
           </View>
-          <PillButton
+          <PrimaryButton
             title="Tiếp tục"
-            onPress={() => navigation.navigate('OrderSummary')}
+            onPress={() => {
+              listPackage.length
+                ? navigation.navigate('OrderSummary', {
+                    ...route.params,
+                    packages: listPackage,
+                  })
+                : setAlert(true);
+            }}
             buttonStyle={{ backgroundColor: COLORS.primary }}
           />
         </View>
@@ -138,8 +153,9 @@ const style = StyleSheet.create({
   item: {
     backgroundColor: COLORS.white,
     padding: 10,
-    borderRadius: 20,
-    elevation: 5,
+    borderRadius: 12,
+    shadowColor: COLORS.primary,
+    elevation: 20,
     marginBottom: 25,
   },
 });

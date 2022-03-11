@@ -2,15 +2,18 @@ import { StyleSheet, Text, View } from 'react-native';
 import React, { useState, useRef } from 'react';
 import { Picker } from '@react-native-picker/picker';
 import { primary } from '../../styles/color';
+import TextField from '../TextField';
 
 const Select = props => {
-  let { data, selected, setSelected } = props;
+  const { data, selected, setSelected, disabled = false } = props;
   const [selectedItem, setSelectedItem] = useState(selected);
   return (
     <View style={styles.container}>
       {props.title && <Text style={styles.texttitle}>{props.title}</Text>}
       <View style={styles.inputView}>
         <Picker
+          enabled={!disabled}
+          mode="dropdown"
           style={{ flex: 1, fontSize: 17, color: '#000' }}
           dropdownIconColor={primary}
           selectedValue={selectedItem}

@@ -1,225 +1,130 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   StyleSheet,
   FlatList,
-  TouchableOpacity,
   SafeAreaView,
+  VirtualizedList,
 } from 'react-native';
-import {
-  Text,
-  Icon,
-  CheckBox,
-  Tab,
-  TabView,
-  ListItem,
-  Rating,
-} from 'react-native-elements';
-import { container, header, shadowCard } from '../../styles/layoutStyle';
+import { Text, Tab, TabView } from 'react-native-elements';
+import { container } from '../../styles/layoutStyle';
 import Loading from '../../components/Loading';
 import Header from '../../components/Header';
-import { danger, primary, success, warning } from '../../styles/color';
 import { COLORS, FONTS } from '../../styles';
-import OrderIndicator from '../../components/StepIndicator/OrderIndicator';
+import orderApi from './../../api/orderApi';
+import Delivered from './Delivery/Delivered';
+import Delivering from './Delivery/Delivering';
 
 export default function OrderHistory({ navigation }) {
-  const [deliveredList, setDelivered] = useState([
-    {
-      carId: '#afoqijfoasdada'.toLocaleUpperCase(),
-      dateTime: '12/20/2019 3:36 PM',
-    },
-  ]);
-  const [deliveringList, setDelivering] = useState([
-    {
-      carId: '#afoqijfoasdada'.toLocaleUpperCase(),
-      dateTime: '12/20/2019 3:36 PM',
-    },
-  ]);
+  const [deliveredList, setDelivered] = useState([]);
+  const [deliveringList, setDelivering] = useState([]);
   const [index, setIndex] = useState(0);
+  const [loading, setLoading] = useState(<Loading />);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      Promise.all([orderApi.deliveringOrders(), orderApi.deliveredOrders()])
+        .then(response => {
+          setDelivering(response[0]);
+          setDelivered(response[1]);
+          setLoading(null);
+        })
+        .catch(error => {
+          setLoading(null);
+        });
+    });
+
+    return unsubscribe;
+  }, []);
 
   const renderDeliveredItem = ({ item, index }) => (
-    <TouchableOpacity>
-      <ListItem containerStyle={styles.deliveredContainer}>
-        <ListItem.Content style={{ flex: 2 }}>
-          <ListItem.Title>{item.carId}</ListItem.Title>
-          <ListItem.Subtitle style={{ flex: 1 }}>
-            {item.dateTime}
-          </ListItem.Subtitle>
-          <Text
-            style={{
-              ...FONTS.SmolBold,
-              color: danger,
-            }}>
-            Đã giao vào 22 tháng 12
-          </Text>
-        </ListItem.Content>
-
-        <ListItem.Content
-          style={{
-            flex: 1,
-            display: 'flex',
-            alignItems: 'flex-end',
-          }}>
-          <View style={{ flex: 1 }}>
-            <Icon
-              size={30}
-              name="inventory"
-              iconStyle={{
-                color: '#FFF',
-              }}
-              containerStyle={styles.wrapperIcon}
-            />
-          </View>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <Text
-              style={[
-                FONTS.Smol,
-                { marginRight: 10, color: 'rgba(0,0,0,0.5)' },
-              ]}>
-              Đánh giá
-            </Text>
-            <Rating type="custom" imageSize={18} tintColor={COLORS.gray} />
-          </View>
-        </ListItem.Content>
-      </ListItem>
-    </TouchableOpacity>
+    <Delivered item={item} navigation={navigation} />
   );
 
   const renderDeliveringItem = ({ item, index }) => (
-    <TouchableOpacity
-      activeOpacity={0.9}
-      onPress={() => navigation.navigate('OrderDetail')}>
-      <ListItem containerStyle={styles.deliveringContainer}>
-        <ListItem.Content
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            marginBottom: 20,
-            alignItems: 'flex-start',
-          }}>
-          <View>
-            <Icon
-              size={30}
-              name="inventory"
-              iconStyle={{
-                color: '#FFF',
-              }}
-              containerStyle={[
-                styles.wrapperIcon,
-                {
-                  marginRight: 10,
-                },
-              ]}
-            />
-          </View>
-          <ListItem.Content style={{ flex: 1 }}>
-            <Text style={[FONTS.BigBold]}>#CSGO112200</Text>
-            <Text style={[FONTS.SmolBold, { color: success }]}>
-              Đang vận chuyển
-            </Text>
-          </ListItem.Content>
-          <View>
-            <Icon
-              size={30}
-              name="more-horiz"
-              iconStyle={{
-                color: '#FFF',
-              }}
-              containerStyle={[
-                styles.wrapperIcon,
-                {
-                  marginRight: 10,
-                  borderRadius: 10,
-                },
-              ]}
-            />
-          </View>
-        </ListItem.Content>
-
-        <View style={{ width: '110%', alignSelf: 'center' }}>
-          <OrderIndicator current={3} name={'Hà Nội'} />
-        </View>
-      </ListItem>
-    </TouchableOpacity>
+    <Delivering item={item} navigation={navigation} />
   );
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header headerText="Lịch sử gửi hàng"></Header>
-      <Tab
-        value={index}
-        onChange={e => setIndex(e)}
-        indicatorStyle={{
-          backgroundColor: primary,
-          height: 3,
-        }}>
-        <Tab.Item
-          title="Đang vận chuyển"
-          titleStyle={{ fontSize: 12, color: primary }}
-          containerStyle={{
-            backgroundColor: '#FFF',
-          }}
-        />
-        <Tab.Item
-          title="Đã vận chuyển"
-          titleStyle={{ fontSize: 12, color: primary }}
-          containerStyle={{
-            backgroundColor: '#FFF',
-          }}
-        />
-      </Tab>
+      {loading}
+      <Header headerText="Lịch sử gửi hàng" />
+      <View style={{ paddingHorizontal: 15, height: 62 }}>
+        <Tab
+          value={index}
+          onChange={e => setIndex(e)}
+          indicatorStyle={{
+            height: 0,
+          }}>
+          <Tab.Item
+            title="Đang vận chuyển"
+            titleStyle={{ fontSize: 12, color: COLORS.primary }}
+            containerStyle={{
+              backgroundColor: COLORS.gray,
+              borderTopLeftRadius: 20,
+              borderBottomLeftRadius: 20,
+            }}
+            buttonStyle={[
+              { padding: 3 },
+              index === 0 ? [styles.activeTab] : [styles.inactiveTab],
+            ]}
+          />
+          <Tab.Item
+            title="Đã vận chuyển"
+            titleStyle={{ fontSize: 12, color: COLORS.primary }}
+            containerStyle={[
+              {
+                backgroundColor: COLORS.gray,
+                borderTopRightRadius: 20,
+                borderBottomRightRadius: 20,
+              },
+            ]}
+            buttonStyle={[
+              { padding: 3 },
+              index === 1 ? [styles.activeTab] : [styles.inactiveTab],
+            ]}
+          />
+        </Tab>
+      </View>
 
       <TabView value={index} onChange={setIndex} animationType="spring">
         <TabView.Item style={{ width: '100%' }}>
-          <FlatList
-            contentContainerStyle={styles.flatContent}
+          <VirtualizedList
+            initialNumToRender={3}
             data={deliveringList}
+            contentContainerStyle={styles.flatContent}
+            keyExtractor={item => `${item.id}`}
+            getItemCount={() => deliveringList.length}
+            getItem={(item, index) => {
+              return item[index];
+            }}
             renderItem={renderDeliveringItem}
-            keyExtractor={item => `${item.carId}`}
             ListEmptyComponent={
-              <View
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  paddingTop: '50%',
-                }}>
+              <View style={styles.noData}>
                 <Text>Chưa có lịch sử vận chuyển</Text>
               </View>
             }
           />
         </TabView.Item>
         <TabView.Item style={{ width: '100%' }}>
-          <FlatList
+          <VirtualizedList
+            initialNumToRender={3}
             contentContainerStyle={styles.flatContent}
             data={deliveredList}
             renderItem={renderDeliveredItem}
-            keyExtractor={item => `${item.carId}`}
+            keyExtractor={item => `${item.id}`}
+            getItemCount={() => deliveredList.length}
+            getItem={(item, index) => {
+              return item[index];
+            }}
             ListEmptyComponent={
-              <View
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  paddingTop: '50%',
-                }}>
+              <View style={styles.noData}>
                 <Text>Chưa có lịch sử vận chuyển</Text>
               </View>
             }
           />
         </TabView.Item>
       </TabView>
-
-      {/* {data.length == 0 && <Loading />} */}
     </SafeAreaView>
   );
 }
@@ -253,10 +158,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   flatContent: {
-    paddingVertical: 20,
+    paddingVertical: 12,
   },
   wrapperIcon: {
-    backgroundColor: primary,
+    backgroundColor: COLORS.primary,
     padding: 10,
     borderRadius: 25,
   },
@@ -279,7 +184,26 @@ const styles = StyleSheet.create({
     marginVertical: 15,
     display: 'flex',
     flexDirection: 'column',
-    ...shadowCard,
-    elevation: 2,
+    elevation: 10,
+    shadowColor: COLORS.primary,
+  },
+  activeTab: {
+    backgroundColor: COLORS.white,
+    margin: 8,
+    marginHorizontal: 5,
+    borderRadius: 16,
+  },
+  inactiveTab: {
+    backgroundColor: '#F1F1FA',
+    margin: 8,
+    marginHorizontal: 5,
+  },
+  noData: {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: '50%',
   },
 });

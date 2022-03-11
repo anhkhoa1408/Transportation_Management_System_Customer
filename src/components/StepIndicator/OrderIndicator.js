@@ -30,13 +30,37 @@ const indicatorStyle = {
 };
 
 const getStepIndicatorIconConfig = (props, current) => {
-  return (
-    props.position === current && {
-      name: 'local-shipping',
-      color: props.stepStatus === 'finished' ? '#ffffff' : COLORS.primary,
-      size: 20,
+  const iconConfig = {
+    name: 'feed',
+    color: props.stepStatus === 'finished' ? '#ffffff' : COLORS.primary,
+    size: 16,
+  };
+  switch (props.position) {
+    case 0: {
+      iconConfig.name = 'shopping-cart';
+      break;
     }
-  );
+    case 1: {
+      iconConfig.name = 'inventory';
+      break;
+    }
+    case 2: {
+      iconConfig.name = 'local-shipping';
+      break;
+    }
+    case 3: {
+      iconConfig.name = 'storefront';
+      break;
+    }
+    case 4: {
+      iconConfig.name = 'home';
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+  return iconConfig;
 };
 
 const OrderIndicator = props => {
@@ -46,7 +70,11 @@ const OrderIndicator = props => {
   );
 
   const renderLabel = ({ position, stepStatus, label, currentPosition }) => {
-    return current === position ? <Text>{name}</Text> : <Text></Text>;
+    return position === current && position === 2 ? (
+      <Text>{name}</Text>
+    ) : (
+      <Text></Text>
+    );
   };
 
   return (

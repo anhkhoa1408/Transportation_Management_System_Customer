@@ -167,7 +167,7 @@ const Account = ({ navigation, userInfo }) => {
 
   const footerComponent = (
     <>
-      <View style={{ padding: 30 }}>
+      <View style={{ padding: 25 }}>
         <Text style={[styles.smallText, { marginBottom: 5 }]}>
           Điểm thành viên của bạn
         </Text>
@@ -180,9 +180,10 @@ const Account = ({ navigation, userInfo }) => {
         </Text>
         <View
           style={{
-            padding: 18,
-            paddingHorizontal: 25,
-            elevation: 5,
+            padding: 10,
+            paddingHorizontal: 20,
+            elevation: 10,
+            shadowColor: COLORS.primary,
             backgroundColor: '#FFF',
             borderRadius: 12,
           }}>
@@ -314,13 +315,14 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     marginTop: 30,
     marginHorizontal: 15,
-    elevation: 10,
+    elevation: 15,
+    shadowColor: COLORS.primary,
     backgroundColor: COLORS.white,
     borderRadius: 10,
   },
   bigText: {
     fontWeight: 'bold',
-    fontSize: 25,
+    fontSize: 20,
     color: '#000',
   },
   smallText: {

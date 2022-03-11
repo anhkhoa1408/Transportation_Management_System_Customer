@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { Image, StyleSheet, View, FlatList } from 'react-native';
 import { Card, Icon, withBadge, Text } from 'react-native-elements';
-import Loading from '../../components/Loading';
 import Header from '../../components/Header';
 import HeaderAvatar from '../../components/HeaderAvatar';
 import InfoCard from './InfoCard';
@@ -10,10 +9,9 @@ import InfoCard from './InfoCard';
 import { connect } from 'react-redux';
 import homeAPI from '../../api/homeAPI';
 // Import Asset
-import styles, { STYLES, COLORS } from '../../styles';
+import { STYLES, COLORS } from '../../styles';
 import banner from './../../assets/images/delivery.jpg';
 import { container, shadowCard } from '../../styles/layoutStyle';
-import { danger, primary, success } from '../../styles/color';
 
 function HomeScreen({ navigation, ...props }) {
   const BadgedIcon = withBadge(10)(Icon);

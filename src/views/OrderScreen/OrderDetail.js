@@ -1,50 +1,38 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, SafeAreaView } from 'react-native';
 import {
-  View,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  SafeAreaView,
-  ScrollView,
-} from 'react-native';
-import {
-  ListItem,
   Text,
   Icon,
   Avatar,
-  Divider,
   Button,
   Overlay,
   Tab,
   TabView,
 } from 'react-native-elements';
-import { container, header, shadowCard } from '../../styles/layoutStyle';
-import Loading from '../../components/Loading';
+import { container } from '../../styles/layoutStyle';
 import Header from '../../components/Header';
 import { COLORS, FONTS } from '../../styles';
-import OrderIndicator from '../../components/StepIndicator/OrderIndicator';
-import { InfoField } from '../../components/InfoField';
 import OrderRating from './Order/OrderRating';
 import Detail from './Order/Detail';
 import PackageList from './Order/PakageList';
 import OrderTracing from './Order/OrderTracing';
+import orderApi from '../../api/orderApi';
 
-export default function OrderDetail({ navigation }) {
+export default function OrderDetail({ navigation, route }) {
   const [index, setIndex] = useState(0);
   const [option, setOption] = useState(false);
   const [rating, setRating] = useState(false);
-  const [data, setData] = useState([
-    {
-      id: '#FOIJOJOF123',
-      quantity: 10,
-      current_address: 'kho Hà Nội',
-    },
-    {
-      id: '#FOIJOJOF121',
-      quantity: 10,
-      current_address: 'kho Hà Nội',
-    },
-  ]);
+  const [trace, setTrace] = useState(null);
+  const { item } = route?.params;
+
+  useEffect(() => {
+    if (item.id) {
+      orderApi
+        .tracing(item.id)
+        .then(response => setTrace(response))
+        .catch(err => console.log(err));
+    }
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -69,8 +57,8 @@ export default function OrderDetail({ navigation }) {
           }}
         />
         <View style={{ flex: 1, marginLeft: 10 }}>
-          <Text style={[FONTS.BigBold]}>Nguyễn Anh Khoa</Text>
-          <Text style={[FONTS.Smol]}>SDT: 0909145830</Text>
+          <Text style={[FONTS.BigBold]}>{item.sender_name}</Text>
+          <Text style={[FONTS.Smol]}>{item.sender_phone}</Text>
         </View>
         <Icon
           name="chat"
@@ -138,7 +126,8 @@ export default function OrderDetail({ navigation }) {
         </Overlay>
       </View>
 
-      <View style={{ padding: 20 }}>
+      {/* Tab view */}
+      <View style={{ paddingHorizontal: 20, height: 62, marginVertical: 20 }}>
         <Tab
           value={index}
           onChange={e => {
@@ -156,13 +145,14 @@ export default function OrderDetail({ navigation }) {
               fontWeight: 'bold',
             }}
             containerStyle={{
-              backgroundColor: '#F3F3FA',
+              backgroundColor: COLORS.gray,
               borderTopLeftRadius: 20,
               borderBottomLeftRadius: 20,
             }}
-            buttonStyle={
-              index === 0 ? [styles.activeTab] : [styles.inactiveTab]
-            }
+            buttonStyle={[
+              { padding: 3 },
+              index === 0 ? [styles.activeTab] : [styles.inactiveTab],
+            ]}
           />
           <Tab.Item
             title="Chi tiết"
@@ -173,12 +163,13 @@ export default function OrderDetail({ navigation }) {
             }}
             containerStyle={[
               {
-                backgroundColor: '#F3F3FA',
+                backgroundColor: COLORS.gray,
               },
             ]}
-            buttonStyle={
-              index === 1 ? [styles.activeTab] : [styles.inactiveTab]
-            }
+            buttonStyle={[
+              { padding: 3 },
+              index === 1 ? [styles.activeTab] : [styles.inactiveTab],
+            ]}
           />
           <Tab.Item
             title="Kiện hàng"
@@ -189,14 +180,15 @@ export default function OrderDetail({ navigation }) {
             }}
             containerStyle={[
               {
-                backgroundColor: '#F3F3FA',
+                backgroundColor: COLORS.gray,
                 borderTopRightRadius: 20,
                 borderBottomRightRadius: 20,
               },
             ]}
-            buttonStyle={
-              index === 2 ? [styles.activeTab] : [styles.inactiveTab]
-            }
+            buttonStyle={[
+              { padding: 3 },
+              index === 2 ? [styles.activeTab] : [styles.inactiveTab],
+            ]}
           />
         </Tab>
       </View>
@@ -204,13 +196,13 @@ export default function OrderDetail({ navigation }) {
       <TabView value={index} onChange={setIndex} animationType="spring">
         <TabView.Item
           style={{ width: '100%', paddingHorizontal: 20, paddingVertical: 10 }}>
-          <OrderTracing current={4} />
+          <OrderTracing current={item.state} trace={trace} />
         </TabView.Item>
         <TabView.Item style={{ width: '100%', paddingHorizontal: 20 }}>
-          <Detail />
+          <Detail item={item} />
         </TabView.Item>
         <TabView.Item style={{ width: '100%', paddingHorizontal: 20 }}>
-          <PackageList />
+          <PackageList item={item} />
         </TabView.Item>
       </TabView>
 
@@ -248,7 +240,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     margin: 8,
     marginHorizontal: 5,
-    borderRadius: 20,
+    borderRadius: 16,
   },
   inactiveTab: {
     backgroundColor: '#F1F1FA',
