@@ -7,6 +7,7 @@ import { COLORS, FONTS } from '../../../styles';
 import OrderStep from '../../../components/StepIndicator/OrderStep';
 import PrimaryButton from '../../../components/CustomButton/PrimaryButton';
 import ModalMess from '../../../components/ModalMess';
+import { v4 } from 'uuid';
 
 const InputPackage = ({ route, navigation }) => {
   const { pack } = route?.params;
@@ -74,7 +75,7 @@ const InputPackage = ({ route, navigation }) => {
           contentContainerStyle={{ padding: 5 }}
           data={listPackage}
           renderItem={renderItem}
-          keyExtractor={item => item.id}
+          keyExtractor={item => v4()}
         />
 
         <View style={{ marginBottom: 10, paddingTop: 15 }}>

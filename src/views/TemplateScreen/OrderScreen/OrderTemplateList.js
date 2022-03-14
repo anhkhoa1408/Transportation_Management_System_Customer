@@ -1,105 +1,102 @@
-import React, { useState } from 'react';
+import moment from 'moment';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
-  View,
+  FlatList,
+  SafeAreaView,
   StyleSheet,
   TouchableOpacity,
-  FlatList,
-  ScrollView,
-  SafeAreaView,
+  View,
 } from 'react-native';
-import { Avatar, Icon, Text, ListItem, CheckBox } from 'react-native-elements';
+import { Icon, ListItem, Text } from 'react-native-elements';
+import templateApi from '../../../api/templateApi';
 import CustomSearch from '../../../components/CustomSearch/CustomSearch';
-import { container, header } from '../../../styles/layoutStyle';
-import img from '../../../assets/images/download.jpg';
-import { store } from '../../../config/configureStore';
 import Header from '../../../components/Header';
-import { primary, danger } from '../../../styles/color';
 import { COLORS, FONTS } from '../../../styles';
-import PillButton from '../../../components/CustomButton/PillButton';
+import { danger, primary } from '../../../styles/color';
+import { container, header } from '../../../styles/layoutStyle';
+import PrimaryButton from './../../../components/CustomButton/PrimaryButton';
+import Loading from './../../../components/Loading';
+import Template from './TemplateItem/Template';
 
 const OrderTemplateList = ({ route, navigation }) => {
-  const [data, setData] = useState([
-    {
-      id: '#afoqijfoasdada'.toLocaleUpperCase(),
-      dateTime: '12/20/2019 3:36 PM',
-    },
-    {
-      id: '#bmiweopkrejgoi'.toLocaleUpperCase(),
-      dateTime: '12/20/2019 3:36 PM',
-    },
-    {
-      id: '#opkopjqwoiasdd'.toLocaleUpperCase(),
-      dateTime: '12/20/2019 3:36 PM',
-    },
-  ]);
+  const [data, setData] = useState([]);
+  const [page, setPage] = useState(0);
+  const [loading, setLoading] = useState(null);
+  const [deleteList, setDelList] = useState([]);
 
   const [check, setCheck] = useState(
     Array.from({ length: data.length }, (_, index) => false),
   );
 
-  const handleCheck = index => {
-    check[index] = !check[index];
-    setCheck([...check]);
+  const handleCheck = useCallback(
+    index => {
+      check[index] = !check[index];
+      setCheck([...check]);
+      if (check[index]) {
+        setDelList([...deleteList, data[index].id]);
+      } else {
+        setDelList([
+          ...deleteList.filter(item => {
+            return item !== data[index].id;
+          }),
+        ]);
+      }
+    },
+    [data, deleteList],
+  );
+
+  const handleCheckAll = () => {
+    setCheck(Array.from({ length: data.length }, (_, index) => true));
+    setDelList(data.map(item => item.id));
   };
 
+  const handleUnCheckAll = () => {
+    setCheck(Array.from({ length: data.length }, (_, index) => false));
+    setDelList([]);
+  };
+
+  const handleDelete = () => {
+    templateApi
+      .deleteOrder({ deleteList: deleteList })
+      .then(response => {
+        setData(response);
+        setDelList([]);
+        setCheck(Array.from({ length: data.length }, (_, index) => false));
+      })
+      .catch(error => console.log(error));
+  };
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      setLoading(<Loading />);
+      templateApi
+        .getOrders({ page: page })
+        .then(response => {
+          setLoading(null);
+          setData(response);
+        })
+        .catch(error => {
+          console.log(error);
+          setLoading(null);
+        });
+    });
+    return unsubscribe;
+  }, []);
+
   const renderItem = ({ item, index }) => (
-    <TouchableOpacity
-      onLongPress={() => handleCheck(index)}
-      onPress={() =>
-        check.some(item => item === true)
-          ? handleCheck(index)
-          : navigation.navigate('EditOrderInfo')
-      }>
-      <ListItem containerStyle={style.reportItem}>
-        <View style={{ flexDirection: 'row' }}>
-          <View
-            style={{
-              backgroundColor: 'rgba(255,255,255,0.6)',
-              padding: 10,
-              borderRadius: 15,
-              marginRight: 10,
-            }}>
-            <Icon
-              size={30}
-              name="archive"
-              iconStyle={{
-                color: '#FFF',
-              }}
-              containerStyle={{
-                backgroundColor: COLORS.header,
-                padding: 10,
-                borderRadius: 25,
-              }}
-            />
-          </View>
-          <ListItem.Content>
-            <ListItem.Title>{item.id}</ListItem.Title>
-            <ListItem.Subtitle>{item.dateTime}</ListItem.Subtitle>
-          </ListItem.Content>
-          {check.some(item => item === true) ? (
-            <ListItem.CheckBox
-              checkedIcon="dot-circle-o"
-              uncheckedIcon="circle-o"
-              checked={check[index]}
-              checkedColor={primary}
-            />
-          ) : (
-            <ListItem.Chevron size={30} />
-          )}
-        </View>
-        {route.params?.useTemplate && (
-          <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
-            <Text style={[FONTS.BigBold, { color: COLORS.primary }]}>
-              Sử dụng
-            </Text>
-          </TouchableOpacity>
-        )}
-      </ListItem>
-    </TouchableOpacity>
+    <Template
+      index={index}
+      check={check}
+      item={item}
+      navigation={navigation}
+      onCheck={handleCheck}
+      route={route}
+    />
   );
 
   return (
     <SafeAreaView style={style.container}>
+      {loading}
       <Header
         leftElement={
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
@@ -113,10 +110,7 @@ const OrderTemplateList = ({ route, navigation }) => {
           display: 'flex',
         }}>
         {check.some(item => item === true) ? (
-          <TouchableOpacity
-            onPress={() =>
-              setCheck(Array.from({ length: data.length }, (_, index) => false))
-            }>
+          <TouchableOpacity onPress={handleUnCheckAll}>
             <Text
               style={{
                 alignSelf: 'flex-end',
@@ -128,10 +122,7 @@ const OrderTemplateList = ({ route, navigation }) => {
             </Text>
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity
-            onPress={() =>
-              setCheck(Array.from({ length: data.length }, (_, index) => true))
-            }>
+          <TouchableOpacity onPress={handleCheckAll}>
             <Text
               style={{
                 alignSelf: 'flex-end',
@@ -165,52 +156,32 @@ const OrderTemplateList = ({ route, navigation }) => {
               justifyContent: 'center',
               paddingTop: '50%',
             }}>
-            <Text>Chưa có lịch sử nhập xuất</Text>
+            <Text>Chưa có mẫu</Text>
           </View>
         }
       />
       {check.some(item => item === true) ? (
         <View style={{ padding: 20 }}>
-          <PillButton
+          <PrimaryButton
             title="Xoá"
             buttonStyle={{
               backgroundColor: COLORS.danger,
             }}
+            onPress={handleDelete}
           />
         </View>
       ) : (
         <View style={{ padding: 20 }}>
-          <PillButton
-            // ViewComponent={() => (
-            //   <View
-            //     style={{
-            //       backgroundColor: COLORS.primary,
-            //       height: 55,
-            //       display: 'flex',
-            //       flexDirection: 'row',
-            //       justifyContent: 'center',
-            //       alignItems: 'center',
-            //       paddingHorizontal: 100,
-            //       paddingVertical: 20,
-            //     }}>
-            //     <Icon
-            //       size={20}
-            //       name="add"
-            //       color={COLORS.primary}
-            //       reverse
-            //       reverseColor={COLORS.white}
-            //       containerStyle={{
-            //         opacity: 0.5,
-            //         backgroundColor: '#f2fbff',
-            //       }}
-            //     />
-            //   </View>
-            // )}
+          <PrimaryButton
             title="Thêm mẫu đơn hàng"
             buttonStyle={{
               backgroundColor: COLORS.primary,
             }}
-            onPress={() => navigation.navigate('EditOrderInfo')}
+            onPress={() =>
+              navigation.navigate('EditOrderInfo', {
+                action: 'add',
+              })
+            }
           />
         </View>
       )}
