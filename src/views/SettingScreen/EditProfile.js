@@ -1,21 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, ScrollView } from 'react-native';
-import { COLORS } from '../../styles';
-import authApi from '../../api/authApi';
-import { useDispatch } from 'react-redux';
-import { CLEAN_STORE } from '../../constants/types';
-import { store } from '../../config/configureStore';
 import { useFormik } from 'formik';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Avatar, Icon } from 'react-native-elements';
+import { useDispatch } from 'react-redux';
 import * as Bonk from 'yup';
 import { saveInfo } from '../../actions/actions';
-import ModalMess from '../../components/ModalMess';
-import { danger, success } from '../../styles/color';
-import { Avatar, Icon } from 'react-native-elements';
-import Header from '../../components/Header';
-import TextField from '../../components/TextField';
+import authApi from '../../api/authApi';
 import PillButton from '../../components/CustomButton/PillButton';
-import Loading from '../../components/Loading';
 import { DatePicker } from '../../components/DatePicker';
+import Header from '../../components/Header';
+import Loading from '../../components/Loading';
+import ModalMess from '../../components/ModalMess';
+import TextField from '../../components/TextField';
+import { store } from '../../config/configureStore';
+import { COLORS } from '../../styles';
+import { danger, success } from '../../styles/color';
 
 const EditProfile = ({ navigation }) => {
   const [data, setData] = useState({

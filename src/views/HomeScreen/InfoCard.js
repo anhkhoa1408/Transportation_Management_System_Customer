@@ -1,10 +1,10 @@
 import React, { useRef } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Icon, ListItem, Text } from 'react-native-elements';
-import { primary } from '../../styles/color';
+import { StyleSheet, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+import { Icon, ListItem, Text } from 'react-native-elements';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { COLORS } from '../../styles';
+import { primary } from '../../styles/color';
 
 const InfoCard = ({ item, navigation }) => {
   const ref = useRef(null);

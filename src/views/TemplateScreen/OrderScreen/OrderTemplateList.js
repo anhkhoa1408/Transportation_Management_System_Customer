@@ -1,5 +1,4 @@
-import moment from 'moment';
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   FlatList,
   SafeAreaView,
@@ -7,11 +6,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Icon, ListItem, Text } from 'react-native-elements';
+import { Icon, Text } from 'react-native-elements';
 import templateApi from '../../../api/templateApi';
 import CustomSearch from '../../../components/CustomSearch/CustomSearch';
 import Header from '../../../components/Header';
-import { COLORS, FONTS } from '../../../styles';
+import { COLORS } from '../../../styles';
 import { danger, primary } from '../../../styles/color';
 import { container, header } from '../../../styles/layoutStyle';
 import PrimaryButton from './../../../components/CustomButton/PrimaryButton';

@@ -51,7 +51,7 @@ const OrderSummary = ({ route, navigation }) => {
 
   const total_quantity = useMemo(() => {
     return packages.reduce(
-      (total, item) => total + Number.parseInt(item.weight),
+      (total, item) => total + Number.parseInt(item.quantity),
       0,
     );
   }, [packages]);
