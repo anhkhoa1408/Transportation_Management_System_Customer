@@ -1,8 +1,5 @@
 export var provinces = [
   {
-    name: 'Chọn',
-  },
-  {
     name: 'Hà Nội',
     districts: [
       {
