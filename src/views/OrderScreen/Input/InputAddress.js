@@ -8,7 +8,7 @@ import PrimaryButton from '../../../components/CustomButton/PrimaryButton';
 import Select from '../../../components/Select/Select';
 import { COLORS, FONTS } from '../../../styles';
 import OrderStep from '../../../components/StepIndicator/OrderStep';
-import { provinces } from '../../../utils/province';
+import { provinces } from '../../../constants/province';
 import { useFormik } from 'formik';
 import * as Bonk from 'yup';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';

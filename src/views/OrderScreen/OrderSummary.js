@@ -1,28 +1,25 @@
-import React, { useCallback, useEffect, useState, useMemo, memo } from 'react';
+import React, { memo, useMemo, useState } from 'react';
 import {
-  View,
-  StyleSheet,
   SafeAreaView,
   ScrollView,
+  StyleSheet,
   TouchableOpacity,
-  TouchableHighlight,
-  Pressable,
-  Linking,
+  View,
 } from 'react-native';
-import { Text, Icon, ListItem, Divider } from 'react-native-elements';
-import { container } from '../../styles/layoutStyle';
-import Header from '../../components/Header';
-import PrimaryButton from '../../components/CustomButton/PrimaryButton';
-import { COLORS, FONTS } from '../../styles';
-import OrderStep from '../../components/StepIndicator/OrderStep';
-import { InfoField } from '../../components/InfoField';
-import { joinAddress, simplifyString } from './../../utils/address';
-import { store } from '../../config/configureStore';
-import orderApi from '../../api/orderApi';
+import { Divider, Icon, ListItem, Text } from 'react-native-elements';
 import { v4 as uuidv4 } from 'uuid';
+import orderApi from '../../api/orderApi';
+import PrimaryButton from '../../components/CustomButton/PrimaryButton';
+import Header from '../../components/Header';
+import { InfoField } from '../../components/InfoField';
+import OrderStep from '../../components/StepIndicator/OrderStep';
+import { store } from '../../config/configureStore';
 import { handleRequestPayment } from '../../services/momo';
+import { COLORS, FONTS } from '../../styles';
+import { container } from '../../styles/layoutStyle';
 import Loading from './../../components/Loading';
 import ModalMess from './../../components/ModalMess';
+import { joinAddress } from './../../utils/address';
 
 const OrderSummary = ({ route, navigation }) => {
   const [loading, setLoading] = useState(null);
@@ -60,11 +57,11 @@ const OrderSummary = ({ route, navigation }) => {
   }, [packages]);
 
   const handleOrder = () => {
-    // TODO: - calculate shipment fee
+    // TODO: - calculate shipment fee service
     setLoading(<Loading />);
-
     let payer_name = '',
       payer_phone = '';
+
     switch (payment.title) {
       case 'Thanh toán bởi người gửi':
         payer_name = userInfo.name;
@@ -105,19 +102,18 @@ const OrderSummary = ({ route, navigation }) => {
       .then(response => response)
       .then(response => {
         if (response) {
+          setLoading(null);
           let id = JSON.stringify({
             id: response.id,
           });
           if (payment.value === 'momo') {
-            setLoading(null);
             return handleRequestPayment(1000, orderIdForMomo, id);
           } else {
-            setLoading(null);
             setAlert({
               type: 'success',
               message: 'Đặt hàng thành công',
             });
-            navigation.navigate('HomeScreen');
+            if (alert) navigation.navigate('HomeScreen');
           }
         } else {
           setAlert({
@@ -132,6 +128,7 @@ const OrderSummary = ({ route, navigation }) => {
           type: 'danger',
           message: 'Đặt hàng thất bại',
         });
+        setLoading(null);
       });
   };
 
