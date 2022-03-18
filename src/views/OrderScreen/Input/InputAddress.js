@@ -1,38 +1,98 @@
-import React, { useEffect, useState, useMemo } from 'react';
-import { View, StyleSheet, SafeAreaView } from 'react-native';
-import { Avatar, Text, Icon } from 'react-native-elements';
-import { container } from '../../../styles/layoutStyle';
-import Header from '../../../components/Header';
-import TextField from '../../../components/TextField';
-import PrimaryButton from '../../../components/CustomButton/PrimaryButton';
-import Select from '../../../components/Select/Select';
-import { COLORS, FONTS } from '../../../styles';
-import OrderStep from '../../../components/StepIndicator/OrderStep';
-import { provinces } from '../../../constants/province';
 import { useFormik } from 'formik';
-import * as Bonk from 'yup';
+import React, { useEffect, useMemo, useState } from 'react';
+import { SafeAreaView, StyleSheet } from 'react-native';
+import { Icon, Text } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import * as Bonk from 'yup';
+import PrimaryButton from '../../../components/CustomButton/PrimaryButton';
+import Header from '../../../components/Header';
+import Select from '../../../components/Select/Select';
+import TextField from '../../../components/TextField';
+import { provinces } from '../../../constants/province';
+import { FONTS } from '../../../styles';
+import { container } from '../../../styles/layoutStyle';
 
 const InputAddress = ({ navigation, route, ...props }) => {
   const { type } = route?.params;
-  const cities = useMemo(() => {
-    return provinces.map(item => ({
+
+  const initializeAddress = useMemo(() => {
+    let cities = provinces.map(item => ({
       label: item.name,
       value: item,
     }));
-  }, []);
-  const [selectCity, setSelectCity] = useState();
 
-  const [districts, setDistricts] = useState([]);
-  const [selectDistrict, setSelectDistrict] = useState();
+    let selectCity = (
+      cities.find(city => city.label === route?.params[type]?.city) || cities[0]
+    ).value;
 
-  const [wards, setWards] = useState([]);
-  const [selectWard, setSelectWard] = useState();
+    let districts =
+      selectCity &&
+      selectCity.districts.map(item => ({
+        label: item.name,
+        value: item,
+      }));
+
+    let selectDistrict =
+      districts &&
+      (
+        districts.find(
+          district => district.label === route?.params[type]?.province,
+        ) || districts[0]
+      ).value;
+
+    let wards =
+      selectDistrict &&
+      selectDistrict.wards.map(item => ({
+        label: item,
+        value: item,
+      }));
+
+    let selectWard =
+      wards &&
+      (
+        wards.find(ward => {
+          return ward.label === route?.params[type]?.ward;
+        }) || wards[0]
+      ).value;
+
+    return {
+      cities,
+      selectCity,
+      districts,
+      selectDistrict,
+      wards,
+      selectWard,
+    };
+  }, [route.params]);
+
+  const [cities, setCities] = useState(initializeAddress.cities);
+  const [selectCity, setSelectCity] = useState(
+    initializeAddress.selectCity || {
+      label: '',
+      value: '',
+    },
+  );
+
+  const [districts, setDistricts] = useState(initializeAddress.districts || []);
+  const [selectDistrict, setSelectDistrict] = useState(
+    initializeAddress.selectDistrict || {
+      label: '',
+      value: '',
+    },
+  );
+
+  const [wards, setWards] = useState(initializeAddress.wards || []);
+  const [selectWard, setSelectWard] = useState(
+    initializeAddress.selectWard || {
+      label: '',
+      value: '',
+    },
+  );
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      street: '',
+      street: route?.params[type]?.street || '',
     },
     validationSchema: Bonk.object({
       street: Bonk.string().required('Bạn chưa nhập tên đường'),
@@ -47,42 +107,52 @@ const InputAddress = ({ navigation, route, ...props }) => {
       ...route.params,
       [type]: {
         street: street,
-        ward: selectWard,
-        province: selectDistrict.name,
-        city: selectCity.name,
+        ward: selectWard.label || initializeAddress.selectCity.name,
+        province: selectDistrict.label || initializeAddress.selectDistrict.name,
+        city: selectCity.name || initializeAddress.selectWard,
       },
     });
   };
 
   const handleSelectCity = city => {
     setSelectCity(city);
-    let districts = city.districts.map(item => ({
-      label: item.name,
-      value: item,
-    }));
-
-    setDistricts(districts);
   };
 
   const handleSelectDistrict = district => {
-    setSelectDistrict(district);
-    let wards = district.wards.map(item => ({
-      label: item,
-      value: item,
-    }));
-    setWards(wards);
+    setSelectDistrict({
+      label: district.name,
+      value: district,
+    });
+  };
+
+  const handleSelectWard = ward => {
+    setSelectWard({
+      label: ward,
+      value: ward,
+    });
   };
 
   useEffect(() => {
-    if (Array.isArray(districts) && districts[0]) {
-      setWards(
-        districts[0].value.wards.map(item => ({
-          label: item,
-          value: item,
-        })),
-      );
+    if (selectCity.name !== initializeAddress?.selectCity?.name) {
+      let districts = selectCity.districts.map(item => ({
+        label: item.name,
+        value: item,
+      }));
+      setDistricts(districts);
+      setSelectDistrict(districts[0]);
     }
   }, [selectCity]);
+
+  useEffect(() => {
+    if (selectDistrict.name !== initializeAddress?.selectDistrict?.name) {
+      let wards = selectDistrict.value.wards.map(item => ({
+        label: item,
+        value: item,
+      }));
+      setWards(wards);
+      setSelectWard(wards[0]);
+    }
+  }, [selectDistrict]);
 
   return (
     <SafeAreaView style={style.container}>
@@ -117,7 +187,7 @@ const InputAddress = ({ navigation, route, ...props }) => {
           disabled={!wards && !wards.length}
           title="Phường / xã"
           selected={selectWard}
-          setSelected={setSelectWard}
+          setSelected={handleSelectWard}
           data={wards}
         />
         <TextField
@@ -129,7 +199,7 @@ const InputAddress = ({ navigation, route, ...props }) => {
           onChangeText={text => formik.setFieldValue('street', text)}
         />
         <PrimaryButton
-          title="Tiếp tục"
+          title="Thêm"
           onPress={formik.submitForm}
           containerStyle={{ marginTop: 30 }}
         />

@@ -11,7 +11,7 @@ class OrderApi {
     return axiosClient.get(url);
   };
   deliveringOrders = () => {
-    const url = MAIN_URL.concat(`/orders`);
+    const url = MAIN_URL.concat(`/orders/delivering`);
     return axiosClient.get(url);
   };
   deliveredOrders = () => {

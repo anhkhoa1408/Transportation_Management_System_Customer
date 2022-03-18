@@ -1,17 +1,16 @@
 // Import Component
-import React, { useState, useEffect } from 'react';
-import { Image, StyleSheet, View, FlatList } from 'react-native';
-import { Card, Icon, withBadge, Text } from 'react-native-elements';
-import Header from '../../components/Header';
-import HeaderAvatar from '../../components/HeaderAvatar';
-import InfoCard from './InfoCard';
+import React, { useState } from 'react';
+import { Image, StyleSheet, View } from 'react-native';
+import { Icon, withBadge } from 'react-native-elements';
 // Import Function
 import { connect } from 'react-redux';
-import homeAPI from '../../api/homeAPI';
+import Header from '../../components/Header';
+import HeaderAvatar from '../../components/HeaderAvatar';
 // Import Asset
-import { STYLES, COLORS } from '../../styles';
-import banner from './../../assets/images/delivery.jpg';
+import { COLORS, STYLES } from '../../styles';
 import { container, shadowCard } from '../../styles/layoutStyle';
+import banner from './../../assets/images/delivery.jpg';
+import InfoCard from './InfoCard';
 
 function HomeScreen({ navigation, ...props }) {
   const BadgedIcon = withBadge(10)(Icon);

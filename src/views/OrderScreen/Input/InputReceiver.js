@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, SafeAreaView } from 'react-native';
-import { Text, Icon } from 'react-native-elements';
-import { container } from '../../../styles/layoutStyle';
-import Header from '../../../components/Header';
-import TextField from '../../../components/TextField';
-import PrimaryButton from '../../../components/CustomButton/PrimaryButton';
-import { COLORS, FONTS } from '../../../styles';
-import OrderStep from '../../../components/StepIndicator/OrderStep';
 import { useFormik } from 'formik';
+import React from 'react';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
+import { Icon, Text } from 'react-native-elements';
 import * as Bonk from 'yup';
+import PrimaryButton from '../../../components/CustomButton/PrimaryButton';
+import Header from '../../../components/Header';
+import OrderStep from '../../../components/StepIndicator/OrderStep';
+import TextField from '../../../components/TextField';
+import { FONTS } from '../../../styles';
+import { container } from '../../../styles/layoutStyle';
 
 const InputReceiver = ({ navigation, route }) => {
   const formik = useFormik({

@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import {
-  View,
-  StyleSheet,
   SafeAreaView,
   ScrollView,
+  StyleSheet,
   TouchableOpacity,
+  View,
 } from 'react-native';
-import { Avatar, Text, Icon, ListItem } from 'react-native-elements';
-import { container, shadowCard } from '../../styles/layoutStyle';
-import Header from '../../components/Header';
-import PillButton from '../../components/CustomButton/PillButton';
-import { COLORS, FONTS } from '../../styles';
-import momo from '../../assets/images/momo.png';
+import { Avatar, Icon, ListItem, Text } from 'react-native-elements';
 import mastercard from '../../assets/images/mastercard.png';
+import momo from '../../assets/images/momo.png';
+import PillButton from '../../components/CustomButton/PillButton';
+import Header from '../../components/Header';
+import { COLORS, FONTS } from '../../styles';
+import { container } from '../../styles/layoutStyle';
+import PrimaryButton from '../../components/CustomButton/PrimaryButton';
 
 const Payment = ({ navigation, route }) => {
   const [offlineExpand, setOffline] = useState(true);
@@ -21,7 +22,6 @@ const Payment = ({ navigation, route }) => {
     sender: false,
     receiver: false,
     momo: false,
-    visa: false,
   });
 
   const handleCheck = name => {
@@ -29,7 +29,6 @@ const Payment = ({ navigation, route }) => {
       sender: false,
       receiver: false,
       momo: false,
-      visa: false,
       [name]: !check[name],
     });
   };
@@ -51,10 +50,6 @@ const Payment = ({ navigation, route }) => {
           case 'momo':
             title = 'Ví điện tử Momo';
             value = 'momo';
-            break;
-          case 'visa':
-            title = 'Thẻ ngân hàng';
-            value = 'bank';
             break;
         }
         acc['payment'] = {
@@ -93,7 +88,7 @@ const Payment = ({ navigation, route }) => {
         style={[style.form]}>
         <View>
           <ListItem.Accordion
-            activeOpacity={0.9}
+            underlayColor={COLORS.gray}
             content={
               <ListItem.Content>
                 <Text style={{ ...FONTS.Big, fontWeight: '600' }}>
@@ -151,7 +146,7 @@ const Payment = ({ navigation, route }) => {
             </TouchableOpacity>
           </ListItem.Accordion>
           <ListItem.Accordion
-            activeOpacity={0.9}
+            underlayColor={COLORS.gray}
             content={
               <ListItem.Content>
                 <Text style={{ ...FONTS.Big, fontWeight: '600' }}>
@@ -185,33 +180,11 @@ const Payment = ({ navigation, route }) => {
                 checkedIcon={<Icon name="check-box" color={COLORS.primary} />}
               />
             </TouchableOpacity>
-            <TouchableOpacity
-              activeOpacity={0.9}
-              onPress={() => handleCheck('visa')}
-              style={[style.rowContainer, style.item]}>
-              <Avatar
-                source={mastercard}
-                size="medium"
-                containerStyle={{
-                  backgroundColor: '#FFF',
-                  shadowColor: COLORS.primary,
-                  elevation: 15,
-                  padding: 8,
-                  marginRight: 10,
-                  borderRadius: 15,
-                }}
-              />
-              <Text style={{ flex: 1 }}>Master Card</Text>
-              <ListItem.CheckBox
-                checked={check.visa}
-                checkedIcon={<Icon name="check-box" color={COLORS.primary} />}
-              />
-            </TouchableOpacity>
           </ListItem.Accordion>
         </View>
       </ScrollView>
       <View style={{ padding: 20 }}>
-        <PillButton
+        <PrimaryButton
           title="Đồng ý"
           buttonStyle={{ backgroundColor: COLORS.primary }}
           onPress={handleSubmit}

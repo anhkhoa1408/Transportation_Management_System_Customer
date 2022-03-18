@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, SafeAreaView, FlatList } from 'react-native';
-import { Text, Icon, Divider, ListItem } from 'react-native-elements';
+import { Text, Icon, Divider, ListItem, Button } from 'react-native-elements';
 import { container } from '../../../styles/layoutStyle';
 import Header from '../../../components/Header';
 import { COLORS, FONTS } from '../../../styles';
@@ -83,27 +83,41 @@ const InputPackage = ({ route, navigation }) => {
             style={{
               flexDirection: 'row',
             }}>
-            <PrimaryButton
-              title="Thêm kiện hàng"
-              backgroundColor={COLORS.success}
+            <Button
+              type="outline"
+              title={'Thêm kiện hàng'}
+              titleStyle={{ color: COLORS.success }}
+              buttonStyle={{
+                borderColor: COLORS.success,
+                borderWidth: 2,
+                padding: 14,
+                borderRadius: 8,
+              }}
+              containerStyle={{ flex: 1, marginRight: 10, marginVertical: 15 }}
               onPress={() =>
                 navigation.navigate('EditPackage', {
                   ...route.params,
                   order: true,
                 })
               }
-              containerStyle={{ flex: 1, marginRight: 5 }}
             />
-            <PrimaryButton
-              title="Chọn mẫu"
-              backgroundColor={COLORS.warning}
+            <Button
+              type="outline"
+              title={'Chọn mẫu'}
+              titleStyle={{ color: COLORS.header }}
+              buttonStyle={{
+                borderColor: COLORS.header,
+                borderWidth: 2,
+                padding: 14,
+                borderRadius: 8,
+              }}
+              containerStyle={{ flex: 1, marginLeft: 10, marginVertical: 15 }}
               onPress={() =>
                 navigation.navigate('PackageTemplateList', {
                   ...route.params,
                   useTemplate: true,
                 })
               }
-              containerStyle={{ flex: 1, marginLeft: 5 }}
             />
           </View>
           <View
@@ -147,7 +161,7 @@ const style = StyleSheet.create({
     backgroundColor: '#FFF',
   },
   form: {
-    paddingHorizontal: 30,
+    paddingHorizontal: 25,
     display: 'flex',
     flexDirection: 'column',
   },
@@ -156,7 +170,7 @@ const style = StyleSheet.create({
     padding: 10,
     borderRadius: 12,
     shadowColor: COLORS.primary,
-    elevation: 20,
+    elevation: 15,
     marginBottom: 25,
   },
 });

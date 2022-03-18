@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
-import { Avatar, Text, Icon, ListItem } from 'react-native-elements';
-import { container } from '../../../styles/layoutStyle';
-import Header from '../../../components/Header';
-import TextField from '../../../components/TextField';
+import { SafeAreaView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Icon, ListItem, Text } from 'react-native-elements';
 import PrimaryButton from '../../../components/CustomButton/PrimaryButton';
-import { COLORS, FONTS } from '../../../styles';
+import Header from '../../../components/Header';
 import OrderStep from '../../../components/StepIndicator/OrderStep';
+import TextField from '../../../components/TextField';
+import { FONTS } from '../../../styles';
+import { container } from '../../../styles/layoutStyle';
 import { joinAddress, simplifyString } from '../../../utils/address';
 
 const InputInfo = ({ navigation, route }) => {
   const [name, setName] = useState('');
+  console.log(route.params);
   return (
     <SafeAreaView style={style.container}>
       <Header
