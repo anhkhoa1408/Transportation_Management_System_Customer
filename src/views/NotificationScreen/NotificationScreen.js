@@ -99,13 +99,7 @@ const NotificationScreen = ({ navigation }) => {
 
   const ref = useRef();
 
-  const keyExtractor = (item, index) => index.toString();
-
-  const handleDeleteNotify = id => {
-    let newData = deleteData.filter((item, index) => item.id !== id);
-    setDeleteData(newData);
-    setData(newData.slice(0, count));
-  };
+  const keyExtractor = (item, index) => item.id;
 
   const handleShowMore = () => {
     if (count <= appList.length - 3) {
@@ -118,15 +112,21 @@ const NotificationScreen = ({ navigation }) => {
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     setTimeout(() => setRefreshing(false), 500);
-    setTimeout(
-      () =>
-        ref.current.scrollToIndex({
-          index: 0,
-          animated: true,
-        }),
-      500,
-    );
-  }, []);
+    // setTimeout(
+    //   () =>
+    //     ref.current.scrollToIndex({
+    //       index: 0,
+    //       animated: true,
+    //     }),
+    //   500,
+    // );
+  }, [data]);
+
+  const handleDeleteNotify = id => {
+    let newData = deleteData.filter((item, index) => item.id !== id);
+    setDeleteData(newData);
+    setData(newData.slice(0, count));
+  };
 
   useEffect(() => {
     setData(appList.slice(0, count));
@@ -241,10 +241,11 @@ const NotificationScreen = ({ navigation }) => {
         keyExtractor={keyExtractor}
         renderItem={renderItem}
         persistentScrollbar={true}
+        refreshing
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
-        // onContentSizeChange={() => ref.current.scrollToEnd({ animated: true })}
+        onContentSizeChange={() => ref.current.scrollToEnd({ animated: true })}
         onScrollBeginDrag={() => ref.current.flashScrollIndicators()}
         ListFooterComponent={() =>
           deleteData.length > 3 &&

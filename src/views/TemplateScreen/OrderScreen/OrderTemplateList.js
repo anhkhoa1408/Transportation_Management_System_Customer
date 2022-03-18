@@ -19,7 +19,7 @@ import Template from './TemplateItem/Template';
 
 const OrderTemplateList = ({ route, navigation }) => {
   const [data, setData] = useState([]);
-  const [page, setPage] = useState(0);
+  const [_start, setStart] = useState(0);
   const [loading, setLoading] = useState(null);
   const [deleteList, setDelList] = useState([]);
 
@@ -69,7 +69,7 @@ const OrderTemplateList = ({ route, navigation }) => {
     const unsubscribe = navigation.addListener('focus', () => {
       setLoading(<Loading />);
       templateApi
-        .getOrders({ page: page })
+        .getOrders()
         .then(response => {
           setLoading(null);
           setData(response);
