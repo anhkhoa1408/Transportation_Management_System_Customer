@@ -1,164 +1,142 @@
 import React, { useEffect, useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  SafeAreaView,
-  ImageBackground,
-} from 'react-native';
-import { COLORS } from '../../styles';
+import { StyleSheet, View, TouchableOpacity, SafeAreaView } from 'react-native';
+import { Text } from 'react-native-elements';
+import { COLORS, STYLES, FONTS } from '../../styles';
 import TextField from '../../components/TextField';
 import authApi from '../../api/authApi';
-import { useDispatch } from 'react-redux';
 import * as Bonk from 'yup';
 import { useFormik } from 'formik';
 import { danger, success } from '../../styles/color';
-import { saveInfo } from '../../actions/actions';
-import background from './../../assets/images/background.png';
-import bg from './../../assets/images/bg.png';
 import Loading from './../../components/Loading';
+import PrimaryButton from '../../components/CustomButton/PrimaryButton';
+import ModalMess from '../../components/ModalMess';
 
-const ResetPass = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isFocus, setFocus] = useState('');
+const ResetPass = ({ navigation, route }) => {
+  const [data, setData] = useState({
+    password: '',
+    confirmPassword: '',
+  });
   const [loading, setLoading] = useState(false);
+  const [alert, setAlert] = useState(null);
 
-  const dispatch = useDispatch();
+  const alertType = {
+    error: {
+      type: 'danger',
+      message: 'Cập nhật mật khẩu thất bại',
+    },
+    success: {
+      type: 'success',
+      message: 'Cập nhật mật khẩu thành công',
+      btnText: 'Đăng nhập',
+    },
+  };
+
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: {
-      email: email,
-      password: password,
-    },
-    // validationSchema: Bonk.object({
-    //   email: Bonk.string().required('Thông tin bắt buộc'),
-    //   password: Bonk.string()
-    //     .required('Thông tin bắt buộc')
-    //     .min(8, 'Mật khẩu phải tối thiểu 8 ký tự'),
-    // }),
+    initialValues: data,
+    validationSchema: Bonk.object({
+      password: Bonk.string()
+        .required('Thông tin bắt buộc')
+        .matches(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/,
+          'Mật khẩu mới phải tối thiểu 8 ký tự, bao gồm chữ in hoa',
+        )
+        .min(8, 'Mật khẩu phải tối thiểu 8 ký tự'),
+      confirmPassword: Bonk.string()
+        .required('Thông tin bắt buộc')
+        .oneOf(
+          [Bonk.ref('password'), null],
+          'Mật khẩu và xác nhận mật khẩu không khớp',
+        )
+        .min(8, 'Mật khẩu phải tối thiểu 8 ký tự'),
+    }),
     onSubmit: values => {
-      handleSubmit(values);
+      handleSubmit(values.password);
     },
   });
 
-  const handleSubmit = values => {
-    navigation.navigate('Signin');
-    // setLoading(true);
-    // authApi
-    //   .login({
-    //     identifier: values.email,
-    //     password: values.password,
-    //   })
-    //   .then(data => {
-    //     dispatch(saveInfo(data));
-    //     setLoading(false);
-    //   })
-    //   .catch(err => alert('Username or password incorrect!'));
+  const handleSubmit = newPassword => {
+    setLoading(<Loading />);
+    authApi
+      .resetPassword({ token: route.params.token, newPassword })
+      .then(data => {
+        setLoading(false);
+        setAlert(alertType.success);
+      })
+      .catch(err => {
+        setLoading(false);
+        console.log(err.response.status, JSON.stringify(err.response.data));
+        setAlert(alertType.error);
+      });
   };
 
-  // useEffect(() => {
-  //   function handleBackButton() {
-  //     // navigation.navigate('register-phone');
-  //     // return true;
-  //     console.log(1);
-  //   }
-
-  //   const backHandler = BackHandler.addEventListener(
-  //     'hardwareBackPress',
-  //     handleBackButton,
-  //   );
-
-  //   return () => backHandler.remove();
-  // }, [navigation]);
+  const onAlertConfirm = value => {
+    setAlert(value);
+    if (alert.type === 'success') {
+      navigation.navigate('Signin');
+    }
+  };
 
   return (
-    <>
-      {loading ? (
-        <Loading />
-      ) : (
-        <SafeAreaView style={styles.container}>
-          <ImageBackground
-            resizeMode="cover"
-            style={styles.background}
-            source={bg}>
-            <View style={{ ...styles.form, ...isFocus }}>
-              <TextField
-                icon="phone"
-                placeholder="Mật khẩu"
-                value={formik.values.email}
-                onChangeText={setEmail}
-              />
-
-              {formik.touched.email && formik.errors.email ? (
-                <Text
-                  style={{
-                    color: danger,
-                    marginBottom: 15,
-                    fontWeight: 'bold',
-                  }}>
-                  {formik.errors.email}
-                </Text>
-              ) : null}
-
-              <TextField
-                icon="https"
-                placeholder="Xác nhận mật khẩu"
-                value={formik.values.password}
-                secureTextEntry
-                onChangeText={setPassword}
-              />
-
-              {formik.touched.password && formik.errors.password ? (
-                <Text
-                  style={{
-                    color: danger,
-                    marginBottom: 15,
-                    fontWeight: 'bold',
-                  }}>
-                  {formik.errors.password}
-                </Text>
-              ) : null}
-
-              <View style={styles.btnContainer}>
-                <TouchableOpacity
-                  style={[styles.loginBtn, { backgroundColor: success }]}
-                  onPress={formik.submitForm}>
-                  <Text
-                    style={{
-                      color: 'white',
-                      fontSize: 20,
-                      fontWeight: 'bold',
-                    }}>
-                    Đổi mật khẩu
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </ImageBackground>
-        </SafeAreaView>
+    <SafeAreaView style={styles.container}>
+      {alert && (
+        <ModalMess
+          type={alert.type}
+          message={alert.message}
+          setAlert={onAlertConfirm}
+          alert={alert}
+        />
       )}
-    </>
+      <View style={{ paddingHorizontal: 20, marginTop: '40%', flex: 1 }}>
+        <Text style={styles.title}>Đổi mật khẩu</Text>
+        <Text
+          style={{
+            marginBottom: 5,
+            color: 'rgba(0,0,0,0.5)',
+          }}>
+          Nhập mật khẩu mới cho tài khoản của bạn
+        </Text>
+        <TextField
+          icon="https"
+          placeholder="Mật khẩu mới"
+          secureTextEntry
+          value={formik.values.password}
+          onChangeText={text => formik.setFieldValue('password', text)}
+          error={formik.touched.password && formik.errors.password}
+          errorMessage={formik.errors.password}
+        />
+
+        <TextField
+          icon="https"
+          placeholder="Xác nhận mật khẩu"
+          value={formik.values.confirmPassword}
+          secureTextEntry
+          onChangeText={text => formik.setFieldValue('confirmPassword', text)}
+          error={
+            formik.touched.confirmPassword && formik.errors.confirmPassword
+          }
+          errorMessage={formik.errors.confirmPassword}
+        />
+
+        <PrimaryButton title="Xác nhận" onPress={formik.submitForm} />
+      </View>
+      <View style={[styles.container1]}>
+        <Text style={[FONTS.Medium]}>Đổi mật khẩu thành công? </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Signin')}>
+          <Text style={{ ...FONTS.BigBold, color: COLORS.primary }}>
+            Đăng nhập
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   );
 };
 
-export default ResetPass;
-
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: 'column',
+    ...STYLES.container,
     alignItems: 'stretch',
-    backgroundColor: COLORS.white,
-    width: '100%',
-    height: '100%',
-  },
-  btnContainer: {
-    width: '100%',
-    marginTop: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 20,
   },
   container1: {
     marginTop: 20,
@@ -167,33 +145,15 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  loginBtn: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    backgroundColor: COLORS.primary,
-    borderRadius: 35,
-    height: 50,
-  },
-  forgot: {
-    color: COLORS.primary,
-    fontSize: 18,
+  title: {
+    fontSize: 30,
+    alignSelf: 'flex-start',
     fontWeight: 'bold',
-    alignSelf: 'flex-end',
-  },
-  background: {
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  form: {
-    paddingHorizontal: 30,
-    paddingVertical: 25,
-    width: '90%',
-    backgroundColor: COLORS.white,
-    borderRadius: 30,
+    borderBottomColor: COLORS.primary,
+    borderBottomWidth: 5,
+    paddingBottom: 10,
+    marginBottom: 10,
   },
 });
+
+export default ResetPass;

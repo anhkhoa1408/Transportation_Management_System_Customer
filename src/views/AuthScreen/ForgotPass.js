@@ -1,138 +1,105 @@
 import React, { useEffect, useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  SafeAreaView,
-  ImageBackground,
-} from 'react-native';
-import { COLORS } from '../../styles';
-import TextField from '../../components/TextField';
-import authApi from '../../api/authApi';
+import { StyleSheet, View, SafeAreaView } from 'react-native';
+import { Image, Text } from 'react-native-elements';
 import { useDispatch } from 'react-redux';
-import * as Bonk from 'yup';
+import TextField from '../../components/TextField';
 import { useFormik } from 'formik';
-import { danger } from '../../styles/color';
-import { saveInfo } from '../../actions/actions';
-import background from './../../assets/images/background.png';
-import bg from './../../assets/images/bg.png';
+import * as Bonk from 'yup';
+import banner from '../../assets/images/password_banner.png';
 import Loading from './../../components/Loading';
+import PrimaryButton from '../../components/CustomButton/PrimaryButton';
+import { COLORS, STYLES, FONTS } from '../../styles';
 
-const ForgotPass = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const ForgotPass = ({ navigation, route }) => {
+  const [phone, setPhone] = useState('');
   const [isFocus, setFocus] = useState('');
   const [loading, setLoading] = useState(false);
+  const [meta, setMeta] = useState({});
+
+  const routeMetas = {
+    forgot: {
+      title: 'Quên mật khẩu',
+      banner: '',
+      navigate: 'resetPass',
+    },
+    signin: {
+      title: 'Đăng nhập',
+      banner: '',
+      navigate: 'Signin',
+    },
+  };
+
+  useEffect(() => {
+    setMeta(routeMetas[route.params.type]);
+  }, []);
+
+  const formatPhone = phone => {
+    return '+84' + phone.slice(1);
+  };
 
   const dispatch = useDispatch();
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      email: email,
-      password: password,
+      phone: phone,
     },
-    // validationSchema: Bonk.object({
-    //   email: Bonk.string().required('Thông tin bắt buộc'),
-    //   password: Bonk.string()
-    //     .required('Thông tin bắt buộc')
-    //     .min(8, 'Mật khẩu phải tối thiểu 8 ký tự'),
-    // }),
+    validationSchema: Bonk.object({
+      phone: Bonk.string()
+        .required('Thông tin bắt buộc')
+        .min(10, 'Tối thiểu 10 chữ số')
+        .max(11, 'Tối đa 11 chữ số')
+        .matches(/(0[0-9]{9,10})/g, 'Số điện thoại không hợp lệ'),
+    }),
     onSubmit: values => {
       handleSubmit(values);
     },
   });
 
   const handleSubmit = values => {
-    navigation.navigate('inputOtp');
-    // setLoading(true);
-    // authApi
-    //   .login({
-    //     identifier: values.email,
-    //     password: values.password,
-    //   })
-    //   .then(data => {
-    //     dispatch(saveInfo(data));
-    //     setLoading(false);
-    //   })
-    //   .catch(err => alert('Username or password incorrect!'));
+    navigation.navigate('inputOtp', {
+      phone: formatPhone(values.phone),
+      meta,
+    });
   };
 
-  // useEffect(() => {
-  //   function handleBackButton() {
-  //     // navigation.navigate('register-phone');
-  //     // return true;
-  //     console.log(1);
-  //   }
-
-  //   const backHandler = BackHandler.addEventListener(
-  //     'hardwareBackPress',
-  //     handleBackButton,
-  //   );
-
-  //   return () => backHandler.remove();
-  // }, [navigation]);
-
   return (
-    <>
-      {loading ? (
-        <Loading />
-      ) : (
-        <SafeAreaView style={styles.container}>
-          <ImageBackground
-            resizeMode="cover"
-            style={styles.background}
-            source={bg}>
-            {!isFocus && (
-              <Text
-                style={{
-                  fontSize: 45,
-                  alignSelf: 'flex-start',
-                  marginBottom: 20,
-                  alignSelf: 'flex-start',
-                  marginLeft: '5%',
-                }}>
-                Quên mật khẩu
-              </Text>
-            )}
-            <View style={{ ...styles.form, ...isFocus }}>
-              <TextField
-                icon="phone"
-                placeholder="Số điện thoại"
-                value={formik.values.email}
-                onChangeText={setEmail}
-              />
+    <SafeAreaView style={styles.container}>
+      {loading}
+      <Image
+        resizeMode="contain"
+        source={banner}
+        style={{
+          height: 220,
+          marginBottom: 20,
+        }}
+      />
+      <View style={{ width: '100%' }}>
+        <Text style={styles.title}>{meta?.title}</Text>
+        <Text
+          style={{
+            fontSize: 15,
+            color: 'rgba(0, 0, 0, 0.5)',
+          }}>
+          Nhập số điện thoại của bạn
+        </Text>
+        <TextField
+          keyboardType="numeric"
+          icon="phone"
+          placeholder="Số điện thoại"
+          value={formik.values.phone}
+          onChangeText={setPhone}
+          error={formik.touched.phone && formik.errors.phone}
+          errorMessage={formik.errors.phone}
+        />
 
-              {formik.touched.email && formik.errors.email ? (
-                <Text
-                  style={{
-                    color: danger,
-                    marginBottom: 15,
-                    fontWeight: 'bold',
-                  }}>
-                  {formik.errors.email}
-                </Text>
-              ) : null}
-
-              <View style={styles.btnContainer}>
-                <TouchableOpacity
-                  style={styles.loginBtn}
-                  onPress={formik.submitForm}>
-                  <Text
-                    style={{
-                      color: 'white',
-                      fontSize: 20,
-                      fontWeight: 'bold',
-                    }}>
-                    Lấy mã OTP
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </ImageBackground>
-        </SafeAreaView>
-      )}
-    </>
+        <PrimaryButton
+          backgroundColor="#f55651"
+          containerStyle={{ marginTop: 20 }}
+          title="Lấy mã OTP"
+          onPress={formik.submitForm}
+        />
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -140,53 +107,16 @@ export default ForgotPass;
 
 export const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    backgroundColor: COLORS.white,
-    width: '100%',
-    height: '100%',
+    ...STYLES.container,
+    padding: 25,
   },
-  btnContainer: {
-    width: '100%',
-    marginTop: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  container1: {
-    marginTop: 20,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  loginBtn: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    backgroundColor: COLORS.primary,
-    borderRadius: 35,
-    height: 50,
-  },
-  forgot: {
-    color: COLORS.primary,
-    fontSize: 18,
+  title: {
+    alignSelf: 'flex-start',
+    fontSize: 30,
     fontWeight: 'bold',
-    alignSelf: 'flex-end',
-  },
-  background: {
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  form: {
-    paddingHorizontal: 30,
-    paddingVertical: 25,
-    width: '90%',
-    backgroundColor: COLORS.white,
-    borderRadius: 30,
+    paddingBottom: 10,
+    borderBottomColor: '#f55651',
+    borderBottomWidth: 5,
+    marginBottom: 10,
   },
 });
