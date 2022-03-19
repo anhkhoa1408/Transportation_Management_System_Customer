@@ -199,7 +199,7 @@ const SignIn = ({ navigation, route }) => {
             marginTop: 10,
             flex: 1,
           }}>
-          <Text style={styles.subTitle}>Đăng nhập với</Text>
+          <Text style={styles.subTitle}>Hoặc đăng nhập với</Text>
           <View
             style={{
               flexDirection: 'row',
@@ -236,15 +236,15 @@ const SignIn = ({ navigation, route }) => {
             </TouchableOpacity>
           </View>
         </View>
+        <View style={[styles.container1]}>
+          <Text style={[FONTS.Medium]}>Chưa có tài khoản? </Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+            <Text style={{ ...FONTS.BigBold, color: COLORS.primary }}>
+              Đăng ký
+            </Text>
+          </TouchableOpacity>
+        </View>
       </KeyboardAwareScrollView>
-      <View style={[styles.container1]}>
-        <Text style={[FONTS.Medium]}>Chưa có tài khoản? </Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-          <Text style={{ ...FONTS.BigBold, color: COLORS.primary }}>
-            Đăng ký
-          </Text>
-        </TouchableOpacity>
-      </View>
     </SafeAreaView>
   );
 };
@@ -263,6 +263,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
+    paddingVertical: 15,
   },
   forgot: {
     color: COLORS.primary,

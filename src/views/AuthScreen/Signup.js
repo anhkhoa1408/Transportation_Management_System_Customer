@@ -16,22 +16,29 @@ import * as Bonk from 'yup';
 import { useFormik } from 'formik';
 import banner from './../../assets/images/banner_signup.jpg';
 import PrimaryButton from './../../components/CustomButton/PrimaryButton';
+import Loading from './../../components/Loading';
+import authApi from '../../api/authApi';
+import ModalMess from '../../components/ModalMess';
 
 const SignUp = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [repeatPassword, setRepeat] = useState('');
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    repeatPassword: '',
+  });
+  const [loading, setLoading] = useState(null);
+  const [alert, setAlert] = useState(null);
 
   const dispatch = useDispatch();
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: {
-      email: email,
-      password: password,
-      repeatPassword: repeatPassword,
-    },
+    initialValues: formData,
     validationSchema: Bonk.object({
-      email: Bonk.string().required('Thông tin bắt buộc'),
+      name: Bonk.string().required('Thông tin bắt buộc'),
+      email: Bonk.string()
+        .required('Thông tin bắt buộc')
+        .email('Email không hợp lệ'),
       password: Bonk.string()
         .required('Thông tin bắt buộc')
         .min(8, 'Mật khẩu phải tối thiểu 8 ký tự'),
@@ -44,13 +51,53 @@ const SignUp = ({ navigation }) => {
         ),
     }),
     onSubmit: values => {
-      setFocus('');
       Keyboard.dismiss();
       handleSubmit(values);
     },
   });
 
-  const handleSubmit = values => {};
+  const onAlertConfirm = value => {
+    setAlert(value);
+    if (alert.type === 'success') {
+      navigation.navigate('Signin');
+    }
+  };
+
+  const handleSubmit = values => {
+    setLoading(<Loading />);
+    authApi
+      .register(values)
+      .then(data => {
+        setAlert({
+          type: 'success',
+          btnText: 'Đăng nhập',
+          message: 'Đăng ký thành công!',
+        });
+        setLoading(null);
+      })
+      .catch(err => {
+        try {
+          const message = err.response.data.data[0].messages[0].id;
+          if (message === 'Auth.form.error.email.taken')
+            setAlert({
+              type: 'warning',
+              message: 'Email đã được sử dụng!',
+            });
+          else
+            setAlert({
+              type: 'warning',
+              message: 'Thông tin không đúng!',
+            });
+        } catch (error) {
+          setAlert({
+            type: 'warning',
+            message: 'Đăng ký thất bại!',
+          });
+        }
+        setLoading(null);
+        setDisabled(false);
+      });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -61,11 +108,19 @@ const SignUp = ({ navigation }) => {
         }}
         source={banner}
       />
+      {alert && (
+        <ModalMess
+          type={alert.type}
+          message={alert.message}
+          setAlert={onAlertConfirm}
+          alert={alert}
+        />
+      )}
+      {loading}
       <KeyboardAvoidingView
         style={{ flex: 1 }}
-        enabled
-        behavior="padding"
-        keyboardVerticalOffset={20}>
+        enableOnAndroid
+        enableAutomaticScroll>
         <ScrollView
           keyboardShouldPersistTaps="always"
           contentContainerStyle={{
@@ -77,64 +132,50 @@ const SignUp = ({ navigation }) => {
             style={{
               fontSize: 15,
               color: 'rgba(0, 0, 0, 0.5)',
+              paddingBottom: 20,
             }}>
             Trải nghiệm ngay dịch vụ vận chuyển liên tỉnh
           </Text>
+
           <TextField
             icon="person-outline"
-            placeholder="Tên đăng nhập"
-            value={formik.values.email}
-            onChangeText={setEmail}
+            placeholder="Họ và Tên"
+            value={formik.values.name}
+            onChangeText={text => formik.setFieldValue('name', text)}
+            error={formik.touched.name && formik.errors.name}
+            errorMessage={formik.errors.name}
           />
-
-          {formik.touched.email && formik.errors.email ? (
-            <Text
-              style={{
-                color: COLORS.danger,
-                marginBottom: 5,
-                fontWeight: 'bold',
-              }}>
-              {formik.errors.email}
-            </Text>
-          ) : null}
 
           <TextField
-            icon="lock"
-            placeholder="Mật khẩu"
-            value={formik.values.password}
-            secureTextEntry
-            onChangeText={setPassword}
+            icon="email"
+            placeholder="Email"
+            value={formik.values.email}
+            onChangeText={text => formik.setFieldValue('email', text)}
+            error={formik.touched.email && formik.errors.email}
+            errorMessage={formik.errors.email}
           />
 
-          {formik.touched.email && formik.errors.email ? (
-            <Text
-              style={{
-                color: COLORS.danger,
-                marginBottom: 5,
-                fontWeight: 'bold',
-              }}>
-              {formik.errors.email}
-            </Text>
-          ) : null}
+          <TextField
+            icon="https"
+            placeholder="Mật khẩu mới"
+            secureTextEntry
+            value={formik.values.password}
+            onChangeText={text => formik.setFieldValue('password', text)}
+            error={formik.touched.password && formik.errors.password}
+            errorMessage={formik.errors.password}
+          />
 
           <TextField
             icon="lock"
             placeholder="Xác nhận mật khẩu"
-            value={formik.values.repeatPassword}
             secureTextEntry
-            onChangeText={setRepeat}
+            value={formik.values.repeatPassword}
+            onChangeText={text => formik.setFieldValue('repeatPassword', text)}
+            error={
+              formik.touched.repeatPassword && formik.errors.repeatPassword
+            }
+            errorMessage={formik.errors.repeatPassword}
           />
-
-          {formik.touched.repeatPassword && formik.errors.repeatPassword ? (
-            <Text
-              style={{
-                color: COLORS.danger,
-                marginBottom: 5,
-                fontWeight: 'bold',
-              }}>
-              {formik.errors.repeatPassword}
-            </Text>
-          ) : null}
 
           <PrimaryButton
             containerStyle={{

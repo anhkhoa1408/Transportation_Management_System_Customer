@@ -14,7 +14,7 @@ class AuthorApi {
     return axiosClient.get(url);
   };
   register = data => {
-    const url = MAIN_URL.concat('/auth/signup');
+    const url = MAIN_URL.concat('/auth/local/register');
     return axiosClient.post(url, data);
   };
   update = (id, data) => {
