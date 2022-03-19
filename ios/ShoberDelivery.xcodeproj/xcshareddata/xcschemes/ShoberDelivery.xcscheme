@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "Transportation_Management_System_Frontend.app"
-               BlueprintName = "Transportation_Management_System_Frontend"
-               ReferencedContainer = "container:Transportation_Management_System_Frontend.xcodeproj">
+               BuildableName = "ShoberDelivery.app"
+               BlueprintName = "ShoberDelivery"
+               ReferencedContainer = "container:ShoberDelivery.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "Transportation_Management_System_FrontendTests.xctest"
-               BlueprintName = "Transportation_Management_System_FrontendTests"
-               ReferencedContainer = "container:Transportation_Management_System_Frontend.xcodeproj">
+               BuildableName = "ShoberDeliveryTests.xctest"
+               BlueprintName = "ShoberDeliveryTests"
+               ReferencedContainer = "container:ShoberDelivery.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "Transportation_Management_System_Frontend.app"
-            BlueprintName = "Transportation_Management_System_Frontend"
-            ReferencedContainer = "container:Transportation_Management_System_Frontend.xcodeproj">
+            BuildableName = "ShoberDelivery.app"
+            BlueprintName = "ShoberDelivery"
+            ReferencedContainer = "container:ShoberDelivery.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "Transportation_Management_System_Frontend.app"
-            BlueprintName = "Transportation_Management_System_Frontend"
-            ReferencedContainer = "container:Transportation_Management_System_Frontend.xcodeproj">
+            BuildableName = "ShoberDelivery.app"
+            BlueprintName = "ShoberDelivery"
+            ReferencedContainer = "container:ShoberDelivery.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
