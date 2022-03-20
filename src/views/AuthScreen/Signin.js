@@ -22,8 +22,8 @@ import ModalMess from '../../components/ModalMess';
 import banner from './../../assets/images/banner_signin.jpg';
 import { Icon, Image, Text, SocialIcon } from 'react-native-elements';
 import PrimaryButton from '../../components/CustomButton/PrimaryButton';
-// import { socket, initChat } from '../../config/socketIO';
-// import { syncToken } from '../../config/cloudMessage';
+import { socket, initChat } from '../../config/socketIO';
+import { syncToken } from '../../config/cloudMessage';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { onFacebookButtonPress, onGoogleButtonPress } from '../../config/OAuth';
 
@@ -84,9 +84,9 @@ const SignIn = ({ navigation, route }) => {
     handler
       .then(data => {
         dispatch(saveInfo(data));
-        // if (socket.disconnected) socket.connect();
-        // else initChat();
-        // syncToken();
+        if (socket.disconnected) socket.connect();
+        else initChat();
+        syncToken();
         setLoading(null);
       })
       .catch(err => {

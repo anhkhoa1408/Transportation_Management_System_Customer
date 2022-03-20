@@ -2,38 +2,37 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { View, StyleSheet, Touchable } from 'react-native';
 import { Avatar, Text } from 'react-native-elements';
 import { GiftedChat } from 'react-native-gifted-chat';
-import { container, header } from '../../styles/layoutStyle';
+import { header } from '../../styles/layoutStyle';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import img from './../../assets/images/download.jpg';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { socket } from '../../config/socketIO';
+import { addMessage } from '../../actions/actions';
+import { connect } from 'react-redux';
+import { getAvatarFromUri } from '../../utils/avatarUltis';
 
-const SendMessageScreen = ({ navigation }) => {
-  const [messages, setMessages] = useState([]);
+const MessageScreen = props => {
+  const { navigation, route, messenger, user, customerInfo } = props;
+  const { room } = route.params;
+
+  const [messages, setMessages] = useState();
+  const [customer, setCustomer] = useState(customerInfo[room]);
 
   useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: 'Hello developer',
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: 'React Native',
-          avatar: 'https://placeimg.com/140/140/any',
-        },
-      },
-    ]);
-  }, []);
+    setMessages(messenger[room]);
+  }, [messenger]);
 
-  const onSend = useCallback((messages = []) => {
-    setMessages(previousMessages =>
-      GiftedChat.append(previousMessages, messages),
-    );
+  const onSend = useCallback((newMessages = []) => {
+    socket.emit('chat', newMessages[0], room);
+
+    setMessages(previousMessages => {
+      props.addMessage(newMessages[0], room);
+      // return GiftedChat.append(previousMessages, newMessages);
+    });
   }, []);
 
   return (
     <View style={messagesScreenStyle.container}>
-      <View style={messagesScreenStyle.header}>
+      <View style={header}>
         <TouchableOpacity>
           <MaterialIcon
             name="west"
@@ -41,22 +40,31 @@ const SendMessageScreen = ({ navigation }) => {
             onPress={() => navigation.goBack()}
           />
         </TouchableOpacity>
-        <Text h4>Uchiha papasuker</Text>
+        <Text h4>{customer?.name}</Text>
         <Avatar
           rounded
           size="small"
-          source={img}
-          onPress={() => navigation.navigate('CustomerInfo')}
+          source={{ uri: getAvatarFromUri(customer?.avatar) }}
+          onPress={() =>
+            navigation.navigate('CustomerInfo', {
+              avatar: getAvatarFromUri(customer?.avatar),
+              name: customer?.name,
+              phone: customer?.phone,
+            })
+          }
         />
       </View>
       <GiftedChat
         messages={messages}
         onSend={messages => onSend(messages)}
         user={{
-          _id: 1,
+          _id: user.id,
+          name: user.name,
+          avatar: user.avatar?.url,
         }}
         placeholder="Nhập"
         textInputStyle={messagesScreenStyle.input}
+        renderAvatar={null}
       />
     </View>
   );
@@ -68,11 +76,20 @@ const messagesScreenStyle = StyleSheet.create({
     height: '100%',
     backgroundColor: '#FFF',
   },
-  header: { ...header },
   input: {
     padding: 15,
     backgroundColor: '#FFF',
   },
 });
 
-export default SendMessageScreen;
+const mapStateToProps = state => ({
+  messenger: state.messenger,
+  user: state.userInfo.user,
+  customerInfo: state.customerInfo,
+});
+
+const mapDispatchToProps = dispatch => ({
+  addMessage: (message, room) => dispatch(addMessage(message, room)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MessageScreen);
