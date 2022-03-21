@@ -7,18 +7,17 @@ import { COLORS } from '../../styles';
 function PrimaryButton(props) {
   return (
     <Button
-      {...props}
       containerStyle={{
-        ...props.containerStyle,
         borderRadius: 8,
         marginVertical: 15,
+        ...props.containerStyle,
       }}
       buttonStyle={{
-        ...props.buttonStyle,
         padding: 14,
         backgroundColor: props.backgroundColor
           ? props.backgroundColor
           : COLORS.primary,
+        ...props.buttonStyle,
       }}
       titleStyle={{
         fontSize: 16,
@@ -27,6 +26,7 @@ function PrimaryButton(props) {
       }}
       TouchableComponent={TouchableOpacity}
       activeOpacity={0.7}
+      {...props}
     />
   );
 }

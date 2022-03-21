@@ -17,6 +17,7 @@ import VoucherScreen from '../../views/VoucherScreen/VoucherScreen';
 import InputPackage from '../../views/OrderScreen/Input/InputPackage';
 import Success from '../../views/OrderScreen/Status/Success';
 import Error from '../../views/OrderScreen/Status/Error';
+import MapScreen from '../../views/MapScreen/MapScreen';
 
 const HomeStack = createStackNavigator();
 
@@ -49,6 +50,7 @@ const HomeStackScreen = () => {
       <HomeStack.Screen name="InputPackage" component={InputPackage} />
       <HomeStack.Screen name="Success" component={Success} />
       <HomeStack.Screen name="Error" component={Error} />
+      <HomeStack.Screen name="MapScreen" component={MapScreen} />
     </HomeStack.Navigator>
   );
 };

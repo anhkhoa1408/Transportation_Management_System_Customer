@@ -6,153 +6,60 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import * as Bonk from 'yup';
 import PrimaryButton from '../../../components/CustomButton/PrimaryButton';
 import Header from '../../../components/Header';
-import Select from '../../../components/Select/Select';
 import TextField from '../../../components/TextField';
-import { provinces } from '../../../constants/province';
-import { FONTS } from '../../../styles';
+import { COLORS, FONTS } from '../../../styles';
 import { container } from '../../../styles/layoutStyle';
 
 const InputAddress = ({ navigation, route, ...props }) => {
   const { type } = route?.params;
 
-  const initializeAddress = useMemo(() => {
-    let cities = provinces.map(item => ({
-      label: item.name,
-      value: item,
-    }));
-
-    let selectCity = (
-      cities.find(city => city.label === route?.params[type]?.city) || cities[0]
-    ).value;
-
-    let districts =
-      selectCity &&
-      selectCity.districts.map(item => ({
-        label: item.name,
-        value: item,
-      }));
-
-    let selectDistrict =
-      districts &&
-      (
-        districts.find(
-          district => district.label === route?.params[type]?.province,
-        ) || districts[0]
-      ).value;
-
-    let wards =
-      selectDistrict &&
-      selectDistrict.wards.map(item => ({
-        label: item,
-        value: item,
-      }));
-
-    let selectWard =
-      wards &&
-      (
-        wards.find(ward => {
-          return ward.label === route?.params[type]?.ward;
-        }) || wards[0]
-      ).value;
-
-    return {
-      cities,
-      selectCity,
-      districts,
-      selectDistrict,
-      wards,
-      selectWard,
-    };
-  }, [route.params]);
-
-  const [cities, setCities] = useState(initializeAddress.cities);
-  const [selectCity, setSelectCity] = useState(
-    initializeAddress.selectCity || {
-      label: '',
-      value: '',
-    },
-  );
-
-  const [districts, setDistricts] = useState(initializeAddress.districts || []);
-  const [selectDistrict, setSelectDistrict] = useState(
-    initializeAddress.selectDistrict || {
-      label: '',
-      value: '',
-    },
-  );
-
-  const [wards, setWards] = useState(initializeAddress.wards || []);
-  const [selectWard, setSelectWard] = useState(
-    initializeAddress.selectWard || {
-      label: '',
-      value: '',
-    },
-  );
+  useEffect(() => {
+    if (route.params[type]) formik.setValues(route.params[type]);
+  }, [route.params?.from_address, route.params?.to_address]);
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      street: route?.params[type]?.street || '',
+      street: '',
+      ward: '',
+      province: '',
+      city: '',
     },
     validationSchema: Bonk.object({
       street: Bonk.string().required('Bạn chưa nhập tên đường'),
+      ward: Bonk.string().required('Bạn chưa nhập tên quận'),
+      province: Bonk.string().required('Bạn chưa nhập tên quận'),
+      city: Bonk.string().required('Bạn chưa nhập thành phố'),
     }),
     onSubmit: values => {
       handleSubmit(values);
     },
   });
 
-  const handleSubmit = ({ street }) => {
-    navigation.navigate('InputInfo', {
-      ...route.params,
-      [type]: {
-        street: street,
-        ward: selectWard.label || initializeAddress.selectCity.name,
-        province: selectDistrict.label || initializeAddress.selectDistrict.name,
-        city: selectCity.name || initializeAddress.selectWard,
-      },
-    });
-  };
-
-  const handleSelectCity = city => {
-    setSelectCity(city);
-  };
-
-  const handleSelectDistrict = district => {
-    setSelectDistrict({
-      label: district.name,
-      value: district,
-    });
-  };
-
-  const handleSelectWard = ward => {
-    setSelectWard({
-      label: ward,
-      value: ward,
-    });
-  };
-
-  useEffect(() => {
-    if (selectCity.name !== initializeAddress?.selectCity?.name) {
-      let districts = selectCity.districts.map(item => ({
-        label: item.name,
-        value: item,
-      }));
-      setDistricts(districts);
-      setSelectDistrict(districts[0]);
+  const handleSubmit = values => {
+    const params =
+      route.params?.previousScreen === 'EditOrderInfo'
+        ? {
+            item: {
+              ...route.params?.item,
+              [type]: {
+                ...values,
+              },
+            },
+          }
+        : {
+            [type]: {
+              ...values,
+            },
+          };
+    if (route.params?.previousScreen) {
+      navigation.navigate({
+        name: route.params?.previousScreen,
+        params: params,
+        merge: true,
+      });
     }
-  }, [selectCity]);
-
-  useEffect(() => {
-    if (selectDistrict.name !== initializeAddress?.selectDistrict?.name) {
-      let wards = selectDistrict.value.wards.map(item => ({
-        label: item,
-        value: item,
-      }));
-      setWards(wards);
-      setSelectWard(wards[0]);
-    }
-  }, [selectDistrict]);
+  };
 
   return (
     <SafeAreaView style={style.container}>
@@ -161,6 +68,19 @@ const InputAddress = ({ navigation, route, ...props }) => {
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
         }
         headerText={'Địa chỉ'}
+        rightElement={
+          <Icon
+            name="map"
+            size={30}
+            color={COLORS.primary}
+            onPress={() =>
+              navigation.navigate('MapScreen', {
+                ...route.params,
+                previousScreen: 'InputAddress',
+              })
+            }
+          />
+        }
       />
       <KeyboardAwareScrollView
         enableAutomaticScroll
@@ -170,34 +90,41 @@ const InputAddress = ({ navigation, route, ...props }) => {
           Nhập địa chỉ người {type === 'from_address' ? 'gửi' : 'nhận'}
         </Text>
 
-        <Select
-          title="Thành phố"
-          selected={selectCity}
-          setSelected={handleSelectCity}
-          data={cities}
-        />
-        <Select
-          disabled={!districts && !districts.length}
-          title="Quận / huyện"
-          selected={selectDistrict}
-          setSelected={handleSelectDistrict}
-          data={districts}
-        />
-        <Select
-          disabled={!wards && !wards.length}
-          title="Phường / xã"
-          selected={selectWard}
-          setSelected={handleSelectWard}
-          data={wards}
-        />
         <TextField
-          title="Tên đường, số nhà"
+          title="Số nhà, tên đường"
           value={formik.values.street}
+          onChangeText={text => formik.setFieldValue('street', text)}
           error={formik.touched.street && formik.errors.street}
           errorMessage={formik.errors.street}
-          onBlur={() => formik.setFieldTouched('street')}
-          onChangeText={text => formik.setFieldValue('street', text)}
         />
+
+        <TextField
+          title="Phường / xã"
+          value={formik.values.ward}
+          error={formik.touched.ward && formik.errors.ward}
+          errorMessage={formik.errors.ward}
+          onBlur={() => formik.setFieldTouched('ward')}
+          onChangeText={text => formik.setFieldValue('ward', text)}
+        />
+
+        <TextField
+          title="Quận / huyện"
+          value={formik.values.province}
+          error={formik.touched.province && formik.errors.province}
+          errorMessage={formik.errors.province}
+          onBlur={() => formik.setFieldTouched('province')}
+          onChangeText={text => formik.setFieldValue('province', text)}
+        />
+
+        <TextField
+          title="Thành phố"
+          value={formik.values.city}
+          error={formik.touched.city && formik.errors.city}
+          errorMessage={formik.errors.city}
+          onBlur={() => formik.setFieldTouched('city')}
+          onChangeText={text => formik.setFieldValue('city', text)}
+        />
+
         <PrimaryButton
           title="Thêm"
           onPress={formik.submitForm}

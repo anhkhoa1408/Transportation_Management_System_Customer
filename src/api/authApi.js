@@ -9,7 +9,7 @@ class AuthorApi {
   loginWithProvider = (provider, token) => {
     let url;
     if (provider === 'phone') {
-      url = MAIN_URL.concat(`/auth/phone?code=${token}`);
+      url = MAIN_URL.concat(`/auth/phone?code=${token}&create=true`);
     } else url = MAIN_URL.concat(`/auth/${provider}/callback?code=${token}`);
     return axiosClient.get(url);
   };

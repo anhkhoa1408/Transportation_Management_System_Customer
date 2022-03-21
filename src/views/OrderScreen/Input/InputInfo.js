@@ -11,7 +11,7 @@ import { joinAddress, simplifyString } from '../../../utils/address';
 
 const InputInfo = ({ navigation, route }) => {
   const [name, setName] = useState('');
-  console.log(route.params);
+
   return (
     <SafeAreaView style={style.container}>
       <Header
@@ -39,6 +39,7 @@ const InputInfo = ({ navigation, route }) => {
               navigation.navigate('InputAddress', {
                 ...route.params,
                 type: 'from_address',
+                previousScreen: 'InputInfo',
               })
             }>
             <TextField
@@ -59,6 +60,7 @@ const InputInfo = ({ navigation, route }) => {
               navigation.navigate('InputAddress', {
                 ...route.params,
                 type: 'to_address',
+                previousScreen: 'InputInfo',
               })
             }>
             <TextField

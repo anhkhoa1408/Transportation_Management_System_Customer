@@ -27,7 +27,7 @@ export async function onFacebookButtonPress() {
 export async function onGoogleButtonPress() {
   GoogleSignin.configure({
     webClientId:
-      '712934763680-8sk33mqubcj24hv9mi9kn6r3pp7bcssq.apps.googleusercontent.com',
+      '874335421915-b75jajngfosuoeh59hfg91qv8kt493lt.apps.googleusercontent.com',
   });
   await GoogleSignin.signIn();
   const { accessToken } = await GoogleSignin.getTokens();

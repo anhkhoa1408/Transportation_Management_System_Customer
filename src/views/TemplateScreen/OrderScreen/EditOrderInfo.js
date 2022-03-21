@@ -145,9 +145,10 @@ const EditOrderInfo = ({ navigation, route }) => {
         <TouchableOpacity
           activeOpacity={0.9}
           onPress={() =>
-            navigation.navigate('EditOrderAddress', {
+            navigation.navigate('InputAddress', {
               ...route.params,
               type: 'from_address',
+              previousScreen: 'EditOrderInfo',
             })
           }>
           <TextField
@@ -163,9 +164,10 @@ const EditOrderInfo = ({ navigation, route }) => {
         <TouchableOpacity
           activeOpacity={0.9}
           onPress={() =>
-            navigation.navigate('EditOrderAddress', {
+            navigation.navigate('InputAddress', {
               ...route.params,
               type: 'to_address',
+              previousScreen: 'EditOrderInfo',
             })
           }>
           <TextField
