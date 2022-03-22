@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">Transportation_Management_System_Frontend</string>
+    <string name="app_name">Shober Delivery</string>
+    <string name="facebook_app_id">965783067649638</string>
+    <string name="facebook_client_token">30f3f3083985113e32351cf7f38b4789</string>
 </resources>

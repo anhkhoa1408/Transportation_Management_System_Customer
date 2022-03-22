@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.transportation_management_system_frontend">
+  package="com.tms.customer">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
       android:name=".MainApplication"
@@ -29,5 +30,12 @@
             android:scheme="shober-delivery" />
         </intent-filter>
       </activity>
+
+      <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+      <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
+      
+      <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBhDJukr-5ye-LsjOKRw8xeyWQcFDSESeo"/>
+      <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+
     </application>
 </manifest>

@@ -10,6 +10,7 @@ import EditOrderInfo from '../../views/TemplateScreen/OrderScreen/EditOrderInfo'
 import EditOrderAddress from '../../views/TemplateScreen/OrderScreen/EditOrderAddress';
 import OrderHistory from '../../views/OrderScreen/OrderHistory';
 import OrderDetail from '../../views/OrderScreen/OrderDetail';
+import MessageScreen from '../../views/ChatScreen/MessageScreen';
 
 const OrderStack = createStackNavigator();
 
@@ -22,6 +23,7 @@ const OrderStackScreen = () => {
       initialRouteName="OrderHistory">
       <OrderStack.Screen name="OrderHistory" component={OrderHistory} />
       <OrderStack.Screen name="OrderDetail" component={OrderDetail} />
+      <OrderStack.Screen name="MessageScreen" component={MessageScreen} />
     </OrderStack.Navigator>
   );
 };

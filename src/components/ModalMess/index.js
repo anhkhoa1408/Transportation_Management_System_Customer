@@ -59,7 +59,7 @@ const ModalMess = props => {
         <Button
           buttonStyle={{ backgroundColor: modalType.color }}
           containerStyle={style.buttonContainer}
-          title="ĐÓNG"
+          title={alert?.btnText ? alert.btnText : 'ĐÓNG'}
           type="solid"
           onPress={() => setAlert(null)}
         />
@@ -74,7 +74,6 @@ const style = StyleSheet.create({
     flexDirection: 'row',
   },
   modal: {
-    height: '28%',
     width: '80%',
     backgroundColor: '#FFF',
     position: 'absolute',

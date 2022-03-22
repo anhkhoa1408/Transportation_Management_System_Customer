@@ -1,45 +1,44 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  BackHandler,
   StyleSheet,
-  Text,
   View,
   TouchableOpacity,
   SafeAreaView,
-  ImageBackground,
-  Dimensions,
   ScrollView,
   Keyboard,
+  KeyboardAvoidingView,
 } from 'react-native';
-import { COLORS } from '../../styles';
+import { Image, Text } from 'react-native-elements';
+import { COLORS, STYLES, FONTS } from '../../styles';
 import TextField from '../../components/TextField';
-import authApi from '../../api/authApi';
 import { useDispatch } from 'react-redux';
 import * as Bonk from 'yup';
 import { useFormik } from 'formik';
-import CustomInput from '../../components/CustomInput/CustomInput';
-import { danger } from '../../styles/color';
-import { saveInfo } from '../../actions/actions';
-import bg from './../../assets/images/bg.png';
-import { Header } from 'react-native-elements';
+import banner from './../../assets/images/banner_signup.jpg';
+import PrimaryButton from './../../components/CustomButton/PrimaryButton';
+import Loading from './../../components/Loading';
+import authApi from '../../api/authApi';
+import ModalMess from '../../components/ModalMess';
 
 const SignUp = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [repeatPassword, setRepeat] = useState('');
-  const [isFocus, setFocus] = useState('');
-  const viewRef = useRef();
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    repeatPassword: '',
+  });
+  const [loading, setLoading] = useState(null);
+  const [alert, setAlert] = useState(null);
 
   const dispatch = useDispatch();
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: {
-      email: email,
-      password: password,
-      repeatPassword: repeatPassword,
-    },
+    initialValues: formData,
     validationSchema: Bonk.object({
-      email: Bonk.string().required('Thông tin bắt buộc'),
+      name: Bonk.string().required('Thông tin bắt buộc'),
+      email: Bonk.string()
+        .required('Thông tin bắt buộc')
+        .email('Email không hợp lệ'),
       password: Bonk.string()
         .required('Thông tin bắt buộc')
         .min(8, 'Mật khẩu phải tối thiểu 8 ký tự'),
@@ -52,134 +51,151 @@ const SignUp = ({ navigation }) => {
         ),
     }),
     onSubmit: values => {
-      setFocus('');
       Keyboard.dismiss();
       handleSubmit(values);
     },
   });
 
-  const handleSubmit = values => {
-    // authApi
-    //   .login({
-    //     identifier: values.email,
-    //     password: values.password,
-    //   })
-    //   .then(data => {
-    //     dispatch(saveInfo(data));
-    //   })
-    //   .catch(err => alert('Username or password incorrect!'));
-  };
-
-  const handleFocus = () => {
-    setFocus({
-      height: '75%',
-    });
-  };
-
-  useEffect(() => {
-    function handleKeyBoard() {
-      if (isFocus) setFocus('');
+  const onAlertConfirm = value => {
+    setAlert(value);
+    if (alert.type === 'success') {
+      navigation.navigate('Signin');
     }
+  };
 
-    const KeyboardHandle = Keyboard.addListener(
-      'keyboardDidHide',
-      handleKeyBoard,
-    );
-
-    return () => KeyboardHandle.remove();
-  }, [isFocus]);
+  const handleSubmit = values => {
+    setLoading(<Loading />);
+    authApi
+      .register(values)
+      .then(data => {
+        setAlert({
+          type: 'success',
+          btnText: 'Đăng nhập',
+          message: 'Đăng ký thành công!',
+        });
+        setLoading(null);
+      })
+      .catch(err => {
+        try {
+          const message = err.response.data.data[0].messages[0].id;
+          if (message === 'Auth.form.error.email.taken')
+            setAlert({
+              type: 'warning',
+              message: 'Email đã được sử dụng!',
+            });
+          else
+            setAlert({
+              type: 'warning',
+              message: 'Thông tin không đúng!',
+            });
+        } catch (error) {
+          setAlert({
+            type: 'warning',
+            message: 'Đăng ký thất bại!',
+          });
+        }
+        setLoading(null);
+        setDisabled(false);
+      });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
-      <ImageBackground style={styles.background} source={bg}>
-        <Text
-          style={{
-            fontSize: 45,
-            alignSelf: 'flex-start',
-            marginBottom: 20,
-            marginLeft: '5%',
+      <Image
+        resizeMode="cover"
+        style={{
+          height: 250,
+        }}
+        source={banner}
+      />
+      {alert && (
+        <ModalMess
+          type={alert.type}
+          message={alert.message}
+          setAlert={onAlertConfirm}
+          alert={alert}
+        />
+      )}
+      {loading}
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        enableOnAndroid
+        enableAutomaticScroll>
+        <ScrollView
+          keyboardShouldPersistTaps="always"
+          contentContainerStyle={{
+            paddingHorizontal: 20,
+            paddingTop: 10,
           }}>
-          Tạo tài khoản
-        </Text>
-        <View ref={viewRef} style={{ ...styles.form, ...isFocus }}>
-          <ScrollView
-            keyboardShouldPersistTaps="always"
-            contentContainerStyle={{
-              paddingHorizontal: 15,
-              paddingVertical: 25,
-            }}
-            onFocus={() => {
-              setFocus({
-                height: '75%',
-              });
+          <Text style={styles.title}>Đăng ký</Text>
+          <Text
+            style={{
+              fontSize: 15,
+              color: 'rgba(0, 0, 0, 0.5)',
+              paddingBottom: 20,
             }}>
-            <TextField
-              icon="person-outline"
-              placeholder="Tên đăng nhập"
-              value={formik.values.email}
-              onChangeText={setEmail}
-              onPressIn={handleFocus}
-            />
+            Trải nghiệm ngay dịch vụ vận chuyển liên tỉnh
+          </Text>
 
-            {formik.touched.email && formik.errors.email ? (
-              <Text
-                style={{ color: danger, marginBottom: 5, fontWeight: 'bold' }}>
-                {formik.errors.email}
-              </Text>
-            ) : null}
+          <TextField
+            icon="person-outline"
+            placeholder="Họ và Tên"
+            value={formik.values.name}
+            onChangeText={text => formik.setFieldValue('name', text)}
+            error={formik.touched.name && formik.errors.name}
+            errorMessage={formik.errors.name}
+          />
 
-            <TextField
-              icon="lock"
-              placeholder="Mật khẩu"
-              value={formik.values.password}
-              secureTextEntry
-              onChangeText={setPassword}
-              onPressIn={handleFocus}
-            />
+          <TextField
+            icon="email"
+            placeholder="Email"
+            value={formik.values.email}
+            onChangeText={text => formik.setFieldValue('email', text)}
+            error={formik.touched.email && formik.errors.email}
+            errorMessage={formik.errors.email}
+          />
 
-            {formik.touched.email && formik.errors.email ? (
-              <Text
-                style={{ color: danger, marginBottom: 5, fontWeight: 'bold' }}>
-                {formik.errors.email}
-              </Text>
-            ) : null}
+          <TextField
+            icon="https"
+            placeholder="Mật khẩu mới"
+            secureTextEntry
+            value={formik.values.password}
+            onChangeText={text => formik.setFieldValue('password', text)}
+            error={formik.touched.password && formik.errors.password}
+            errorMessage={formik.errors.password}
+          />
 
-            <TextField
-              icon="lock"
-              placeholder="Xác nhận mật khẩu"
-              value={formik.values.repeatPassword}
-              secureTextEntry
-              onChangeText={setRepeat}
-              onPressIn={handleFocus}
-            />
+          <TextField
+            icon="lock"
+            placeholder="Xác nhận mật khẩu"
+            secureTextEntry
+            value={formik.values.repeatPassword}
+            onChangeText={text => formik.setFieldValue('repeatPassword', text)}
+            error={
+              formik.touched.repeatPassword && formik.errors.repeatPassword
+            }
+            errorMessage={formik.errors.repeatPassword}
+          />
 
-            {formik.touched.repeatPassword && formik.errors.repeatPassword ? (
-              <Text
-                style={{ color: danger, marginBottom: 5, fontWeight: 'bold' }}>
-                {formik.errors.repeatPassword}
-              </Text>
-            ) : null}
+          <PrimaryButton
+            containerStyle={{
+              marginTop: 30,
+            }}
+            backgroundColor={COLORS.success}
+            title="Xác nhận"
+            onPress={formik.submitForm}
+          />
+        </ScrollView>
+      </KeyboardAvoidingView>
 
-            <View style={styles.btnContainer}>
-              <TouchableOpacity
-                style={styles.loginBtn}
-                onPress={formik.submitForm}>
-                <Text
-                  style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>
-                  Xác nhận
-                </Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={[styles.container1]}>
-              <Text>Đã có tài khoản? </Text>
-              <TouchableOpacity onPress={() => navigation.navigate('Signin')}>
-                <Text style={{ color: COLORS.primary }}>Đăng nhập</Text>
-              </TouchableOpacity>
-            </View>
-          </ScrollView>
-        </View>
-      </ImageBackground>
+      <View style={[styles.container1]}>
+        <Text style={[FONTS.Medium]}>Đã có tài khoản? </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Signin')}>
+          <Text style={{ ...FONTS.BigBold, color: COLORS.primary }}>
+            Đăng nhập
+          </Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };
@@ -188,18 +204,9 @@ export default SignUp;
 
 export const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: 'column',
+    ...STYLES.container,
     alignItems: 'stretch',
-    backgroundColor: COLORS.white,
-    width: '100%',
-    height: '100%',
-  },
-  btnContainer: {
-    width: '100%',
-    marginTop: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 20,
   },
   container1: {
     marginTop: 20,
@@ -208,33 +215,13 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  loginBtn: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    backgroundColor: COLORS.primary,
-    borderRadius: 35,
-    height: 50,
-  },
-  forgot: {
-    color: COLORS.primary,
-    fontSize: 18,
+  title: {
+    fontSize: 30,
+    alignSelf: 'flex-start',
     fontWeight: 'bold',
-    alignSelf: 'flex-end',
-  },
-  background: {
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  form: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    width: '90%',
-    backgroundColor: COLORS.white,
-    borderRadius: 30,
+    borderBottomColor: COLORS.success,
+    borderBottomWidth: 5,
+    paddingBottom: 10,
+    marginBottom: 10,
   },
 });

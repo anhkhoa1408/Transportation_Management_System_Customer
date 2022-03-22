@@ -1,162 +1,131 @@
 import React, { useEffect, useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  SafeAreaView,
-  ImageBackground,
-} from 'react-native';
-import { COLORS } from '../../styles';
+import { StyleSheet, View, SafeAreaView } from 'react-native';
+import { COLORS, FONTS, STYLES } from '../../styles';
 import TextField from '../../components/TextField';
 import authApi from '../../api/authApi';
 import { useDispatch } from 'react-redux';
 import * as Bonk from 'yup';
 import { useFormik } from 'formik';
 import { danger, success, warning } from '../../styles/color';
-import { saveInfo } from '../../actions/actions';
-import background from './../../assets/images/background.png';
-import bg from './../../assets/images/bg.png';
+import banner from './../../assets/images/otp_banner.png';
 import Loading from './../../components/Loading';
-import { Divider } from 'react-native-elements';
+import PrimaryButton from '../../components/CustomButton/PrimaryButton';
+import { Divider, Image, Text } from 'react-native-elements';
+import { getPhoneNumberVerificator, getPhoneToken } from '../../config/OAuth';
 
-const InputOtp = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isFocus, setFocus] = useState('');
-  const [loading, setLoading] = useState(false);
+const InputOtp = ({ navigation, route }) => {
+  const { meta, phone } = route.params;
+  const [vCode, setVCode] = useState('');
+  const [timer, setTimer] = useState(60);
+  const [verificator, setVerificator] = useState(null);
 
   const dispatch = useDispatch();
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      email: email,
-      password: password,
+      code: vCode,
     },
-    // validationSchema: Bonk.object({
-    //   email: Bonk.string().required('Thông tin bắt buộc'),
-    //   password: Bonk.string()
-    //     .required('Thông tin bắt buộc')
-    //     .min(8, 'Mật khẩu phải tối thiểu 8 ký tự'),
-    // }),
+    validationSchema: Bonk.object({
+      code: Bonk.string()
+        .required('Thông tin bắt buộc')
+        .length(6, 'Mã xác nhận gồm 6 chữ số'),
+    }),
     onSubmit: values => {
       handleSubmit(values);
     },
   });
 
   const handleSubmit = values => {
-    navigation.navigate('resetPass');
-    // setLoading(true);
-    // authApi
-    //   .login({
-    //     identifier: values.email,
-    //     password: values.password,
-    //   })
-    //   .then(data => {
-    //     dispatch(saveInfo(data));
-    //     setLoading(false);
-    //   })
-    //   .catch(err => alert('Username or password incorrect!'));
+    if (verificator) {
+      getPhoneToken(verificator, values.code).then(token =>
+        navigation.navigate({
+          name: meta.navigate,
+          params: { token: token },
+          merge: true,
+        }),
+      );
+    }
   };
 
-  // useEffect(() => {
-  //   function handleBackButton() {
-  //     // navigation.navigate('register-phone');
-  //     // return true;
-  //     console.log(1);
-  //   }
+  const reSent = () => {
+    setTimer(60);
+    getPhoneNumberVerificator(phone, true).then(data => setVerificator(data));
+  };
 
-  //   const backHandler = BackHandler.addEventListener(
-  //     'hardwareBackPress',
-  //     handleBackButton,
-  //   );
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (timer) {
+        setTimer(timer - 1);
+      }
+    }, 1000);
 
-  //   return () => backHandler.remove();
-  // }, [navigation]);
+    return () => clearInterval(interval);
+  }, [timer]);
+
+  useEffect(() => {
+    getPhoneNumberVerificator(phone, true).then(data => setVerificator(data));
+  }, [route.params?.phone]);
 
   return (
-    <>
-      {loading ? (
-        <Loading />
-      ) : (
-        <SafeAreaView style={styles.container}>
-          <ImageBackground
-            resizeMode="cover"
-            style={styles.background}
-            source={bg}>
-            <View style={{ ...styles.form, ...isFocus }}>
-              <Text
-                style={{
-                  fontSize: 17,
-                  alignSelf: 'center',
-                  textAlign: 'center',
-                  marginBottom: 5,
-                }}>
-                Kiểm tra điện thoại của bạn và nhập mã OTP từ tin nhắn
-              </Text>
-              <TextField
-                icon="phone"
-                placeholder="Nhập mã OTP"
-                value={formik.values.email}
-                onChangeText={setEmail}
-              />
+    <SafeAreaView style={styles.container}>
+      <Image
+        resizeMode="contain"
+        style={styles.background}
+        source={banner}
+        containerStyle={{
+          height: 250,
+        }}
+      />
+      <View style={{ padding: 20 }}>
+        <Text
+          style={{
+            alignSelf: 'center',
+            marginBottom: 5,
+            color: 'rgba(0,0,0,0.5)',
+          }}>
+          Kiểm tra điện thoại của bạn và nhập mã OTP từ tin nhắn
+        </Text>
+        <TextField
+          keyboardType="numeric"
+          icon="phone"
+          placeholder="Nhập mã OTP"
+          value={formik.values.code}
+          onChangeText={setVCode}
+          error={formik.touched.code && formik.errors.code}
+          errorMessage={formik.errors.code}
+        />
 
-              {formik.touched.email && formik.errors.email ? (
-                <Text
-                  style={{
-                    color: danger,
-                    marginBottom: 15,
-                    fontWeight: 'bold',
-                  }}>
-                  {formik.errors.email}
-                </Text>
-              ) : null}
+        <PrimaryButton
+          title="Xác nhận"
+          backgroundColor={COLORS.header}
+          onPress={formik.submitForm}
+        />
 
-              <View style={styles.btnContainer}>
-                <TouchableOpacity
-                  style={[styles.loginBtn, { backgroundColor: success }]}
-                  onPress={formik.submitForm}>
-                  <Text
-                    style={{
-                      color: 'white',
-                      fontSize: 20,
-                      fontWeight: 'bold',
-                    }}>
-                    Xác nhận
-                  </Text>
-                </TouchableOpacity>
-              </View>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Divider
+            width={1}
+            style={{ marginVertical: 20, flex: 1 }}
+            color={COLORS.header}
+          />
+          <Text style={{ paddingHorizontal: 20 }}>hoặc</Text>
+          <Divider
+            width={1}
+            style={{ marginVertical: 20, flex: 1 }}
+            color={COLORS.header}
+          />
+        </View>
 
-              <Divider width={1} style={{ marginVertical: 20 }} />
-
-              <Text
-                style={{
-                  fontSize: 17,
-                  alignSelf: 'center',
-                  textAlign: 'center',
-                }}>
-                Gửi lại mã OTP
-              </Text>
-
-              <View style={styles.btnContainer}>
-                <TouchableOpacity
-                  style={[styles.loginBtn, { backgroundColor: warning }]}
-                  onPress={formik.submitForm}>
-                  <Text
-                    style={{
-                      color: 'white',
-                      fontSize: 20,
-                      fontWeight: 'bold',
-                    }}>
-                    Gửi lại mã
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </ImageBackground>
-        </SafeAreaView>
-      )}
-    </>
+        <PrimaryButton
+          disabled={timer !== 0}
+          disabledStyle={{
+            backgroundColor: COLORS.neutralWarning,
+          }}
+          title={`Gửi lại mã ${timer ? '(' + timer + ')' : ''}`}
+          backgroundColor={COLORS.warning}
+          onPress={reSent}
+        />
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -164,53 +133,8 @@ export default InputOtp;
 
 export const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: 'column',
+    ...STYLES.container,
     alignItems: 'stretch',
-    backgroundColor: COLORS.white,
-    width: '100%',
-    height: '100%',
-  },
-  btnContainer: {
-    width: '100%',
-    marginTop: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  container1: {
-    marginTop: 20,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  loginBtn: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    backgroundColor: COLORS.primary,
-    borderRadius: 35,
-    height: 50,
-  },
-  forgot: {
-    color: COLORS.primary,
-    fontSize: 18,
-    fontWeight: 'bold',
-    alignSelf: 'flex-end',
-  },
-  background: {
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  form: {
-    paddingHorizontal: 30,
-    paddingVertical: 25,
-    width: '90%',
-    backgroundColor: COLORS.white,
-    borderRadius: 30,
+    padding: 20,
   },
 });

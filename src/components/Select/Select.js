@@ -7,6 +7,11 @@ import TextField from '../TextField';
 const Select = props => {
   const { data, selected, setSelected, disabled = false } = props;
   const [selectedItem, setSelectedItem] = useState(selected);
+
+  React.useEffect(() => {
+    // console.log(data);
+  });
+
   return (
     <View style={styles.container}>
       {props.title && <Text style={styles.texttitle}>{props.title}</Text>}
@@ -22,13 +27,10 @@ const Select = props => {
             setSelectedItem(itemValue);
           }}>
           {data.map((item, index) => {
-            return (
-              <Picker.Item
-                key={item.label}
-                label={item.label}
-                value={item.value}
-              />
-            );
+            const name = item?.name ? item.name : item;
+            const value = item?.value ? item.value : item;
+            const label = item?.label ? item.label : name;
+            return <Picker.Item key={label} label={label} value={value} />;
           })}
         </Picker>
       </View>
