@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -18,36 +18,16 @@ import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 import MaskedView from '@react-native-community/masked-view';
 import PillButton from '../../components/CustomButton/PillButton';
+import voucherApi from '../../api/voucherApi';
+import { formatCash } from '../../utils/order';
+import moment from 'moment';
+import { MAIN_URL } from '../../api/config';
+import voucherImg from './../../assets/images/voucher_alt.jpg';
 
 const VoucherScreen = ({ route, navigation }) => {
   const useVoucher = route?.params?.useVoucher;
 
-  const [data, setData] = useState([
-    {
-      id: '#afoqijfoasdada'.toLocaleUpperCase(),
-      discount: '10%',
-      title: 'Cho kiện hàng có khối lượng trên 1000kg',
-      expire: '20/12/2022',
-    },
-    {
-      id: '#bmiweopkrejgoi'.toLocaleUpperCase(),
-      discount: '12%',
-      title: 'Cho kiện hàng có khối lượng trên 3000kg',
-      expire: '20/12/2022',
-    },
-    {
-      id: '#opkopjqwoiasdd'.toLocaleUpperCase(),
-      discount: '18%',
-      title: 'Cho khách hàng có hạng vàng',
-      expire: '20/12/2022',
-    },
-    {
-      id: '#fmppoekpokrope'.toLocaleUpperCase(),
-      discount: '20%',
-      title: 'Sinh nhật khách hàng',
-      expire: '20/12/2022',
-    },
-  ]);
+  const [data, setData] = useState([]);
 
   const ref = useRef([]);
 
@@ -80,29 +60,66 @@ const VoucherScreen = ({ route, navigation }) => {
               justifyContent: 'space-between',
             }}>
             <View style={{ flex: 1 }}>
-              <MaskedView
-                maskElement={
-                  <Text style={[style.discountText]}>Giảm {item.discount}</Text>
-                }>
-                <LinearGradient
-                  colors={['#EF3D3D', '#FFB800']}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 0 }}>
-                  <Text style={[style.discountText, { opacity: 0 }]}>
-                    Giảm {item.discount}
-                  </Text>
-                </LinearGradient>
-              </MaskedView>
-              <ListItem.Subtitle style={{ width: '75%' }}>
-                {item.title}
-              </ListItem.Subtitle>
+              <View style={{ width: '90%' }}>
+                <MaskedView
+                  maskElement={
+                    <Text style={[style.discountText]}>
+                      Giảm{' '}
+                      {item && item.sale_type === 'value'
+                        ? formatCash(item.sale.toString())
+                        : item.sale + ' %'}
+                    </Text>
+                  }>
+                  <LinearGradient
+                    colors={['#EF3D3D', '#FFB800']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}>
+                    <Text style={[style.discountText, { opacity: 0 }]}>
+                      Giảm{' '}
+                      {item && item.sale_type === 'value'
+                        ? formatCash(item.sale.toString())
+                        : item.sale + ' %'}
+                    </Text>
+                  </LinearGradient>
+                </MaskedView>
+                <MaskedView
+                  maskElement={
+                    <Text>
+                      Tối đa: {formatCash(item.sale_max.toString())} - đơn tối
+                      thiểu:{' '}
+                      {item.minimum_order &&
+                        formatCash(item.minimum_order.toString())}
+                    </Text>
+                  }>
+                  <LinearGradient
+                    colors={['#EF3D3D', '#FFB800']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}>
+                    <Text style={[{ opacity: 0 }]}>
+                      Tối đa: {formatCash(item.sale_max.toString())} - đơn tối
+                      thiểu:{' '}
+                      {item.minimum_order &&
+                        formatCash(item.minimum_order.toString())}
+                    </Text>
+                  </LinearGradient>
+                </MaskedView>
+              </View>
             </View>
-            <Avatar
-              size="medium"
-              source={{
-                uri: 'https://res.cloudinary.com/dfnoohdaw/image/upload/v1638692549/avatar_default_de42ce8b3d.png',
-              }}
-            />
+            {item.voucher_img && item.voucher_img.url ? (
+              <Avatar
+                size="medium"
+                avatarStyle={{ borderRadius: 8 }}
+                source={{
+                  uri: MAIN_URL.concat(item.voucher_img.url),
+                }}
+              />
+            ) : (
+              <Avatar
+                size="medium"
+                avatarStyle={{ borderRadius: 8 }}
+                source={voucherImg}
+              />
+            )}
           </ListItem.Content>
           <View
             style={{
@@ -116,7 +133,7 @@ const VoucherScreen = ({ route, navigation }) => {
                   onPress={() =>
                     navigation.navigate('OrderSummary', {
                       ...route.params,
-                      voucher: 'Giảm phí vận chuyển ' + item.discount,
+                      voucher: 'Giảm phí vận chuyển ' + item.sale,
                     })
                   }>
                   <Text
@@ -132,19 +149,27 @@ const VoucherScreen = ({ route, navigation }) => {
                 </TouchableOpacity>
               )}
             </View>
+
             <ListItem.Subtitle
               style={{
                 alignSelf: 'flex-end',
                 color: primary,
                 fontWeight: 'bold',
               }}>
-              Đến {item.expire}
+              Đến {moment(item.expired).format('DD/MM/YYYY')}
             </ListItem.Subtitle>
           </View>
         </ListItem>
       </TouchableWithoutFeedback>
     </Animatable.View>
   );
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      voucherApi.getList().then(response => setData(response));
+    });
+    return unsubscribe;
+  }, []);
 
   return (
     <SafeAreaView style={style.container}>
@@ -214,7 +239,7 @@ const style = StyleSheet.create({
     color: 'rgba(0,0,0,0.5)',
   },
   discountText: {
-    fontSize: 28,
+    fontSize: 22,
     fontWeight: 'bold',
   },
 });
