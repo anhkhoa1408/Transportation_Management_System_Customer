@@ -133,7 +133,13 @@ const VoucherScreen = ({ route, navigation }) => {
                   onPress={() =>
                     navigation.navigate('OrderSummary', {
                       ...route.params,
-                      voucher: 'Giảm phí vận chuyển ' + item.sale,
+                      voucher: {
+                        title: `Giảm phí vận chuyển ${item.sale_type === 'value'
+                        ? formatCash(item.sale.toString())
+                        : item.sale + " %"}`,
+                        data: item
+                      }
+                        
                     })
                   }>
                   <Text
@@ -141,7 +147,7 @@ const VoucherScreen = ({ route, navigation }) => {
                       {
                         color: COLORS.primary,
                         fontWeight: 'bold',
-                        fontSize: 20,
+                        fontSize: 15,
                       },
                     ]}>
                     Dùng ngay
@@ -166,7 +172,19 @@ const VoucherScreen = ({ route, navigation }) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      voucherApi.getList().then(response => setData(response));
+      if (route?.params?.fee) {
+        voucherApi
+          .getList({
+            minimum_order_lte: route.params.fee,
+          })
+          .then(response => {
+            setData(response);
+          });
+      } else {
+        voucherApi.getList().then(response => {
+          setData(response);
+        });
+      }
     });
     return unsubscribe;
   }, []);
@@ -204,7 +222,7 @@ const VoucherScreen = ({ route, navigation }) => {
               justifyContent: 'center',
               paddingTop: '50%',
             }}>
-            <Text>Chưa có lịch sử nhập xuất</Text>
+            <Text>Không có mã giảm giá đạt điều kiện</Text>
           </View>
         }
       />
