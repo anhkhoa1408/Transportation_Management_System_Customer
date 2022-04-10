@@ -26,6 +26,7 @@ import { socket, initChat } from '../../config/socketIO';
 import { syncToken } from '../../config/cloudMessage';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { onFacebookButtonPress, onGoogleButtonPress } from '../../config/OAuth';
+import { useTranslation } from 'react-i18next';
 
 const SignIn = ({ navigation, route }) => {
   const [email, setEmail] = useState('');
@@ -34,6 +35,9 @@ const SignIn = ({ navigation, route }) => {
   const [alert, setAlert] = useState(null);
   const [showPass, setShowPass] = useState(false);
   const [disabled, setDisabled] = useState(false);
+
+  const { t, i18n } = useTranslation("common")
+  // i18n.changeLanguage("vi" hoac "en")
 
   const dispatch = useDispatch();
   const formik = useFormik({
@@ -185,10 +189,17 @@ const SignIn = ({ navigation, route }) => {
             <Text style={styles.forgot}>Quên mật khẩu?</Text>
           </TouchableOpacity>
           <PrimaryButton
-            title="Đăng nhập"
+            title={t("login")}
             onPress={formik.submitForm}
             disabled={disabled}
           />
+
+          {/* For demo only */}
+          {/* <PrimaryButton
+            title={t("login")}
+            onPress={() => i18n.changeLanguage(i18n.language === "en" ? "vi" : "en")}
+            disabled={disabled}
+          /> */}
         </View>
 
         <View
