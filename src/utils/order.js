@@ -32,10 +32,11 @@ function convertTracingState(state) {
 
 function formatCash(cash) {
   return cash
+    .toString()
     .split('')
     .reverse()
     .reduce((total, item, index) =>
-      !(index % 3) ? `${item},${total}` : `${item}${total}`,
+      !(index % 3) ? `${item}.${total}` : `${item}${total}`,
     )
     .concat(' VND');
 }

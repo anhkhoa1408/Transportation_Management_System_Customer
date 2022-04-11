@@ -11,10 +11,18 @@ import {
   initForegroundMessage,
 } from './src/config/cloudMessage';
 
+// For language
+import { config as i18nextConfig } from './src/translation/index.js';
+import i18next from 'i18next';
+import { I18nextProvider } from 'react-i18next';
+
 import { LogBox } from 'react-native';
 LogBox.ignoreLogs(['EventEmitter.removeListener']);
 
 export default function App(props) {
+  //init i18next
+  i18next.init(i18nextConfig);
+
   useEffect(() => {
     return initForegroundMessage();
   }, []);
@@ -26,10 +34,12 @@ export default function App(props) {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <NavigationContainer linking={linking}>
-          <StatusBar backgroundColor="white" barStyle="dark-content" />
-          <Routes />
-        </NavigationContainer>
+        <I18nextProvider i18n={i18next}>
+          <NavigationContainer linking={linking}>
+            <StatusBar backgroundColor="white" barStyle="dark-content" />
+            <Routes />
+          </NavigationContainer>
+        </I18nextProvider>
       </PersistGate>
     </Provider>
   );

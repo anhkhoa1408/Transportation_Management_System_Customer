@@ -1,4 +1,4 @@
-import React, { memo, useMemo, useState } from 'react';
+import React, { memo, useEffect, useMemo, useState } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -17,6 +17,7 @@ import { store } from '../../config/configureStore';
 import { handleRequestPayment } from '../../services/momo';
 import { COLORS, FONTS } from '../../styles';
 import { container } from '../../styles/layoutStyle';
+import { formatCash } from '../../utils/order';
 import Loading from './../../components/Loading';
 import ModalMess from './../../components/ModalMess';
 import { joinAddress } from './../../utils/address';
@@ -24,6 +25,8 @@ import { joinAddress } from './../../utils/address';
 const OrderSummary = ({ route, navigation }) => {
   const [loading, setLoading] = useState(null);
   const [alert, setAlert] = useState(null);
+  const [fee, setFee] = useState(1000000);
+  const initialFee = 1000000;
 
   const {
     voucher,
@@ -87,8 +90,8 @@ const OrderSummary = ({ route, navigation }) => {
       receiver_phone,
       receiver_name,
       method: payment.value,
-      fee: 1000,
-      remain_fee: 1000,
+      fee: fee,
+      remain_fee: fee,
       from_address,
       to_address,
       name,
@@ -137,6 +140,25 @@ const OrderSummary = ({ route, navigation }) => {
     setAlert(_alert);
     if (alert.type === 'success') navigation.navigate('HomeScreen');
   };
+
+  useEffect(() => {
+    if (voucher && voucher.data) {
+      let { sale_type, sale, sale_max } = voucher.data;
+      let tempFee = initialFee;
+      if (sale_type === 'value') {
+        if (tempFee > sale) {
+          tempFee = tempFee - sale;
+        }
+      } else if (sale_type === 'percentage') {
+        let discount = tempFee - (tempFee * sale) / 100;
+        if (discount > sale_max) {
+          discount = sale_max;
+        }
+        tempFee = tempFee - discount;
+      }
+      setFee(tempFee);
+    }
+  }, [voucher]);
 
   return (
     <SafeAreaView style={style.container}>
@@ -242,11 +264,12 @@ const OrderSummary = ({ route, navigation }) => {
                 navigation.navigate('VoucherScreen', {
                   ...route.params,
                   useVoucher: true,
+                  fee: initialFee,
                 })
               }>
               <View style={[style.select, style.rowContainer]}>
                 <Text style={[{ flex: 1 }]}>
-                  {voucher ? voucher : 'Nhấn để chọn'}
+                  {voucher && voucher.title ? voucher.title : 'Nhấn để chọn'}
                 </Text>
                 <ListItem.Chevron size={30} />
               </View>
@@ -261,7 +284,7 @@ const OrderSummary = ({ route, navigation }) => {
           />
           <View style={[style.rowContainer]}>
             <Text style={[{ flex: 1 }, FONTS.Big]}>Tổng cộng</Text>
-            <Text style={[FONTS.BigBold]}>1 000 000 VND</Text>
+            <Text style={[FONTS.BigBold]}>{formatCash(fee.toString())}</Text>
           </View>
           <PrimaryButton
             title="Xác nhận"
