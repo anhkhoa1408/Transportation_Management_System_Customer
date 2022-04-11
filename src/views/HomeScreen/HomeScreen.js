@@ -9,10 +9,11 @@ import HeaderAvatar from '../../components/HeaderAvatar';
 // Import Asset
 import { COLORS, STYLES } from '../../styles';
 import { container, shadowCard } from '../../styles/layoutStyle';
+import { getAvatarFromUser, getNameFromUser } from '../../utils/avatarUltis';
 import banner from './../../assets/images/delivery.jpg';
 import InfoCard from './InfoCard';
 
-function HomeScreen({ navigation, ...props }) {
+function HomeScreen({ navigation, userInfo, ...props }) {
   const BadgedIcon = withBadge(10)(Icon);
   const [listData, setListData] = useState([
     {
@@ -38,17 +39,6 @@ function HomeScreen({ navigation, ...props }) {
     },
   ]);
 
-  const [user, setUser] = useState({
-    name: '',
-    avatar:
-      'https://res.cloudinary.com/dfnoohdaw/image/upload/v1638692549/avatar_default_de42ce8b3d.png',
-  });
-
-  const renderItem = ({ item }) => (
-    <InfoCard item={item} navigation={navigation} />
-  );
-  const keyExtractor = (item, index) => index.toString();
-
   return (
     <>
       {/* {!listData.length && <Loading />} */}
@@ -62,10 +52,10 @@ function HomeScreen({ navigation, ...props }) {
               onPress={() => navigation.navigate('Notification')}
             />
           }
-          headerText={'Xin chào ' + user.name}
+          headerText={'Xin chào ' + getNameFromUser(userInfo?.user)}
           rightElement={
             <HeaderAvatar
-              url={user.avatar}
+              url={getAvatarFromUser(userInfo?.user)}
               onPressAction={() => navigation.navigate('Account')}
             />
           }

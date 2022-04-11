@@ -20,9 +20,12 @@ import { COLORS, FONTS } from '../../styles';
 import { useDispatch } from 'react-redux';
 import color, { success, danger } from '../../styles/color';
 import { connect } from 'react-redux';
+import { getAvatarFromUser } from '../../utils/avatarUltis';
 
 const Account = ({ navigation, userInfo }) => {
-  const [progress, setProgress] = useState(50);
+  const [progress, setProgress] = useState(
+    userInfo?.user?.point ? userInfo?.user?.point : 0,
+  );
   const dispatch = useDispatch();
   const [toggle, setToggle] = useState({
     language: true,
@@ -165,6 +168,34 @@ const Account = ({ navigation, userInfo }) => {
     );
   };
 
+  const currentState = () => {
+    switch (userInfo?.user.type) {
+      case 'User':
+        return 'Đồng';
+      case 'Iron':
+        return 'Sắt';
+      case 'Gold':
+        return 'Vàng';
+      case 'Diamond':
+        return 'Kim cương';
+      default:
+        return 'Đồng';
+    }
+  };
+
+  const nextState = () => {
+    switch (userInfo?.user.type) {
+      case 'User':
+        return 'bạc';
+      case 'Iron':
+        return 'vàng';
+      case 'Gold':
+        return 'kim cương';
+      default:
+        return 'đồng';
+    }
+  };
+
   const footerComponent = (
     <>
       <View style={{ padding: 25 }}>
@@ -176,7 +207,7 @@ const Account = ({ navigation, userInfo }) => {
           <Text style={[{ color: COLORS.primary, fontSize: 30 }]}>
             {100 - progress}
           </Text>{' '}
-          điểm nữa để tăng lên vị trí thành viên bạc
+          điểm nữa để tăng lên vị trí thành viên {nextState()}
         </Text>
         <View
           style={{
@@ -266,14 +297,14 @@ const Account = ({ navigation, userInfo }) => {
           rounded
           size="large"
           source={{
-            uri: userInfo?.user?.avatar?.url,
+            uri: getAvatarFromUser(userInfo?.user),
           }}
         />
         <View style={{ marginLeft: 20, flex: 1 }}>
           <Text style={styles.smallText}>Xin chào</Text>
           <Text style={styles.bigText}>{userInfo?.user?.name}</Text>
           <Text style={[styles.statusText, { color: COLORS.warning }]}>
-            Thành viên đồng
+            Thành viên {currentState()}
           </Text>
         </View>
         <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>

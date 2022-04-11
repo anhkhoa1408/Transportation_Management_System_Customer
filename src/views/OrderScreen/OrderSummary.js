@@ -112,6 +112,7 @@ const OrderSummary = ({ route, navigation }) => {
             setAlert({
               type: 'success',
               message: 'Đặt hàng thành công',
+              btnText: 'Tới trang chủ',
             });
             if (alert) navigation.navigate('HomeScreen');
           }
@@ -132,6 +133,11 @@ const OrderSummary = ({ route, navigation }) => {
       });
   };
 
+  const setAlertDeco = _alert => {
+    setAlert(_alert);
+    if (alert.type === 'success') navigation.navigate('HomeScreen');
+  };
+
   return (
     <SafeAreaView style={style.container}>
       {loading}
@@ -140,7 +146,7 @@ const OrderSummary = ({ route, navigation }) => {
           type={alert.type}
           message={alert.message}
           alert={alert}
-          setAlert={setAlert}
+          setAlert={setAlertDeco}
         />
       )}
       <Header
