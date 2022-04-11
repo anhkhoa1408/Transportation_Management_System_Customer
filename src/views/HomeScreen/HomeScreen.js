@@ -1,5 +1,5 @@
 // Import Component
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { Icon, withBadge } from 'react-native-elements';
 // Import Function
@@ -9,11 +9,29 @@ import HeaderAvatar from '../../components/HeaderAvatar';
 // Import Asset
 import { COLORS, STYLES } from '../../styles';
 import { container, shadowCard } from '../../styles/layoutStyle';
+import { getAvatarFromUser, getNameFromUser } from '../../utils/avatarUltis';
 import banner from './../../assets/images/delivery.jpg';
 import InfoCard from './InfoCard';
 
-function HomeScreen({ navigation, ...props }) {
-  const BadgedIcon = withBadge(10)(Icon);
+function HomeScreen({ navigation, userInfo, noties, ...props }) {
+  const [badge, setBadge] = useState(null);
+
+  useEffect(() => {
+    setBadge(Badge(Object.keys(noties).length));
+  }, [noties]);
+
+  const Badge = totalNoties => {
+    const BadgedIcon = withBadge(totalNoties)(Icon);
+    return (
+      <BadgedIcon
+        name="notifications"
+        color={COLORS.primary}
+        size={30}
+        onPress={() => navigation.navigate('Notification')}
+      />
+    );
+  };
+
   const [listData, setListData] = useState([
     {
       icon: 'add',
@@ -38,34 +56,16 @@ function HomeScreen({ navigation, ...props }) {
     },
   ]);
 
-  const [user, setUser] = useState({
-    name: '',
-    avatar:
-      'https://res.cloudinary.com/dfnoohdaw/image/upload/v1638692549/avatar_default_de42ce8b3d.png',
-  });
-
-  const renderItem = ({ item }) => (
-    <InfoCard item={item} navigation={navigation} />
-  );
-  const keyExtractor = (item, index) => index.toString();
-
   return (
     <>
       {/* {!listData.length && <Loading />} */}
       <View style={homeStyle.container}>
         <Header
-          leftElement={
-            <BadgedIcon
-              name="notifications"
-              color={COLORS.primary}
-              size={30}
-              onPress={() => navigation.navigate('Notification')}
-            />
-          }
-          headerText={'Xin chào ' + user.name}
+          leftElement={badge}
+          headerText={'Xin chào ' + getNameFromUser(userInfo?.user)}
           rightElement={
             <HeaderAvatar
-              url={user.avatar}
+              url={getAvatarFromUser(userInfo?.user)}
               onPressAction={() => navigation.navigate('Account')}
             />
           }
@@ -119,6 +119,7 @@ const homeStyle = StyleSheet.create({
 
 const mapStateToProps = state => ({
   userInfo: state.userInfo,
+  noties: state.notification,
 });
 
 export default connect(mapStateToProps)(HomeScreen);

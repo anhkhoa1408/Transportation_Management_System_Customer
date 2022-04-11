@@ -49,17 +49,19 @@ const EditPackage = ({ route, navigation }) => {
     validationSchema: Bonk.object({
       len: Bonk.number()
         .required('Bạn chưa nhập chiều dài')
-        .min(1, 'Chiều dài không hợp lệ'),
+        .min(0, 'Chiều dài không hợp lệ'),
       width: Bonk.number()
         .required('Bạn chưa nhập chiều rộng')
-        .min(1, 'Chiều rộng không hợp lệ'),
+        .min(0, 'Chiều rộng không hợp lệ'),
       height: Bonk.number()
         .required('Bạn chưa nhập chiều cao')
-        .min(1, 'Chiều cao không hợp lệ'),
-      weight: Bonk.number().required('Bạn chưa nhập cân nặng'),
+        .min(0, 'Chiều cao không hợp lệ'),
+      weight: Bonk.number()
+        .required('Bạn chưa nhập khối lượng')
+        .min(0, 'Khối lượng không hợp lệ'),
       quantity: Bonk.number()
         .required('Bạn chưa nhập số lượng')
-        .min(10, 'Khối lượng không hợp lệ'),
+        .min(1, 'Khối lượng không hợp lệ'),
     }),
     onSubmit: values => {
       if (type === 'edit') handleEdit(values);
@@ -186,7 +188,7 @@ const EditPackage = ({ route, navigation }) => {
             errorMessage={formik.errors.len}
             onBlur={() => formik.setFieldTouched('len')}
             onChangeText={text =>
-              formik.setFieldValue('len', text.replace(/[^0-9]/g, ''))
+              formik.setFieldValue('len', text.replace(/[^0-9.]/g, ''))
             }
           />
           <TextField
@@ -198,7 +200,7 @@ const EditPackage = ({ route, navigation }) => {
             errorMessage={formik.errors.width}
             onBlur={() => formik.setFieldTouched('width')}
             onChangeText={text =>
-              formik.setFieldValue('width', text.replace(/[^0-9]/g, ''))
+              formik.setFieldValue('width', text.replace(/[^0-9.]/g, ''))
             }
           />
           <TextField
@@ -210,7 +212,7 @@ const EditPackage = ({ route, navigation }) => {
             errorMessage={formik.errors.height}
             onBlur={() => formik.setFieldTouched('height')}
             onChangeText={text =>
-              formik.setFieldValue('height', text.replace(/[^0-9]/g, ''))
+              formik.setFieldValue('height', text.replace(/[^0-9.]/g, ''))
             }
           />
           <TextField
@@ -222,7 +224,7 @@ const EditPackage = ({ route, navigation }) => {
             errorMessage={formik.errors.weight}
             onBlur={() => formik.setFieldTouched('weight')}
             onChangeText={text =>
-              formik.setFieldValue('weight', text.replace(/[^0-9]/g, ''))
+              formik.setFieldValue('weight', text.replace(/[^0-9.]/g, ''))
             }
           />
           <TextField

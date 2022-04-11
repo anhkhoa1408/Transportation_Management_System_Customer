@@ -25,8 +25,8 @@ import { joinAddress } from './../../utils/address';
 const OrderSummary = ({ route, navigation }) => {
   const [loading, setLoading] = useState(null);
   const [alert, setAlert] = useState(null);
-  const [fee, setFee] = useState(1000000)
-  const initialFee = 1000000
+  const [fee, setFee] = useState(1000000);
+  const initialFee = 1000000;
 
   const {
     voucher,
@@ -115,6 +115,7 @@ const OrderSummary = ({ route, navigation }) => {
             setAlert({
               type: 'success',
               message: 'Đặt hàng thành công',
+              btnText: 'Tới trang chủ',
             });
             if (alert) navigation.navigate('HomeScreen');
           }
@@ -135,24 +136,29 @@ const OrderSummary = ({ route, navigation }) => {
       });
   };
 
+  const setAlertDeco = _alert => {
+    setAlert(_alert);
+    if (alert.type === 'success') navigation.navigate('HomeScreen');
+  };
+
   useEffect(() => {
     if (voucher && voucher.data) {
-      let {sale_type, sale, sale_max} = voucher.data
+      let { sale_type, sale, sale_max } = voucher.data;
       let tempFee = initialFee;
-      if (sale_type === "value") {
+      if (sale_type === 'value') {
         if (tempFee > sale) {
-          tempFee = tempFee - sale
+          tempFee = tempFee - sale;
         }
-      } else if (sale_type === "percentage") {
-        let discount = tempFee - tempFee * sale / 100
+      } else if (sale_type === 'percentage') {
+        let discount = tempFee - (tempFee * sale) / 100;
         if (discount > sale_max) {
-          discount = sale_max
+          discount = sale_max;
         }
-        tempFee = tempFee - discount
+        tempFee = tempFee - discount;
       }
-      setFee(tempFee)
+      setFee(tempFee);
     }
-  }, [voucher])
+  }, [voucher]);
 
   return (
     <SafeAreaView style={style.container}>
@@ -162,7 +168,7 @@ const OrderSummary = ({ route, navigation }) => {
           type={alert.type}
           message={alert.message}
           alert={alert}
-          setAlert={setAlert}
+          setAlert={setAlertDeco}
         />
       )}
       <Header
@@ -258,7 +264,7 @@ const OrderSummary = ({ route, navigation }) => {
                 navigation.navigate('VoucherScreen', {
                   ...route.params,
                   useVoucher: true,
-                  fee: initialFee
+                  fee: initialFee,
                 })
               }>
               <View style={[style.select, style.rowContainer]}>

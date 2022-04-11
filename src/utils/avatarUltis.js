@@ -13,3 +13,12 @@ export function getAvatarFromUri(uri = undefined) {
   }
   return uri;
 }
+
+export function getNameFromUser(user) {
+  if (user?.name) {
+    const s_name = user?.name.split(' ');
+    return s_name[s_name.length - 1];
+  } else if (user?.email) return user?.email.split('@')[0];
+  else if (user?.phone) return user?.phone;
+  else return 'Khách hàng';
+}

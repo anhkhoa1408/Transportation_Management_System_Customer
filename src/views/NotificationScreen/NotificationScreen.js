@@ -1,136 +1,41 @@
 import {
   StyleSheet,
-  Text,
   View,
   FlatList,
   TouchableOpacity,
   SafeAreaView,
-  RefreshControl,
 } from 'react-native';
-import { Avatar, ListItem, Icon, Divider, Button } from 'react-native-elements';
+import { ListItem, Icon, Divider, Button } from 'react-native-elements';
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import Header from '../../components/Header';
 import { container } from '../../styles/layoutStyle';
-import img from './../../assets/images/icon.png';
 import { danger, primary } from '../../styles/color';
+import { connect } from 'react-redux';
+import NotiItem from './components/NotiItem';
+import { cleanNotification, removeNotification } from '../../actions/actions';
 
-const NotificationScreen = ({ navigation }) => {
-  const appList = [
-    {
-      id: 1,
-      title: 'Shober of Justice',
-      subTitle: 'Bạn có tin nhắn mới từ khách hàng',
-      type: 'chat',
-      time: '09:45 sáng',
-      content: 'Hãy giao cho tôi vào lúc 11h sáng',
-    },
-    {
-      id: 2,
-      title: 'Hệ thống',
-      subTitle: 'Bạn có đơn vận chuyển mới',
-      type: 'delivery',
-      time: '09:46 sáng',
-    },
-    {
-      id: 3,
-      title: 'Hệ thống',
-      subTitle: 'Bạn có đơn vận chuyển mới',
-      type: 'delivery',
-      time: '09:46 sáng',
-    },
-    {
-      id: 4,
-      title: 'Hệ thống',
-      subTitle: 'Bạn có đơn vận chuyển mới',
-      type: 'delivery',
-      time: '09:46 sáng',
-    },
-    {
-      id: 5,
-      title: 'Uchiha',
-      subTitle: 'Bạn có tin nhắn mới từ khách hàng',
-      type: 'chat',
-      time: '09:45 sáng',
-      content: 'Hãy giao cho tôi vào lúc 11h sáng',
-    },
-    {
-      id: 6,
-      title: 'Uchiha',
-      subTitle: 'Bạn có đơn vận chuyển mới',
-      type: 'chat',
-      time: '09:45 sáng',
-      content: 'Hãy giao cho tôi vào lúc 11h sáng',
-    },
-    {
-      id: 7,
-      title: 'Shober of Justice',
-      subTitle: 'Bạn có tin nhắn mới từ khách hàng',
-      type: 'chat',
-      time: '09:45 sáng',
-      content: 'Hãy giao cho tôi vào lúc 11h sáng',
-    },
-    {
-      id: 8,
-      title: 'Hệ thống',
-      subTitle: 'Bạn có đơn vận chuyển mới',
-      type: 'delivery',
-      time: '09:46 sáng',
-    },
-    {
-      id: 9,
-      title: 'Hệ thống',
-      subTitle: 'Bạn có đơn vận chuyển mới',
-      type: 'delivery',
-      time: '09:46 sáng',
-    },
-    {
-      id: 10,
-      title: 'Hệ thống',
-      subTitle: 'Bạn có đơn vận chuyển mới',
-      type: 'delivery',
-      time: '09:48 sáng',
-    },
-  ];
+const NotificationScreen = props => {
+  const { noties, navigation } = props;
 
   const [count, setCount] = useState(5);
-  const [data, setData] = useState(appList.slice(0, count));
-  const [deleteData, setDeleteData] = useState(appList);
-  const [refreshing, setRefreshing] = useState(false);
+  const [data, setData] = useState([]);
+  const [deleteData, setDeleteData] = useState([]);
 
   const ref = useRef();
 
-  const keyExtractor = (item, index) => item.id;
+  const keyExtractor = (item, index) => index.toString();
 
   const handleShowMore = () => {
-    if (count <= appList.length - 3) {
-      setCount(count + 3);
-    } else {
-      setCount(count + appList.length - data.length);
-    }
-  };
-
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    setTimeout(() => setRefreshing(false), 500);
-    // setTimeout(
-    //   () =>
-    //     ref.current.scrollToIndex({
-    //       index: 0,
-    //       animated: true,
-    //     }),
-    //   500,
-    // );
-  }, [data]);
-
-  const handleDeleteNotify = id => {
-    let newData = deleteData.filter((item, index) => item.id !== id);
-    setDeleteData(newData);
-    setData(newData.slice(0, count));
+    // if (count <= appList.length - 3) {
+    //   setCount(count + 3);
+    // } else {
+    //   setCount(count + appList.length - data.length);
+    // }
   };
 
   useEffect(() => {
-    setData(appList.slice(0, count));
-  }, [count]);
+    setData(Object.values(noties).sort((a, b) => b.sentTime - a.sentTime));
+  }, [noties]);
 
   const renderItem = ({ item, index }) => {
     return (
@@ -142,7 +47,9 @@ const NotificationScreen = ({ navigation }) => {
         }}
         rightContent={
           <Button
-            onPress={() => handleDeleteNotify(item.id)}
+            onPress={() => {
+              props.removeNoti(item.id);
+            }}
             title="Xoá"
             icon={{ name: 'delete', color: 'white' }}
             buttonStyle={{ minHeight: '100%', backgroundColor: 'red' }}
@@ -150,68 +57,7 @@ const NotificationScreen = ({ navigation }) => {
         }
         bottomDivider>
         <ListItem.Content>
-          {item.type === 'chat' ? (
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-              }}>
-              <Avatar
-                containerStyle={[styles.icon]}
-                source={img}
-                rounded
-                size="medium"
-              />
-              <View style={{ flex: 1, paddingHorizontal: 5 }}>
-                <ListItem.Title style={[styles.title]}>
-                  {item.title}
-                </ListItem.Title>
-                <ListItem.Subtitle style={{ marginBottom: 15 }}>
-                  {item.subTitle}
-                </ListItem.Subtitle>
-                <Text style={[styles.content]}>{`"${item.content}"`}</Text>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('SendMessage')}>
-                  <Text style={[styles.highlightText]}>Xem chi tiết</Text>
-                </TouchableOpacity>
-              </View>
-              <View>
-                <Text style={[styles.highlightText]}>{item.time}</Text>
-              </View>
-            </View>
-          ) : (
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-              }}>
-              <Icon
-                containerStyle={[{ margin: 0 }, styles.icon]}
-                reverse
-                reverseColor="#FFF"
-                color={primary}
-                size={25}
-                name="package"
-                type="feather"
-              />
-              <View style={{ flex: 1 }}>
-                <ListItem.Title style={[styles.title]}>
-                  {item.title}
-                </ListItem.Title>
-                <ListItem.Subtitle
-                  style={[{ marginBottom: 15 }, styles.subTitle]}>
-                  {item.subTitle}
-                </ListItem.Subtitle>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('OrderDetail')}>
-                  <Text style={[styles.highlightText]}>Xem chi tiết</Text>
-                </TouchableOpacity>
-              </View>
-              <View>
-                <Text style={[styles.highlightText]}>{item.time}</Text>
-              </View>
-            </View>
-          )}
+          <NotiItem item={item} navigation={navigation} />
         </ListItem.Content>
       </ListItem.Swipeable>
     );
@@ -227,8 +73,7 @@ const NotificationScreen = ({ navigation }) => {
         rightElement={
           <TouchableOpacity
             onPress={() => {
-              setData([]);
-              setDeleteData([]);
+              props.cleanNoti();
             }}>
             <Icon name="delete" color={danger} />
           </TouchableOpacity>
@@ -241,11 +86,7 @@ const NotificationScreen = ({ navigation }) => {
         keyExtractor={keyExtractor}
         renderItem={renderItem}
         persistentScrollbar={true}
-        refreshing
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-        onContentSizeChange={() => ref.current.scrollToEnd({ animated: true })}
+        // onContentSizeChange={() => ref.current.scrollToEnd({ animated: true })}
         onScrollBeginDrag={() => ref.current.flashScrollIndicators()}
         ListFooterComponent={() =>
           deleteData.length > 3 &&
@@ -268,28 +109,20 @@ const NotificationScreen = ({ navigation }) => {
   );
 };
 
-export default NotificationScreen;
+const mapStateToProps = state => ({
+  noties: state.notification,
+});
+
+const mapDispatchToProps = dispatch => ({
+  cleanNoti: () => dispatch(cleanNotification()),
+  removeNoti: id => dispatch(removeNotification(id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(NotificationScreen);
 
 const styles = StyleSheet.create({
   container: {
     ...container,
     alignItems: 'stretch',
-  },
-  icon: {
-    marginRight: 15,
-  },
-  highlightText: { color: primary, fontWeight: 'bold', fontSize: 16 },
-  title: {
-    fontSize: 18,
-    fontWeight: '700',
-    marginBottom: 5,
-  },
-  subTitle: {
-    color: 'rgba(0,0,0,0.5)',
-  },
-  content: {
-    fontSize: 18,
-    color: 'rgba(0, 0, 0, 0.6)',
-    marginBottom: 10,
   },
 });

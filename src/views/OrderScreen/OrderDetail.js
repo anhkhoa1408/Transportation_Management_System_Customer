@@ -70,6 +70,7 @@ export default function OrderDetail({ navigation, route }) {
             elevation: 5,
             borderRadius: 15,
             marginRight: 10,
+            justifyContent: 'center',
           }}
         />
         <Icon
@@ -81,6 +82,7 @@ export default function OrderDetail({ navigation, route }) {
             backgroundColor: '#FFF',
             elevation: 5,
             borderRadius: 15,
+            justifyContent: 'center',
           }}
           onPress={() => setOption(!option)}
         />
