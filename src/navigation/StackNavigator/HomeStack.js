@@ -18,6 +18,7 @@ import InputPackage from '../../views/OrderScreen/Input/InputPackage';
 import Success from '../../views/OrderScreen/Status/Success';
 import Error from '../../views/OrderScreen/Status/Error';
 import MapScreen from '../../views/MapScreen/MapScreen';
+import Account from '../../views/AuthScreen/Account';
 
 const HomeStack = createStackNavigator();
 
@@ -29,6 +30,7 @@ const HomeStackScreen = () => {
       })}
       initialRouteName="HomeScreen">
       <HomeStack.Screen name="HomeScreen" component={HomeScreen} />
+      <HomeStack.Screen name="Account" component={Account} />
       <HomeStack.Screen name="Notification" component={NotificationScreen} />
       <HomeStack.Screen
         name="PackageTemplateList"
