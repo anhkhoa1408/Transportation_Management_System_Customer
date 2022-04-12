@@ -12,9 +12,12 @@ import { container, shadowCard } from '../../styles/layoutStyle';
 import { getAvatarFromUser, getNameFromUser } from '../../utils/avatarUltis';
 import banner from './../../assets/images/delivery.jpg';
 import InfoCard from './InfoCard';
+import { useTranslation } from 'react-i18next';
+
 
 function HomeScreen({ navigation, userInfo, noties, ...props }) {
   const [badge, setBadge] = useState(null);
+  const { t, i18n } = useTranslation("common")
 
   useEffect(() => {
     setBadge(Badge(Object.keys(noties).length));
@@ -35,23 +38,23 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
   const [listData, setListData] = useState([
     {
       icon: 'add',
-      title: 'Đặt hàng',
+      title: t("homeScreen.order"),
       navigate: 'InputInfo',
     },
     {
       icon: 'event-available',
-      title: 'Dùng mẫu đơn hàng',
+      title: t("homeScreen.useOrderForm"),
       navigate: 'OrderTemplateList',
       useTemplate: true,
     },
     {
       icon: 'assignment',
-      title: 'Quản lý mẫu đơn hàng',
+      title: t("homeScreen.manageOrderForm"),
       navigate: 'OrderTemplateList',
     },
     {
       icon: 'inventory',
-      title: 'Quản lý mẫu kiện hàng',
+      title: t("homeScreen.manageParcelSamples"),
       navigate: 'PackageTemplateList',
     },
   ]);
@@ -62,7 +65,7 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
       <View style={homeStyle.container}>
         <Header
           leftElement={badge}
-          headerText={'Xin chào ' + getNameFromUser(userInfo?.user)}
+          headerText={t("homeScreen.hello") + getNameFromUser(userInfo?.user)}
           rightElement={
             <HeaderAvatar
               url={getAvatarFromUser(userInfo?.user)}

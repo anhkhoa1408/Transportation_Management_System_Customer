@@ -5,8 +5,10 @@ import { Icon, ListItem, Text } from 'react-native-elements';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { COLORS } from '../../styles';
 import { primary } from '../../styles/color';
+import { useTranslation } from 'react-i18next';
 
 const InfoCard = ({ item, navigation }) => {
+  const { t, i18n } = useTranslation("common")
   const ref = useRef(null);
   const handlePress = async navigate => {
     await ref.current.animate({

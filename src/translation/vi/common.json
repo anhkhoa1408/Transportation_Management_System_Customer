@@ -72,7 +72,11 @@
     "enter":"Nhập"
   },
   "homeScreen":{
-    "order":"Đặt hàng"
+    "order":"Đặt hàng",
+    "useOrderForm":"Use order form",
+    "manageOrderForm":"Manage order form",
+    "manageParcelSamples":"Manage parcel samples",
+    "hello":"Xin chào "
   },
   "mapScreen":{
 
