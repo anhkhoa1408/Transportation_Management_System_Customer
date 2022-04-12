@@ -83,7 +83,11 @@
     "choosePlace":"Choose place"
   },
   "notificationScreen":{
-
+    "seeDetails":"See details",
+    "delete":"Delete",
+    "notify":"Notify",
+    "seeMore":"See more",
+    "newMessageFrom":"New message from"
   },
   "orderScreen":{
 

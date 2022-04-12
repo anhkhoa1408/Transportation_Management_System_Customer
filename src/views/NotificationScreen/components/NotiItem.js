@@ -3,8 +3,10 @@ import { ListItem } from 'react-native-elements';
 import { primary } from '../../../styles/color';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import NotiIcon from './NotiIcon';
+import { useTranslation } from 'react-i18next';
 
 const NotiItem = ({ item, navigation }) => {
+  const { t, i18n } = useTranslation("common")
   return (
     <View style={{ display: 'flex', flexDirection: 'row' }}>
       <NotiIcon type={item.type} icon={item.icon} />
@@ -18,7 +20,7 @@ const NotiItem = ({ item, navigation }) => {
           {item.content ? `"${item.content}"` : item.subTitle}
         </Text>
         <TouchableOpacity onPress={() => navigation.navigate('SendMessage')}>
-          <Text style={[styles.highlightText]}>Xem chi tiết</Text>
+          <Text style={[styles.highlightText]}>{t("notificationScreen.seeDetails")}</Text>
         </TouchableOpacity>
       </View>
     </View>

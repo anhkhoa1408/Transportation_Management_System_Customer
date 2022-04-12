@@ -83,7 +83,11 @@
     "choosePlace":"Chọn địa điểm"
   },
   "notificationScreen":{
-
+    "seeDetails":"Xem chi tiết",
+    "delete":"Xóa bỏ",
+    "notify":"Thông báo",
+    "seeMore":"Xem thêm",
+    "newMessageFrom":"Tin nhắn mới từ"
   },
   "orderScreen":{
 
