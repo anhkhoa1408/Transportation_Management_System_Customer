@@ -68,7 +68,8 @@
     "alreadyHaveAnAccount?":"Already have an account?"
   },
   "chatScreen":{
-
+    "message":"Message",
+    "enter":"Enter"
   },
   "homeScreen":{
     "order":"Order"

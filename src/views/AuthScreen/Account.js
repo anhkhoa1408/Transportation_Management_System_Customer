@@ -21,8 +21,10 @@ import { useDispatch } from 'react-redux';
 import color, { success, danger } from '../../styles/color';
 import { connect } from 'react-redux';
 import { getAvatarFromUser } from '../../utils/avatarUltis';
+import { useTranslation } from 'react-i18next';
 
 const Account = ({ navigation, userInfo }) => {
+  const { t, i18n } = useTranslation("common")
   const [progress, setProgress] = useState(
     userInfo?.user?.point ? userInfo?.user?.point : 0,
   );
@@ -39,19 +41,19 @@ const Account = ({ navigation, userInfo }) => {
 
   const accountList = [
     {
-      title: 'Chỉnh sửa thông tin',
+      title: t("authScreen.editInformation"),
       icon: 'edit',
       navigate: 'EditProfile',
       color: '#CCC',
     },
     {
-      title: 'Đổi mật khẩu',
+      title: t("authScreen.changePassword"),
       icon: 'lock',
       navigate: 'ChangePass',
       color: '#fc6603',
     },
     {
-      title: 'Đăng xuất',
+      title: t("authScreen.logOut"),
       icon: 'logout',
       navigate: '',
       color: danger,
@@ -60,21 +62,21 @@ const Account = ({ navigation, userInfo }) => {
 
   const appList = [
     {
-      title: 'English',
+      title: t("authScreen.engLish"),
       icon: 'language',
       name: 'language',
       state: toggle.language,
       color: '#ac4ff7',
     },
     {
-      title: 'Chế độ tối',
+      title: t("authScreen.darkMode"),
       icon: 'nightlight-round',
       name: 'nightMode',
       state: toggle.nightMode,
       color: '#000',
     },
     {
-      title: 'Thông báo',
+      title: t("authScreen.notify"),
       icon: 'notifications',
       name: 'notification',
       state: toggle.notification,
@@ -171,28 +173,28 @@ const Account = ({ navigation, userInfo }) => {
   const currentState = () => {
     switch (userInfo?.user.type) {
       case 'User':
-        return 'Đồng';
+        return t("authScreen.copper");
       case 'Iron':
-        return 'Sắt';
+        return t("authScreen.silver");
       case 'Gold':
-        return 'Vàng';
+        return t("authScreen.gold");
       case 'Diamond':
-        return 'Kim cương';
+        return t("authScreen.diamond");
       default:
-        return 'Đồng';
+        return t("authScreen.copper");
     }
   };
 
   const nextState = () => {
     switch (userInfo?.user.type) {
       case 'User':
-        return 'bạc';
+        return t("authScreen.silver");
       case 'Iron':
-        return 'vàng';
+        return t("authScreen.gold");
       case 'Gold':
-        return 'kim cương';
+        return t("authScreen.diamond");
       default:
-        return 'đồng';
+        return t("authScreen.copper");
     }
   };
 
@@ -200,14 +202,14 @@ const Account = ({ navigation, userInfo }) => {
     <>
       <View style={{ padding: 25 }}>
         <Text style={[styles.smallText, { marginBottom: 5 }]}>
-          Điểm thành viên của bạn
+        {t("authScreen.yourMembershipPoints")}
         </Text>
         <Text style={[FONTS.Big, { marginBottom: 35, fontSize: 19 }]}>
-          Bạn chỉ còn{' '}
+        {t("authScreen.youOnlyHave")}{' '}
           <Text style={[{ color: COLORS.primary, fontSize: 30 }]}>
             {100 - progress}
           </Text>{' '}
-          điểm nữa để tăng lên vị trí thành viên {nextState()}
+          {t("authScreen.morePointsToIncreaseToMemberPosition")} {nextState()}
         </Text>
         <View
           style={{
@@ -259,7 +261,7 @@ const Account = ({ navigation, userInfo }) => {
           <Text style={{ alignSelf: 'flex-end', ...FONTS.Big }}>{100}</Text>
         </View>
       </View>
-      <Text style={styles.sectionText}>Tài khoản</Text>
+      <Text style={styles.sectionText}>{t("authScreen.account")}</Text>
       <FlatList
         listKey="A"
         nestedScrollEnabled
@@ -273,7 +275,7 @@ const Account = ({ navigation, userInfo }) => {
         data={accountList}
         renderItem={renderItem}
       />
-      <Text style={styles.sectionText}>Ứng dụng</Text>
+      <Text style={styles.sectionText}>{t("authScreen.application")}</Text>
       <FlatList
         listKey="B"
         nestedScrollEnabled
@@ -301,10 +303,10 @@ const Account = ({ navigation, userInfo }) => {
           }}
         />
         <View style={{ marginLeft: 20, flex: 1 }}>
-          <Text style={styles.smallText}>Xin chào</Text>
+          <Text style={styles.smallText}>{t("authScreen.hello")}</Text>
           <Text style={styles.bigText}>{userInfo?.user?.name}</Text>
           <Text style={[styles.statusText, { color: COLORS.warning }]}>
-            Thành viên {currentState()}
+            {t("authScreen.member")} {currentState()}
           </Text>
         </View>
         <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>

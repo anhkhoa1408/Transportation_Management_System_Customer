@@ -9,8 +9,10 @@ import { socket } from '../../config/socketIO';
 import { addMessage } from '../../actions/actions';
 import { connect } from 'react-redux';
 import { getAvatarFromUri } from '../../utils/avatarUltis';
+import { useTranslation } from 'react-i18next';
 
 const MessageScreen = props => {
+  const { t, i18n } = useTranslation("common")
   const { navigation, route, messenger, user, customerInfo } = props;
   const { room } = route.params;
 
@@ -62,7 +64,7 @@ const MessageScreen = props => {
           name: user.name,
           avatar: user.avatar?.url,
         }}
-        placeholder="Nhập"
+        placeholder={t("chatScreen.enter")}
         textInputStyle={messagesScreenStyle.input}
         renderAvatar={null}
       />

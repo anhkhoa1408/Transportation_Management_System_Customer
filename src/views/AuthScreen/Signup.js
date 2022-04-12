@@ -19,8 +19,10 @@ import PrimaryButton from './../../components/CustomButton/PrimaryButton';
 import Loading from './../../components/Loading';
 import authApi from '../../api/authApi';
 import ModalMess from '../../components/ModalMess';
+import { useTranslation } from 'react-i18next';
 
 const SignUp = ({ navigation }) => {
+  const { t, i18n } = useTranslation("common")
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -35,19 +37,19 @@ const SignUp = ({ navigation }) => {
     enableReinitialize: true,
     initialValues: formData,
     validationSchema: Bonk.object({
-      name: Bonk.string().required('Thông tin bắt buộc'),
+      name: Bonk.string().required(t("authScreen.requiredInformation")),
       email: Bonk.string()
-        .required('Thông tin bắt buộc')
-        .email('Email không hợp lệ'),
+        .required(t("authScreen.requiredInformation"))
+        .email(t("authScreen.invalidEmail")),
       password: Bonk.string()
-        .required('Thông tin bắt buộc')
-        .min(8, 'Mật khẩu phải tối thiểu 8 ký tự'),
+        .required(t("authScreen.requiredInformation"))
+        .min(8, t("authScreen.passwordMustBeAtLeast8Characters")),
       repeatPassword: Bonk.string()
-        .required('Thông tin bắt buộc')
-        .min(8, 'Mật khẩu phải tối thiểu 8 ký tự')
+        .required(t("authScreen.requiredInformation"))
+        .min(8, t("authScreen.passwordMustBeAtLeast8Characters"))
         .oneOf(
           [Bonk.ref('password'), null],
-          'Xác nhận mật khẩu và mật khẩu chưa chính xác',
+          t("authScreen.confirmPasswordAndPasswordIsIncorrect"),
         ),
     }),
     onSubmit: values => {
@@ -70,8 +72,8 @@ const SignUp = ({ navigation }) => {
       .then(data => {
         setAlert({
           type: 'success',
-          btnText: 'Đăng nhập',
-          message: 'Đăng ký thành công!',
+          btnText: t("authScreen.logIn"),
+          message: t("authScreen.signUpSuccess!"),
         });
         setLoading(null);
       })
@@ -81,17 +83,17 @@ const SignUp = ({ navigation }) => {
           if (message === 'Auth.form.error.email.taken')
             setAlert({
               type: 'warning',
-              message: 'Email đã được sử dụng!',
+              message: t("authScreen.emailAlreadyInUse!"),
             });
           else
             setAlert({
               type: 'warning',
-              message: 'Thông tin không đúng!',
+              message: t("authScreen.incorrectInformation!"),
             });
         } catch (error) {
           setAlert({
             type: 'warning',
-            message: 'Đăng ký thất bại!',
+            message: t("authScreen.registrationFailed!"),
           });
         }
         setLoading(null);
@@ -127,19 +129,19 @@ const SignUp = ({ navigation }) => {
             paddingHorizontal: 20,
             paddingTop: 10,
           }}>
-          <Text style={styles.title}>Đăng ký</Text>
+          <Text style={styles.title}>{t("authScreen.login")}</Text>
           <Text
             style={{
               fontSize: 15,
               color: 'rgba(0, 0, 0, 0.5)',
               paddingBottom: 20,
             }}>
-            Trải nghiệm ngay dịch vụ vận chuyển liên tỉnh
+            {t("authScreen.experienceTheIntercityTransportationServiceNow")}
           </Text>
 
           <TextField
             icon="person-outline"
-            placeholder="Họ và Tên"
+            placeholder={t("authScreen.firstNameAndLastName")}
             value={formik.values.name}
             onChangeText={text => formik.setFieldValue('name', text)}
             error={formik.touched.name && formik.errors.name}
@@ -157,7 +159,7 @@ const SignUp = ({ navigation }) => {
 
           <TextField
             icon="https"
-            placeholder="Mật khẩu mới"
+            placeholder={t("authScreen.newPassword")}
             secureTextEntry
             value={formik.values.password}
             onChangeText={text => formik.setFieldValue('password', text)}
@@ -167,7 +169,7 @@ const SignUp = ({ navigation }) => {
 
           <TextField
             icon="lock"
-            placeholder="Xác nhận mật khẩu"
+            placeholder={t("authScreen.confirmPassword")}
             secureTextEntry
             value={formik.values.repeatPassword}
             onChangeText={text => formik.setFieldValue('repeatPassword', text)}
@@ -182,17 +184,17 @@ const SignUp = ({ navigation }) => {
               marginTop: 30,
             }}
             backgroundColor={COLORS.success}
-            title="Xác nhận"
+            title={t("authScreen.confirm")}
             onPress={formik.submitForm}
           />
         </ScrollView>
       </KeyboardAvoidingView>
 
       <View style={[styles.container1]}>
-        <Text style={[FONTS.Medium]}>Đã có tài khoản? </Text>
+        <Text style={[FONTS.Medium]}>{t("authScreen.alreadyHaveAnAccount?")} </Text>
         <TouchableOpacity onPress={() => navigation.navigate('Signin')}>
           <Text style={{ ...FONTS.BigBold, color: COLORS.primary }}>
-            Đăng nhập
+            {t("authScreen.logIn")}
           </Text>
         </TouchableOpacity>
       </View>

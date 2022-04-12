@@ -68,7 +68,8 @@
     
   },
   "chatScreen":{
-
+    "message":"Tin Nhắn",
+    "enter":"Nhập"
   },
   "homeScreen":{
     "order":"Đặt hàng"
