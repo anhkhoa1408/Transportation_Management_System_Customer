@@ -76,10 +76,11 @@
     "useOrderForm":"Use order form",
     "manageOrderForm":"Manage order form",
     "manageParcelSamples":"Manage parcel samples",
-    "hello":"Xin chào "
+    "hello":"Hello "
   },
   "mapScreen":{
-
+    "searchForAPlace":"Search for a place",
+    "choosePlace":"Choose place"
   },
   "notificationScreen":{
 

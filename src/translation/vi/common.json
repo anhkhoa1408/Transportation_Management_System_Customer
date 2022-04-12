@@ -73,13 +73,14 @@
   },
   "homeScreen":{
     "order":"Đặt hàng",
-    "useOrderForm":"Use order form",
-    "manageOrderForm":"Manage order form",
-    "manageParcelSamples":"Manage parcel samples",
+    "useOrderForm":"Sử dụng mẫu đơn đặt hàng",
+    "manageOrderForm":"Quản lý đơn đặt hàng",
+    "manageParcelSamples":"Quản lý các mẫu bưu kiện",
     "hello":"Xin chào "
   },
   "mapScreen":{
-
+    "searchForAPlace":"Tìm kiếm một địa điểm",
+    "choosePlace":"Chọn địa điểm"
   },
   "notificationScreen":{
 
