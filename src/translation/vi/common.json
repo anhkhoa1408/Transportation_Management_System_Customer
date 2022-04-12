@@ -1,4 +1,94 @@
 {
   "confirm": "Xác nhận",
-  "login": "Đăng nhập"
+  "login": "Đăng nhập",
+  "authScreen":{
+    "editInformation": "Chỉnh sửa thông tinEdit information",
+    "changePassword": "Đổi mật khẩu",
+    "logOut": "Đăng xuất",
+    "engLish": "Tiếng Việt",
+    "darkMode": "Chế độ tối",
+    "notify":"Thông báo",
+    "copper": "Đồng",
+    "silver": "Bạc",
+    "gold": "Vàng",
+    "diamond":"Kim cương",
+    "yourMembershipPoints": "Điểm thành viên của bạn",
+    "youOnlyHave": "Bạn chỉ cần",
+    "morePointsToIncreaseToMemberPosition": "thêm điểm để tăng lên vị trí thành viên",
+    "account": "Tài khoản",
+    "hello":"Xin chào",
+    "application":"Ứng dụng",
+    "member":"Thành viên",
+
+    "forgotPassword":"Quên mật khẩu",
+    "logIn":"Đăng nhập",
+    "requiredInformation":"Thông tin bắt buộc",
+    "minimum10Digits":"Tối thiểu 10 chữ số",
+    "max11Digits":"Tối đa 11 chữ số",
+    "invalidPhoneNumber":"số điện thoại không hợp lệ",
+    "enterYourPhoneNumber":"Nhập số điện thoại của bạn",
+    "phoneNumber":"Số điện thoại",
+    "getOTP":"Nhận OTP",
+
+    "6-digitConfirmationCode":"Mã xác nhận gồm 6 chữ số",
+    "checkYourPhoneAndEnterTheOTPFromTheMessage":"Kiểm tra điện thoại của bạn và nhập OTP từ tin nhắn",
+    "enterOTP":"Nhận OTP",
+    "confirm":"Xác nhận",
+    "or":"hoặc",
+    "resendCode":"Mã gửi lại",
+
+    "passwordUpdateFailed":"Cập nhật mật khẩu không thành công",
+    "passwordUpdateSuccessful":"Cập nhật mật khẩu thành công",
+    "newPasswordMustBeAtLeast8Characters,IncludingCapitalLetters":"Mật khẩu mới phải có ít nhất 8 ký tự, bao gồm cả chữ in hoa",
+    "passwordMustBeAtLeast8Characters":"Mật khẩu cần dài ít nhất 8 ký tự",
+    "passwordAndConfirmPasswordDoNotMatch":"Mật khẩu và mật khẩu xác nhận không khớp",
+    "enterANewPasswordForYourAccount":"Nhập mật khẩu mới cho tài khoản của bạn",
+    "newPassword":"Mật khẩu mới",
+    "confirmPassword":"Xác nhận mật khẩu",
+    "changePasswordSuccessfully":"Thay đổi mật khẩu thành công",
+    "login": "Đăng nhập",
+    "emailAlreadyInUse!":"Email đã được sử dụng!",
+    "incorrectAccountOrPassword!":"Tài khoản hoặc mật khẩu không chính xác!",
+    "authenticationFailed":"Quá trình xác thực đã thất bại!",
+    "signInToStartUsingOurService":"Đăng nhập để bắt đầu sử dụng dịch vụ của chúng tôi",
+    "userName":"Tên tài khoản",
+    "password":"Mật khẩu",
+    "orLoginWith":"Hoặc đăng nhập bằng",
+    "doNotHaveAnAccount":"Không có tài khoản",
+    "registration":"Sự đăng ký",
+
+    "invalidEmail":"Email không hợp lệ",
+    "confirmPasswordAndPasswordIsIncorrect":"Xác nhận mật khẩu và mật khẩu không chính xác",
+    "signUpSuccess!":"Đăng ký thành công!",
+    "incorrectInformation!":"Email đã được sử dụng!",
+    "registrationFailed!":"đăng ký không thành công",
+    "experienceTheIntercityTransportationServiceNow":"Hãy trải nghiệm ngay dịch vụ vận chuyển liên tỉnh",
+    "firstNameAndLastName":"Họ và Tên",
+    "alreadyHaveAnAccount?":"Đã có tài khoản?"
+    
+  },
+  "chatScreen":{
+
+  },
+  "homeScreen":{
+    "order":"Đặt hàng"
+  },
+  "mapScreen":{
+
+  },
+  "notificationScreen":{
+
+  },
+  "orderScreen":{
+
+  },
+  "settingScreen":{
+
+  },
+  "templateScreen":{
+
+  },
+  "voucherScreen":{
+
+  }
 }

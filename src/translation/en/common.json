@@ -1,4 +1,95 @@
 {
   "confirm": "Confirm",
-  "login": "Login"
+  "login": "Login",
+  "authScreen":{
+    "editInformation": "Edit information",
+    "changePassword": "Change Password",
+    "logOut": "Log out",
+    "engLish": "English",
+    "darkMode": "Dark Mode",
+    "notify":"Notify",
+    "copper": "Copper",
+    "silver": "Silver",
+    "gold": "Gold",
+    "diamond":"Diamond",
+    "yourMembershipPoints": "Your Membership Points",
+    "youOnlyHave": "You only need",
+    "morePointsToIncreaseToMemberPosition": "more points to increase to member position",
+    "account": "Account",
+    "hello":"Hello",
+    "application":"Application",
+    "member":"Member",
+
+    "forgotPassword":"Forgot password",
+    "logIn":"Log in",
+    "requiredInformation":"Required Information",
+    "minimum10Digits":"Minimum 10 digits",
+    "max11Digits":"Max 11 digits",
+    "invalidPhoneNumber":"invalid phone number",
+    "enterYourPhoneNumber":"Enter your phone number",
+    "phoneNumber":"Phone number",
+    "getOTP":"Get OTP",
+
+    "6-digitConfirmationCode":"6-digit confirmation code",
+    "checkYourPhoneAndEnterTheOTPFromTheMessage":"Check your phone and enter the OTP from the message",
+    "enterOTP":"Enter OTP",
+    "confirm":"Confirm",
+    "or":"or",
+    "resendCode":"Resend code",
+
+    
+    "passwordUpdateFailed":"Password update failed",
+    "passwordUpdateSuccessful":"Password update successful",
+    "newPasswordMustBeAtLeast8Characters,IncludingCapitalLetters":"New password must be at least 8 characters, including capital letters",
+    "passwordMustBeAtLeast8Characters":"Password must be at least 8 characters",
+    "passwordAndConfirmPasswordDoNotMatch":"Password and confirm password do not match",
+    "enterANewPasswordForYourAccount":"Enter a new password for your account",
+    "newPassword":"New password",
+    "confirmPassword":"Confirm password",
+    "changePasswordSuccessfully":"Change password successfully",
+    "login": "Log in",
+    "emailAlreadyInUse!":"Email already in use!",
+    "incorrectAccountOrPassword!":"Incorrect account or password!",
+    "authenticationFailed":"Authentication failed!",
+    "signInToStartUsingOurService":"Sign in to start using our service",
+    "userName":"User name",
+    "password":"Password",
+    "orLoginWith":"Or login with",
+    "doNotHaveAnAccount":"Do not have an account",
+    "registration":"Registration",
+
+    "invalidEmail":"Invalid Email",
+    "confirmPasswordAndPasswordIsIncorrect":"Confirm password and password is incorrect",
+    "signUpSuccess!":"Sign Up Success!",
+    "incorrectInformation!":"Email already in use!",
+    "registrationFailed!":"registration failed",
+    "experienceTheIntercityTransportationServiceNow":"Experience the intercity transportation service now",
+    "firstNameAndLastName":"First name and last name",
+    "alreadyHaveAnAccount?":"Already have an account?"
+  },
+  "chatScreen":{
+
+  },
+  "homeScreen":{
+    "order":"Order"
+  },
+  "mapScreen":{
+
+  },
+  "notificationScreen":{
+
+  },
+  "orderScreen":{
+
+  },
+  "settingScreen":{
+
+  },
+  "templateScreen":{
+
+  },
+  "voucherScreen":{
+
+  }
+
 }
