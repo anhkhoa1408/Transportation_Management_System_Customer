@@ -105,22 +105,22 @@ export default function TextField({
 
 const styles = StyleSheet.create({
   texttitle: {
-    fontSize: 20,
+    fontSize: 15,
     color: '#000000',
   },
   inputView: {
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 10,
-    marginBottom: 10,
+    marginBottom: 5,
     backgroundColor: COLORS.gray,
     borderRadius: 8,
-    paddingVertical: 7,
+    paddingVertical: 5,
     paddingHorizontal: 10,
     borderWidth: 2,
   },
   fsize: {
-    fontSize: 17,
+    fontSize: 15,
     color: '#000',
     paddingLeft: 20,
     paddingVertical: 8,

@@ -5,9 +5,9 @@ import { Button, Text } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native';
 import moment from 'moment';
 
-export const DatePicker = props => {
+export const DatePicker = ({ type, ...props }) => {
   const [date, setDate] = useState(
-    (props.date && new Date(props.date)) || new Date(),
+    props.date ? new Date(props.date) : new Date(),
   );
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
@@ -16,6 +16,7 @@ export const DatePicker = props => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
+    props.setDate && props.setDate(selectedDate)
   };
 
   const showMode = currentMode => {
@@ -37,7 +38,11 @@ export const DatePicker = props => {
       <View style={style.container}>
         <Button
           onPress={showDatepicker}
-          title={moment(date).format('DD-MM-YYYY HH:mm:ss')}
+          title={
+            (type = 'date'
+              ? moment(date).format('DD-MM-YYYY')
+              : moment(date).format('DD-MM-YYYY HH:mm:ss'))
+          }
           buttonStyle={style.button}
           titleStyle={style.title}
           iconPosition="right"
@@ -87,9 +92,10 @@ const style = StyleSheet.create({
   title: {
     color: '#000',
     textAlign: 'left',
+    fontSize: 15,
   },
   containerTitle: {
-    fontSize: 20,
+    fontSize: 15,
     color: '#000000',
   },
 });
