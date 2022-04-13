@@ -8,8 +8,10 @@ import OrderStep from '../../../components/StepIndicator/OrderStep';
 import PrimaryButton from '../../../components/CustomButton/PrimaryButton';
 import ModalMess from '../../../components/ModalMess';
 import { v4 } from 'uuid';
+import { useTranslation } from 'react-i18next';
 
 const InputPackage = ({ route, navigation }) => {
+  const { t, i18n } = useTranslation("common")
   const { pack } = route?.params;
   const [listPackage, setListPackage] = useState([]);
   const [alert, setAlert] = useState(null);
@@ -33,8 +35,8 @@ const InputPackage = ({ route, navigation }) => {
     <ListItem style={style.item} key={index}>
       <Icon reverse name="inventory" size={20} color={COLORS.primary} />
       <ListItem.Content>
-        <ListItem.Title>{item.name || 'Chưa có tên'}</ListItem.Title>
-        <ListItem.Subtitle>{'Số lượng: ' + item.quantity}</ListItem.Subtitle>
+        <ListItem.Title>{item.name || t("orderScreen.unnamed")}</ListItem.Title>
+        <ListItem.Subtitle>{t("orderScreen.quantity")+': ' + item.quantity}</ListItem.Subtitle>
       </ListItem.Content>
       <Icon
         name="delete"
@@ -48,7 +50,7 @@ const InputPackage = ({ route, navigation }) => {
       {alert && (
         <ModalMess
           type="warning"
-          message="Bạn chưa thêm kiện hàng nào"
+          message={t("orderScreen.youHaveNotAddedAnyPackagesYet")}
           alert={alert}
           setAlert={setAlert}
         />
@@ -57,7 +59,7 @@ const InputPackage = ({ route, navigation }) => {
         leftElement={
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
         }
-        headerText={'Vận chuyển'}
+        headerText={t("orderScreen.transport")}
       />
       {/* <OrderStep current={0} /> */}
 
@@ -68,7 +70,7 @@ const InputPackage = ({ route, navigation }) => {
             paddingHorizontal: 15,
             marginBottom: 15,
           }}>
-          Nhấn thêm kiện hàng để tạo mới hoặc chọn kiện hàng mẫu từ danh sách
+          {t("orderScreen.clickAddPackageToCreateANewOneOrSelectASamplePackageFromTheList")}
         </Text>
 
         <FlatList
@@ -85,7 +87,7 @@ const InputPackage = ({ route, navigation }) => {
             }}>
             <Button
               type="outline"
-              title={'Thêm kiện hàng'}
+              title={t("orderScreen.addPackages")}
               titleStyle={{ color: COLORS.success }}
               buttonStyle={{
                 borderColor: COLORS.success,
@@ -103,7 +105,7 @@ const InputPackage = ({ route, navigation }) => {
             />
             <Button
               type="outline"
-              title={'Chọn mẫu'}
+              title={t("orderScreen.packageSample")}
               titleStyle={{ color: COLORS.header }}
               buttonStyle={{
                 borderColor: COLORS.header,
@@ -129,12 +131,12 @@ const InputPackage = ({ route, navigation }) => {
             }}>
             <Divider style={{ flex: 1 }} color={COLORS.primary} width={2} />
             <Text style={{ marginHorizontal: 10, color: COLORS.primary }}>
-              Để
+              {t("orderScreen.put")}
             </Text>
             <Divider style={{ flex: 1 }} color={COLORS.primary} width={2} />
           </View>
           <PrimaryButton
-            title="Tiếp tục"
+            title={t("orderScreen.continue")}
             onPress={() => {
               listPackage.length
                 ? navigation.navigate('OrderSummary', {

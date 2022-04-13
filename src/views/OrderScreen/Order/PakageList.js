@@ -4,8 +4,10 @@ import { Text, Icon } from 'react-native-elements';
 import { container } from '../../../styles/layoutStyle';
 import { joinAddress } from '../../../utils/address';
 import { COLORS, FONTS } from './../../../styles';
+import { useTranslation } from 'react-i18next';
 
 const PackageList = ({ navigation, item, ...props }) => {
+  const { t, i18n } = useTranslation("common")
   const [data, setData] = useState(item.packages);
 
   return (
@@ -30,16 +32,16 @@ const PackageList = ({ navigation, item, ...props }) => {
                   alignItems: 'flex-start',
                 }}>
                 <Text style={{ ...FONTS.BigBold }}>
-                  {item.name || 'Chưa có tên'}
+                  {item.name || t("orderScreen.unnamed")}
                 </Text>
                 <Text style={{ ...FONTS.Medium }}>
-                  Số lượng:{' '}
+                  {t("orderScreen.quantity")}:{' '}
                   <Text style={{ ...styles.info }}>
-                    {item.quantity + ' kiện'}
+                    {item.quantity + t("orderScreen.package")}
                   </Text>
                 </Text>
                 <Text style={{ ...FONTS.Medium }}>
-                  Địa điểm hiện tại:{' '}
+                  {t("orderScreen.currentLocation")}:{' '}
                   <Text style={{ ...styles.info }}>
                     {item?.current_address &&
                       joinAddress(item?.current_address)}

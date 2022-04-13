@@ -4,8 +4,10 @@ import { Text, Icon, ListItem } from 'react-native-elements';
 import { FONTS, COLORS } from '../../../styles';
 import { convertOrderState } from '../../../utils/order';
 import OrderIndicator from '../../../components/StepIndicator/OrderIndicator';
+import { useTranslation } from 'react-i18next';
 
 const Delivering = ({ item, navigation }) => {
+  const { t, i18n } = useTranslation("common")
   return (
     <TouchableHighlight
       underlayColor={COLORS.gray}
@@ -38,9 +40,9 @@ const Delivering = ({ item, navigation }) => {
             />
           </View>
           <ListItem.Content style={{ flex: 1 }}>
-            <Text style={[FONTS.BigBold]}>{item?.name || 'Chưa đặt tên'}</Text>
+            <Text style={[FONTS.BigBold]}>{item?.name || t("orderScreen.unnamed")}</Text>
             <Text style={[FONTS.SmolBold, { color: COLORS.success }]}>
-              {convertOrderState(item.state)}
+              {t(convertOrderState(item.state))}
             </Text>
           </ListItem.Content>
           <View>

@@ -6,8 +6,10 @@ import { COLORS, FONTS } from './../../../styles';
 import { InfoField } from '../../../components/InfoField';
 import { convertOrderState, formatCash } from '../../../utils/order';
 import { joinAddress } from '../../../utils/address';
+import { useTranslation } from 'react-i18next';
 
 const Detail = ({ navigation, item, ...props }) => {
+  const { t, i18n } = useTranslation("common")
   const quantity = useMemo(() => {
     return item.packages.reduce(
       (total, item) => total + item.weight * item.quantity,
@@ -23,15 +25,15 @@ const Detail = ({ navigation, item, ...props }) => {
       ]}>
       <View style={[styles.rowContainer, { paddingRight: 10 }]}>
         <InfoField
-          title="Dự kiến"
+          title={t("orderScreen.expected")}
           content="Thứ 6, 20 tháng 3"
           style={{ flex: 1 }}
         />
         <InfoField
-          title="Trạng thái"
+          title={t("orderScreen.status")}
           content={
             <Text style={{ color: COLORS.success, fontWeight: 'bold' }}>
-              {convertOrderState(item.state)}
+              {t(convertOrderState(item.state))}
             </Text>
           }
           style={{ flex: 1 }}
@@ -39,36 +41,36 @@ const Detail = ({ navigation, item, ...props }) => {
       </View>
       <View style={[styles.rowContainer, { paddingRight: 10 }]}>
         <InfoField
-          title="Từ"
+          title={t("orderScreen.from")}
           content={item?.from_address && joinAddress(item?.from_address)}
           style={{ flex: 1 }}
         />
         <InfoField
-          title="Người nhận"
+          title={t("orderScreen.receiver")}
           content={item?.receiver_name}
           style={{ flex: 1 }}
         />
       </View>
       <View style={[styles.rowContainer, { paddingRight: 10 }]}>
         <InfoField
-          title="Đến"
+          title={t("orderScreen.to")}
           content={item?.to_address && joinAddress(item?.to_address)}
           style={{ flex: 1 }}
         />
         <InfoField
-          title="SDT người nhận"
+          title={t("orderScreen.receiver'sPhoneNumber")}
           content={item?.receiver_phone}
           style={{ flex: 1 }}
         />
       </View>
       <View style={[styles.rowContainer, { paddingRight: 10 }]}>
         <InfoField
-          title="Phí cần trả"
+          title={t("orderScreen.feesToBePaid")}
           content={formatCash(item?.remain_fee.toString())}
           style={{ flex: 1 }}
         />
         <InfoField
-          title="Tổng trọng lượng"
+          title={t("orderScreen.totalWeight")}
           content={quantity + ' kg'}
           style={{ flex: 1 }}
         />

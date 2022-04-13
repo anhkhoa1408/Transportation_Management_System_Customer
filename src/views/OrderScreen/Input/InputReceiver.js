@@ -9,8 +9,10 @@ import OrderStep from '../../../components/StepIndicator/OrderStep';
 import TextField from '../../../components/TextField';
 import { FONTS } from '../../../styles';
 import { container } from '../../../styles/layoutStyle';
+import { useTranslation } from 'react-i18next';
 
 const InputReceiver = ({ navigation, route }) => {
+  const { t, i18n } = useTranslation("common")
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -18,9 +20,9 @@ const InputReceiver = ({ navigation, route }) => {
       receiverPhone: '',
     },
     validationSchema: Bonk.object({
-      receiverName: Bonk.string().required('Bạn chưa nhập tên người nhận'),
+      receiverName: Bonk.string().required(t("orderScreen.youHaveNotEnteredTheReceiver'sName")),
       receiverPhone: Bonk.string().required(
-        'Bạn chưa nhập số điện thoại người nhận',
+        t("orderScreen.youHaveNotEnteredTheReceiver'sPhoneNumber"),
       ),
     }),
     onSubmit: values => {
@@ -37,7 +39,7 @@ const InputReceiver = ({ navigation, route }) => {
         leftElement={
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
         }
-        headerText={'Vận chuyển'}
+        headerText={t("orderScreen.transport")}
       />
       <OrderStep current={0} />
       <View
@@ -45,10 +47,10 @@ const InputReceiver = ({ navigation, route }) => {
         contentContainerStyle={{ padding: 30, flex: 1 }}>
         <View style={{ flex: 1 }}>
           <Text style={[FONTS.SmolBold, { marginVertical: 15 }]}>
-            Nhập thông tin người nhận
+            {t("orderScreen.enterReceiver'sInformation")}
           </Text>
           <TextField
-            title="Tên người nhận"
+            title={t("orderScreen.receiver'sName")}
             value={formik.values.receiverName}
             onBlur={() => formik.setFieldTouched('receiverName')}
             onChangeText={text => formik.setFieldValue('receiverName', text)}
@@ -56,7 +58,7 @@ const InputReceiver = ({ navigation, route }) => {
             errorMessage={formik.errors.receiverName}
           />
           <TextField
-            title="Số điện thoại"
+            title={t("orderScreen.phoneNumber")}
             keyboardType="numeric"
             value={formik.values.receiverPhone}
             onBlur={() => formik.setFieldTouched('receiverPhone')}
@@ -66,7 +68,7 @@ const InputReceiver = ({ navigation, route }) => {
           />
         </View>
         <PrimaryButton
-          title="Thêm kiện hàng"
+          title={t("orderScreen.addPackages")}
           onPress={formik.submitForm}
           containerStyle={{ marginTop: '50%' }}
         />

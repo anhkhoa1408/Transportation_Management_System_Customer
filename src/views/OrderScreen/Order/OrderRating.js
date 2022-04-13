@@ -8,6 +8,7 @@ import PrimaryButton from '../../../components/CustomButton/PrimaryButton';
 import { COLORS } from '../../../styles';
 import ModalMess from '../../../components/ModalMess';
 import orderApi from '../../../api/orderApi';
+import { useTranslation } from 'react-i18next';
 
 const OrderRating = ({ visible, onSwipeComplete, ...props }) => {
   const [height, setHeight] = useState(220);
@@ -15,7 +16,7 @@ const OrderRating = ({ visible, onSwipeComplete, ...props }) => {
   const [comment, setComment] = useState('');
   const [alert, setAlert] = useState(null);
   const id_order = '61a982b712c1a7001641524f';
-
+  const { t, i18n } = useTranslation("common")
   const handleSubmit = () => {
     setHeight(220);
     Keyboard.dismiss();
@@ -41,11 +42,11 @@ const OrderRating = ({ visible, onSwipeComplete, ...props }) => {
   const alertType = {
     error: {
       type: 'danger',
-      message: 'Đánh giá thất bại',
+      message: t("orderScreen.rateFailed"),
     },
     success: {
       type: 'success',
-      message: 'Cảm ơn bạn đã đánh giá',
+      message: t("orderScreen.thankYouForRating"),
     },
   };
 
@@ -92,7 +93,7 @@ const OrderRating = ({ visible, onSwipeComplete, ...props }) => {
             alignSelf: 'center',
           }}>
           {' '}
-          Bạn đánh giá thế nào về dịch vụ của chúng tôi
+          {t("orderScreen.howDoYouRateOurService?")}
         </Text>
 
         <View style={{ marginVertical: 30 }}>
@@ -104,14 +105,14 @@ const OrderRating = ({ visible, onSwipeComplete, ...props }) => {
         </View>
 
         <CustomInput
-          placeholder="Cảm nhận của bạn"
+          placeholder={t("orderScreen.yourFeeling")}
           onFocus={() => setHeight(0)}
           onSubmitEditing={handleSubmit}
           onChangeText={text => setComment(text)}
         />
 
         <PrimaryButton
-          title="Gửi"
+          title={t("orderScreen.send")}
           onPress={handleSubmit}
           buttonStyle={{ backgroundColor: COLORS.header }}
         />

@@ -1,32 +1,34 @@
 function convertOrderState(state) {
   switch (state) {
     case 0:
-      return 'Đang xử lý';
+      return 'utils.processing';
     case 1:
-      return 'Chuẩn bị kiện hàng';
+      return 'utils.prepareThePackage';
     case 2:
-      return 'Đang vận chuyển';
+      return 'utils.transporting';
     case 3:
-      return 'Chuẩn bị giao hàng';
+      return 'utils.preparingForDelivery';
     case 4:
-      return 'Đã giao hàng';
+      return 'utils.delivered';
     case 5:
-      return 'Đã huỷ';
+      return 'utils.canceled';
   }
 }
 
 function convertTracingState(state) {
   switch (state) {
     case 0:
-      return 'Đang nhập kho';
+      return 'utils.importing';
     case 1:
-      return 'Nhập kho thành công';
+      return 'utils.successfullyImported';
     case 2:
-      return 'Đang xuất kho';
+      return 'utils.exporting';
     case 3:
-      return 'Xuất kho thành công';
+      return 'utils.successfullyExporting';
     case 4:
-      return 'Đang vận chuyển';
+      return 'utils.transporting';
+    default:
+      return 'utils.importing'
   }
 }
 

@@ -21,8 +21,10 @@ import { formatCash } from '../../utils/order';
 import Loading from './../../components/Loading';
 import ModalMess from './../../components/ModalMess';
 import { joinAddress } from './../../utils/address';
+import { useTranslation } from 'react-i18next';
 
 const OrderSummary = ({ route, navigation }) => {
+  const { t, i18n } = useTranslation("common")
   const [loading, setLoading] = useState(null);
   const [alert, setAlert] = useState(null);
   const [fee, setFee] = useState(1000000);
@@ -66,19 +68,19 @@ const OrderSummary = ({ route, navigation }) => {
       payer_phone = '';
 
     switch (payment.title) {
-      case 'Thanh toán bởi người gửi':
+      case t("orderScreen.payBySender"):
         payer_name = userInfo.name;
         payer_phone = userInfo.phone;
         break;
-      case 'Ví điện tử Momo':
+      case t("orderScreen.momoE-wallet"):
         payer_name = userInfo.name;
         payer_phone = userInfo.phone;
         break;
-      case 'Thẻ ngân hàng':
+      case t("orderScreen.bankCard"):
         payer_name = userInfo.name;
         payer_phone = userInfo.phone;
         break;
-      case 'Thanh toán bởi người nhận':
+      case t("orderScreen.payByReceiver"):
         payer_name = receiver_name;
         payer_phone = receiver_phone;
         break;
@@ -114,15 +116,15 @@ const OrderSummary = ({ route, navigation }) => {
           } else {
             setAlert({
               type: 'success',
-              message: 'Đặt hàng thành công',
-              btnText: 'Tới trang chủ',
+              message: t("orderScreen.ordersuccess"),
+              btnText: t("orderScreen.goToHomepage"),
             });
             if (alert) navigation.navigate('HomeScreen');
           }
         } else {
           setAlert({
             type: 'danger',
-            message: 'Đặt hàng thất bại',
+            message: t("orderScreen.orderFailed"),
           });
         }
       })
@@ -130,7 +132,7 @@ const OrderSummary = ({ route, navigation }) => {
         console.log(error);
         setAlert({
           type: 'danger',
-          message: 'Đặt hàng thất bại',
+          message: t("orderScreen.orderFailed"),
         });
         setLoading(null);
       });
@@ -175,7 +177,7 @@ const OrderSummary = ({ route, navigation }) => {
         leftElement={
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
         }
-        headerText={'Vận chuyển'}
+        headerText={t("orderScreen.shipment")}
       />
       <OrderStep current={payment ? 2 : 1} />
 
@@ -194,71 +196,70 @@ const OrderSummary = ({ route, navigation }) => {
                 opacity: 0.6,
               },
             ]}>
-            Xin hãy kiểm tra lại thông tin vận chuyển của đơn hàng và nhấn xác
-            nhận để tiến hành thanh toán
+            {t("orderScreen.pleaseCheckYourOrder'sShipmentInformationAndClickConfirmToProceedWithPayment")}
           </Text>
           <View style={[style.rowContainer]}>
             <InfoField
-              title="Dự kiến"
+              title={t("orderScreen.expected")}
               content="Thứ 6, 20 tháng 3"
               style={{ flex: 1 }}
             />
             <InfoField
-              title="Người nhận"
-              content={receiver_name || 'Chưa có'}
+              title={t("orderScreen.receiver")}
+              content={receiver_name || t("orderScreen.notYet")}
               style={{ flex: 1 }}
             />
           </View>
           <View style={[style.rowContainer]}>
             <InfoField
-              title="Từ"
+              title={t("orderScreen.from")}
               content={from_address && joinAddress(from_address)}
               style={{ flex: 1 }}
             />
             <InfoField
-              title="SDT người nhận"
+              title={t("orderScreen.receiver'sPhoneNumber")}
               content={receiver_phone}
               style={{ flex: 1 }}
             />
           </View>
           <View style={[style.rowContainer]}>
             <InfoField
-              title="Đến"
+              title={t("orderScreen.to")}
               content={to_address && joinAddress(to_address)}
               style={{ flex: 1 }}
             />
             <InfoField
-              title="Tổng khối lượng"
+              title={t("orderScreen.totalWeight")}
               content={total_weight + ' kg'}
               style={{ flex: 1 }}
             />
           </View>
           <View style={[style.rowContainer]}>
             <InfoField
-              title="Tổng số loại hàng"
+              title={t("orderScreen.totalTypeOfGoods")}
               content={packages.length}
               style={{ flex: 1 }}
             />
             <InfoField
-              title="Tổng số lượng"
-              content={total_quantity + ' kiện'}
+              title={t("orderScreen.totalOfGoods")}
+              content={total_quantity + ' '+ t("orderScreen.package")}
               style={{ flex: 1 }}
             />
           </View>
           <View style={{ marginVertical: 8 }}>
-            <Text style={[FONTS.BigBold]}>Phương thức thanh toán</Text>
+            <Text style={[FONTS.BigBold]}>{t("orderScreen.paymentMethods")}</Text>
             <TouchableOpacity
               onPress={() => navigation.navigate('Payment', route.params)}>
               <View style={[style.select, style.rowContainer]}>
                 <Text style={[{ flex: 1 }]}>
-                  {payment ? payment.title : 'Nhấn để chọn'}
+                  {payment ? payment.title : t("orderScreen.tapToSelect")}
                 </Text>
                 <ListItem.Chevron size={30} />
               </View>
             </TouchableOpacity>
           </View>
           <View style={{ marginVertical: 8 }}>
-            <Text style={[FONTS.BigBold]}>Mã giảm giá</Text>
+            <Text style={[FONTS.BigBold]}>{t("orderScreen.discountCode")}</Text>
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('VoucherScreen', {
@@ -269,7 +270,7 @@ const OrderSummary = ({ route, navigation }) => {
               }>
               <View style={[style.select, style.rowContainer]}>
                 <Text style={[{ flex: 1 }]}>
-                  {voucher && voucher.title ? voucher.title : 'Nhấn để chọn'}
+                  {voucher && voucher.title ? voucher.title : t("orderScreen.tapToSelect")}
                 </Text>
                 <ListItem.Chevron size={30} />
               </View>
@@ -283,11 +284,11 @@ const OrderSummary = ({ route, navigation }) => {
             width={2}
           />
           <View style={[style.rowContainer]}>
-            <Text style={[{ flex: 1 }, FONTS.Big]}>Tổng cộng</Text>
+            <Text style={[{ flex: 1 }, FONTS.Big]}>{t("orderScreen.total")}</Text>
             <Text style={[FONTS.BigBold]}>{formatCash(fee.toString())}</Text>
           </View>
           <PrimaryButton
-            title="Xác nhận"
+            title={t("orderScreen.confirm")}
             disabled={payment ? false : true}
             disabledStyle={{
               backgroundColor: COLORS.gray,

@@ -14,8 +14,10 @@ import Header from '../../components/Header';
 import { COLORS, FONTS } from '../../styles';
 import { container } from '../../styles/layoutStyle';
 import PrimaryButton from '../../components/CustomButton/PrimaryButton';
+import { useTranslation } from 'react-i18next';
 
 const Payment = ({ navigation, route }) => {
+  const { t, i18n } = useTranslation("common")
   const [offlineExpand, setOffline] = useState(true);
   const [onlineExpand, setOnline] = useState(true);
   const [check, setCheck] = useState({
@@ -40,15 +42,15 @@ const Payment = ({ navigation, route }) => {
           value = '';
         switch (ele) {
           case 'sender':
-            title = 'Thanh toán bởi người nhận';
+            title = t("orderScreen.payBySender");
             value = 'direct';
             break;
           case 'receiver':
-            title = 'Thanh toán bởi người gửi';
+            title = t("orderScreen.payByReceiver");
             value = 'direct';
             break;
           case 'momo':
-            title = 'Ví điện tử Momo';
+            title = t("orderScreen.momoE-wallet");
             value = 'momo';
             break;
         }
@@ -71,7 +73,7 @@ const Payment = ({ navigation, route }) => {
         leftElement={
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
         }
-        headerText={'Phương thức thanh toán'}
+        headerText={t("orderScreen.paymentMethods")}
       />
       <Text
         style={[
@@ -81,7 +83,7 @@ const Payment = ({ navigation, route }) => {
             opacity: 0.6,
           },
         ]}>
-        Xin hãy chọn một trong các phương thức thanh toán sau đây
+        {t("orderScreen.pleaseChooseOneOfTheFollowingPaymentMethods")}
       </Text>
       <ScrollView
         contentContainerStyle={{ paddingHorizontal: 20 }}
@@ -92,7 +94,7 @@ const Payment = ({ navigation, route }) => {
             content={
               <ListItem.Content>
                 <Text style={{ ...FONTS.Big, fontWeight: '600' }}>
-                  Thanh toán offline
+                  {t("orderScreen.offlinePayment")}
                 </Text>
               </ListItem.Content>
             }
@@ -116,7 +118,7 @@ const Payment = ({ navigation, route }) => {
                   borderRadius: 15,
                 }}
               />
-              <Text style={{ flex: 1 }}>Thanh toán bởi người nhận</Text>
+              <Text style={{ flex: 1 }}>{t("orderScreen.payByReceiver")}</Text>
               <ListItem.CheckBox
                 checked={check.sender}
                 checkedIcon={<Icon name="check-box" color={COLORS.primary} />}
@@ -138,7 +140,7 @@ const Payment = ({ navigation, route }) => {
                   borderRadius: 15,
                 }}
               />
-              <Text style={{ flex: 1 }}>Thanh toán bởi người gửi</Text>
+              <Text style={{ flex: 1 }}>{t("orderScreen.payBySender")}</Text>
               <ListItem.CheckBox
                 checked={check.receiver}
                 checkedIcon={<Icon name="check-box" color={COLORS.primary} />}
@@ -150,7 +152,7 @@ const Payment = ({ navigation, route }) => {
             content={
               <ListItem.Content>
                 <Text style={{ ...FONTS.Big, fontWeight: '600' }}>
-                  Thanh toán online
+                  {t("orderScreen.onlinePayment")}
                 </Text>
               </ListItem.Content>
             }
@@ -174,7 +176,7 @@ const Payment = ({ navigation, route }) => {
                   borderRadius: 15,
                 }}
               />
-              <Text style={{ flex: 1 }}>Ví điện tử Momo</Text>
+              <Text style={{ flex: 1 }}>{t("orderScreen.momoE-wallet")}</Text>
               <ListItem.CheckBox
                 checked={check.momo}
                 checkedIcon={<Icon name="check-box" color={COLORS.primary} />}
@@ -185,7 +187,7 @@ const Payment = ({ navigation, route }) => {
       </ScrollView>
       <View style={{ padding: 20 }}>
         <PrimaryButton
-          title="Đồng ý"
+          title={t("orderScreen.agree")}
           buttonStyle={{ backgroundColor: COLORS.primary }}
           onPress={handleSubmit}
         />

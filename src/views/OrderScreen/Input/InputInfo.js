@@ -8,8 +8,10 @@ import TextField from '../../../components/TextField';
 import { FONTS } from '../../../styles';
 import { container } from '../../../styles/layoutStyle';
 import { joinAddress, simplifyString } from '../../../utils/address';
+import { useTranslation } from 'react-i18next';
 
 const InputInfo = ({ navigation, route }) => {
+  const { t, i18n } = useTranslation("common")
   const [name, setName] = useState('');
 
   return (
@@ -18,7 +20,7 @@ const InputInfo = ({ navigation, route }) => {
         leftElement={
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
         }
-        headerText={'Vận chuyển'}
+        headerText={t("orderScreen.transport")}
       />
       <OrderStep current={0} />
       <View
@@ -26,10 +28,10 @@ const InputInfo = ({ navigation, route }) => {
         contentContainerStyle={{ padding: 30, height: '100%' }}>
         <View style={{ flex: 1 }}>
           <Text style={[FONTS.SmolBold, { marginVertical: 15 }]}>
-            Nhập thông tin vận chuyển
+            {t("orderScreen.enterShippingInformation")}
           </Text>
           <TextField
-            title="Tên đơn hàng (tuỳ chọn)"
+            title={t("orderScreen.orderName(optional)")}
             value={name}
             onChangeText={setName}
           />
@@ -43,13 +45,13 @@ const InputInfo = ({ navigation, route }) => {
               })
             }>
             <TextField
-              title="Từ"
+              title={t("orderScreen.from")}
               value={
                 route?.params?.from_address
                   ? simplifyString(joinAddress(route?.params?.from_address), 30)
                   : ''
               }
-              placeholder="Nhấn để thêm"
+              placeholder={t("orderScreen.tapToAdd")}
               editable={false}
               afterComponent={<ListItem.Chevron size={30} />}
             />
@@ -69,15 +71,15 @@ const InputInfo = ({ navigation, route }) => {
                   ? simplifyString(joinAddress(route?.params?.to_address), 30)
                   : ''
               }
-              title="Đến"
-              placeholder="Nhấn để thêm"
+              title={t("orderScreen.to")}
+              placeholder={t("orderScreen.tapToAdd")}
               editable={false}
               afterComponent={<ListItem.Chevron size={30} />}
             />
           </TouchableOpacity>
         </View>
         <PrimaryButton
-          title="Nhập thông tin người nhận"
+          title={t("orderScreen.enterReceiverInformation")}
           disabled={!route?.params?.from_address || !route?.params?.to_address}
           onPress={() => {
             route?.params?.type && delete route.params['type'];
