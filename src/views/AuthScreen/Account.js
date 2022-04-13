@@ -120,7 +120,7 @@ const Account = ({ navigation, userInfo }) => {
             {item.title}
           </ListItem.Title>
 
-          <ListItem.Chevron size={30} />
+          <ListItem.Chevron size={22} />
         </ListItem>
       </TouchableOpacity>
     );

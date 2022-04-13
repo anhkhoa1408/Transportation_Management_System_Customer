@@ -66,7 +66,7 @@ const VoucherScreen = ({ route, navigation }) => {
                 <MaskedView
                   maskElement={
                     <Text style={[style.discountText]}>
-                      {t("voucherScreen.discount")}{' '}
+                      {t("voucherScreen.discount")}{''}
                       {item && item.sale_type === 'value'
                         ? formatCash(item.sale.toString())
                         : item.sale + ' %'}
@@ -77,7 +77,7 @@ const VoucherScreen = ({ route, navigation }) => {
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 0 }}>
                     <Text style={[style.discountText, { opacity: 0 }]}>
-                      {t("voucherScreen.discount")}{' '}
+                      {t("voucherScreen.discount")}{''}
                       {item && item.sale_type === 'value'
                         ? formatCash(item.sale.toString())
                         : item.sale + ' %'}
