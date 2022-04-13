@@ -130,7 +130,7 @@ const ChangePass = ({ navigation }) => {
           onBlur={() => formik.setFieldTouched('confirmPassword')}
         />
 
-        <PillButton
+        <PrimaryButton
           title={t("settingScreen.update")}
           backgroundColor={COLORS.success}
           onPress={formik.submitForm}
