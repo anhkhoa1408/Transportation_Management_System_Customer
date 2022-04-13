@@ -231,10 +231,71 @@
     "address":"Address"
   },
   "templateScreen":{
+    "unnamed":"Unnamed",
+    "dateCreated":"Date created",
+    "use":"Use",
 
+    "youHaveNotEnteredTheStreetName":"You have not entered the street name",
+    "youHaveNotEnteredTheWardName":"You have not entered the ward name",
+    "youHaveNotEnteredTheProvinceName":"You have not entered the province name",
+    "youHaveNotEnteredTheCityName":"You have not entered the city name",
+    "orderForm":"Order form",
+    "houseNumber,StreetName":"House number, street name",
+    "wards":"Wards",
+    "province":"Province",
+    "city":"City",
+
+    "youNeedToEnterTheReceiver'sName":"You need to enter the receiver's name",
+    "youNeedToEnterTheReceiver'sPhoneNumber":"You need to enter the receiver's phone number",
+    "successfullyAddTemplate":"Successfully added template",
+    "failureAddedTemplate":"Failure added template",
+    "updateSuccessful":"Update successful",
+    "updateFailure":"Update failed",
+    "name(optional)":"Name (optional)",
+    "enterPackageInformation":"Enter package information",
+    "placeOfDelivery":"Place of delivery",
+    "tapToAdd":"Tap to add",
+    "receiver'sName":"Receiver's name",
+    "receiver'sPhone":"Receiver's phone",
+
+    "cancel":"Cancel",
+    "delete":"Delete",
+    "selectAll":"Select all",
+    "noTemplateYet":"No template yet",
+    "addOrderTemplate":"Add order template",
+
+    "youHaveNotEnteredTheLength":"You have not entered the length",
+    "invalidLength":"Invalid length",
+    "youHaveNotEnteredTheWidth":"You have not entered the width",
+    "invalidWidth":"Invalid width",
+    "youHaveNotEnteredYourHeight":"You have not entered the height",
+    "invalidHeight":"Invalid height",
+    "youHaveNotEnteredTheVolume":"You have not entered the volume",
+    "invalidVolume":"Invalid volume",
+    "youDidNotEnterANumber":"You did not enter a quantity",
+    "invalidQuantity":"Invalid quantity",
+    "addPackages":"Add packages",
+    "edit":"Edit",
+    "length":"Length",
+    "width":"Width",
+    "height":"Height",
+    "weight":"Weight",
+    "quantity":"Quantity",
+    "typeOfGoods":"TypeOfGoods",
+    "note":"Note",
+
+    "templatePackage":"Template Package",
+    "addTemplatePackage":"Add template package"
   },
   "voucherScreen":{
-
+    "discount":"discount",
+    "max":"Max",
+    "minimumOrder":"Minimum Order",
+    "reducedShippingFees":"Reduced shipping fees",
+    "useItNow":"Use it now",
+    "to":"To",
+    "yourVoucher":"Your Voucher",
+    "noQualifyingVoucher":"No qualifying Voucher"
   }
 
 }

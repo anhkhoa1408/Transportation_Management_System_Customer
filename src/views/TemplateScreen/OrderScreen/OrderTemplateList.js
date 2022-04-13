@@ -16,8 +16,10 @@ import { container, header } from '../../../styles/layoutStyle';
 import PrimaryButton from './../../../components/CustomButton/PrimaryButton';
 import Loading from './../../../components/Loading';
 import Template from './TemplateItem/Template';
+import { useTranslation } from 'react-i18next';
 
 const OrderTemplateList = ({ route, navigation }) => {
+  const { t, i18n } = useTranslation("common")
   const [data, setData] = useState([]);
   const [_start, setStart] = useState(0);
   const [loading, setLoading] = useState(null);
@@ -100,7 +102,7 @@ const OrderTemplateList = ({ route, navigation }) => {
         leftElement={
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
         }
-        headerText={'Mẫu đơn hàng'}
+        headerText={t("templateScreen.orderForm")}
       />
       <View
         style={{
@@ -117,7 +119,7 @@ const OrderTemplateList = ({ route, navigation }) => {
                 marginRight: 10,
                 fontSize: 17,
               }}>
-              Huỷ
+              {t("templateScreen.cancel")}
             </Text>
           </TouchableOpacity>
         ) : (
@@ -129,7 +131,7 @@ const OrderTemplateList = ({ route, navigation }) => {
                 marginRight: 10,
                 fontSize: 17,
               }}>
-              Chọn tất cả
+              {t("templateScreen.selectAll")}
             </Text>
           </TouchableOpacity>
         )}
@@ -155,14 +157,14 @@ const OrderTemplateList = ({ route, navigation }) => {
               justifyContent: 'center',
               paddingTop: '50%',
             }}>
-            <Text>Chưa có mẫu</Text>
+            <Text>{t("templateScreen.noTemplateYet")}</Text>
           </View>
         }
       />
       {check.some(item => item === true) ? (
         <View style={{ padding: 20 }}>
           <PrimaryButton
-            title="Xoá"
+            title={t("templateScreen.delete")}
             buttonStyle={{
               backgroundColor: COLORS.danger,
             }}
@@ -172,7 +174,7 @@ const OrderTemplateList = ({ route, navigation }) => {
       ) : (
         <View style={{ padding: 20 }}>
           <PrimaryButton
-            title="Thêm mẫu đơn hàng"
+            title={t("templateScreen.addOrderTemplate")}
             buttonStyle={{
               backgroundColor: COLORS.primary,
             }}

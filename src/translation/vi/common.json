@@ -232,9 +232,70 @@
     "address":"Địa chỉ"
   },
   "templateScreen":{
+    "unnamed":"Chưa đặt tên",
+    "dateCreated":"Ngày tạo",
+    "use":"Sử dụng",
 
+    "youHaveNotEnteredTheStreetName":"Bạn chưa nhập tên đường",
+    "youHaveNotEnteredTheWardName":"Bạn chưa nhập tên phường",
+    "youHaveNotEnteredTheProvinceName":"Bạn chưa nhập tên huyện",
+    "youHaveNotEnteredTheCityName":"Bạn chưa nhập tên thành phố",
+    "orderForm":"Mẫu đơn hàng",
+    "houseNumber,StreetName":"Số nhà, tên đường",
+    "wards":"Phường / xã",
+    "province":"Quận / huyện",
+    "city":"Thành phố",
+
+    "youNeedToEnterTheReceiver'sName":"Bạn cần nhập tên người nhận",
+    "youNeedToEnterTheReceiver'sPhoneNumber":"Bạn cần nhập số điện thoại người nhận",
+    "successfullyAddTemplate":"Thêm mẫu thành công",
+    "failureAddedTemplate":"Thêm mẫu thất bại",
+    "updateSuccessful":"Cập nhật thành công",
+    "updateFailure":"Cập nhật thất bại",
+    "name(optional)":"Tên (không bắt buộc)",
+    "enterPackageInformation":"Nhập thông tin kiện hàng",
+    "placeOfDelivery":"Nơi gửi hàng",
+    "tapToAdd":"Nhấn để thêm",
+    "receiver'sName":"Tên người nhận",
+    "receiver'sPhone":"SDT người nhận",
+
+    "cancel":"Huỷ",
+    "delete":"Xóa",
+    "selectAll":"Chọn tất cả",
+    "noTemplateYet":"Chưa có mẫu",
+    "addOrderTemplate":"Thêm mẫu đơn hàng",
+
+    "youHaveNotEnteredTheLength":"Bạn chưa nhập chiều dài",
+    "invalidLength":"Chiều dài không hợp lệ",
+    "youHaveNotEnteredTheWidth":"Bạn chưa nhập chiều rộng",
+    "invalidWidth":"Chiều rộng không hợp lệ",
+    "youHaveNotEnteredYourHeight":"Bạn chưa nhập chiều cao",
+    "invalidHeight":"Chiều cao không hợp lệ",
+    "youHaveNotEnteredTheVolume":"Bạn chưa nhập khối lượng",
+    "invalidVolume":"Khối lượng không hợp lệ",
+    "youDidNotEnterANumber":"Bạn chưa nhập số lượng",
+    "invalidQuantity":"Số lượng không hợp lệ",
+    "addPackages":"Thêm kiện hàng",
+    "edit":"Chỉnh sửa",
+    "length":"Chiều dài",
+    "width":"Chiều rộng",
+    "height":"Chiều cao",
+    "weight":"Khối lượng",
+    "quantity":"Số lượng",
+    "typeOfGoods":"Loại hàng hoá",
+    "note":"Ghi chú",
+
+    "templatePackage":"Mẫu kiện hàng",
+    "addTemplatePackage":"Thêm mẫu kiện hàng"
   },
   "voucherScreen":{
-
+    "discount":"Giảm ",
+    "max":"Tối đa",
+    "minimumOrder":"đơn tối thiểu",
+    "reducedShippingFees":"Giảm phí vận chuyển",
+    "useItNow":"Dùng ngay",
+    "to":"Đến",
+    "yourVoucher":"Voucher của bạn",
+    "noQualifyingVoucher":"Không có mã giảm giá đạt điều kiện"
   }
 }

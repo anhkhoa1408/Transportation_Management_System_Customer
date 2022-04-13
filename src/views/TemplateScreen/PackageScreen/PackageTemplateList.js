@@ -15,8 +15,10 @@ import templateApi from './../../../api/templateApi';
 import PrimaryButton from './../../../components/CustomButton/PrimaryButton';
 import Template from './TemplateItem/Template';
 import Loading from '../../../components/Loading';
+import { useTranslation } from 'react-i18next';
 
 const PackageTemplateList = ({ route, navigation }) => {
+  const { t, i18n } = useTranslation("common")
   const [data, setData] = useState([]);
   const [deleteList, setDelList] = useState([]);
   const [loading, setLoading] = useState(null);
@@ -99,7 +101,7 @@ const PackageTemplateList = ({ route, navigation }) => {
         leftElement={
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
         }
-        headerText={'Mẫu kiện hàng'}
+        headerText={t("templateScreen.templatePackage")}
       />
       <View
         style={{
@@ -116,7 +118,7 @@ const PackageTemplateList = ({ route, navigation }) => {
                 marginRight: 10,
                 fontSize: 17,
               }}>
-              Huỷ
+              {t("templateScreen.cancel")}
             </Text>
           </TouchableOpacity>
         ) : (
@@ -128,7 +130,7 @@ const PackageTemplateList = ({ route, navigation }) => {
                 marginRight: 10,
                 fontSize: 17,
               }}>
-              Chọn tất cả
+              {t("templateScreen.selectAll")}
             </Text>
           </TouchableOpacity>
         )}
@@ -153,7 +155,7 @@ const PackageTemplateList = ({ route, navigation }) => {
       {check.some(item => item === true) ? (
         <View style={{ padding: 20 }}>
           <PrimaryButton
-            title="Xoá"
+            title={t("templateScreen.delete")}
             buttonStyle={{
               backgroundColor: COLORS.danger,
             }}
@@ -163,7 +165,7 @@ const PackageTemplateList = ({ route, navigation }) => {
       ) : (
         <View style={{ padding: 20 }}>
           <PrimaryButton
-            title="Thêm mẫu kiện hàng"
+            title={t("templateScreen.addTemplatePackage")}
             buttonStyle={{
               backgroundColor: COLORS.primary,
             }}

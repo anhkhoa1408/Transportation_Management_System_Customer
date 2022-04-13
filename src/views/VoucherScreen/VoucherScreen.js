@@ -23,8 +23,10 @@ import { formatCash } from '../../utils/order';
 import moment from 'moment';
 import { MAIN_URL } from '../../api/config';
 import voucherImg from './../../assets/images/voucher_alt.jpg';
+import { useTranslation } from 'react-i18next';
 
 const VoucherScreen = ({ route, navigation }) => {
+  const { t, i18n } = useTranslation("common")
   const useVoucher = route?.params?.useVoucher;
 
   const [data, setData] = useState([]);
@@ -64,7 +66,7 @@ const VoucherScreen = ({ route, navigation }) => {
                 <MaskedView
                   maskElement={
                     <Text style={[style.discountText]}>
-                      Giảm{' '}
+                      {t("voucherScreen.discount")}{' '}
                       {item && item.sale_type === 'value'
                         ? formatCash(item.sale.toString())
                         : item.sale + ' %'}
@@ -75,7 +77,7 @@ const VoucherScreen = ({ route, navigation }) => {
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 0 }}>
                     <Text style={[style.discountText, { opacity: 0 }]}>
-                      Giảm{' '}
+                      {t("voucherScreen.discount")}{' '}
                       {item && item.sale_type === 'value'
                         ? formatCash(item.sale.toString())
                         : item.sale + ' %'}
@@ -85,8 +87,7 @@ const VoucherScreen = ({ route, navigation }) => {
                 <MaskedView
                   maskElement={
                     <Text>
-                      Tối đa: {formatCash(item.sale_max.toString())} - đơn tối
-                      thiểu:{' '}
+                      {t("voucherScreen.max")}: {formatCash(item.sale_max.toString())} - {t("voucherScreen.minimumOrder")}:{' '}
                       {item.minimum_order &&
                         formatCash(item.minimum_order.toString())}
                     </Text>
@@ -96,8 +97,7 @@ const VoucherScreen = ({ route, navigation }) => {
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 0 }}>
                     <Text style={[{ opacity: 0 }]}>
-                      Tối đa: {formatCash(item.sale_max.toString())} - đơn tối
-                      thiểu:{' '}
+                    {t("voucherScreen.max")}: {formatCash(item.sale_max.toString())} - {t("voucherScreen.minimumOrder")}:{' '}
                       {item.minimum_order &&
                         formatCash(item.minimum_order.toString())}
                     </Text>
@@ -134,7 +134,7 @@ const VoucherScreen = ({ route, navigation }) => {
                     navigation.navigate('OrderSummary', {
                       ...route.params,
                       voucher: {
-                        title: `Giảm phí vận chuyển ${item.sale_type === 'value'
+                        title: `${t("voucherScreen.reducedShippingFees")} ${item.sale_type === 'value'
                         ? formatCash(item.sale.toString())
                         : item.sale + " %"}`,
                         data: item
@@ -150,7 +150,7 @@ const VoucherScreen = ({ route, navigation }) => {
                         fontSize: 15,
                       },
                     ]}>
-                    Dùng ngay
+                    {t("voucherScreen.useItNow")}
                   </Text>
                 </TouchableOpacity>
               )}
@@ -162,7 +162,7 @@ const VoucherScreen = ({ route, navigation }) => {
                 color: primary,
                 fontWeight: 'bold',
               }}>
-              Đến {moment(item.expired).format('DD/MM/YYYY')}
+              {t("voucherScreen.to")} {moment(item.expired).format('DD/MM/YYYY')}
             </ListItem.Subtitle>
           </View>
         </ListItem>
@@ -192,7 +192,7 @@ const VoucherScreen = ({ route, navigation }) => {
   return (
     <SafeAreaView style={style.container}>
       <Header
-        headerText={'Voucher của bạn'}
+        headerText={t("voucherScreen.yourVoucher")}
         leftElement={
           useVoucher && (
             <Icon name="west" size={30} onPress={() => navigation.goBack()} />
@@ -222,7 +222,7 @@ const VoucherScreen = ({ route, navigation }) => {
               justifyContent: 'center',
               paddingTop: '50%',
             }}>
-            <Text>Không có mã giảm giá đạt điều kiện</Text>
+            <Text>{t("voucherScreen.noQualifyingVoucher")}</Text>
           </View>
         }
       />
