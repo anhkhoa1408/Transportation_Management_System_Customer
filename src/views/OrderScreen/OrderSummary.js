@@ -259,7 +259,7 @@ const OrderSummary = ({ route, navigation }) => {
             </TouchableOpacity>
           </View>
           <View style={{ marginVertical: 8 }}>
-            <Text style={[FONTS.BigBold]}>{t("orderScreen.discountCode")}</Text>
+            <Text style={[FONTS.BigBold]}>{t("orderScreen.voucher")}</Text>
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('VoucherScreen', {
