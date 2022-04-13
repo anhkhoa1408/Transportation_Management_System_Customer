@@ -275,6 +275,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     paddingVertical: 15,
+    marginTop: 15
   },
   forgot: {
     color: COLORS.primary,
