@@ -25,7 +25,7 @@ const ForgotPass = ({ navigation, route }) => {
       navigate: 'resetPass',
     },
     signin: {
-      title: 't("authScreen.logIn")',
+      title: t("authScreen.logIn"),
       banner: '',
       navigate: 'Signin',
     },
