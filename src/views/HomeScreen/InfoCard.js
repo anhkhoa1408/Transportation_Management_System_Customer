@@ -66,7 +66,7 @@ const InfoCard = ({ item, navigation }) => {
                 fontSize: 16,
                 textAlign: 'center',
               }}>
-              {item.title}
+              {t(item.title)}
             </Text>
           </ListItem.Content>
         </ListItem>

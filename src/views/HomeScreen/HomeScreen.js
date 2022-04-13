@@ -38,23 +38,23 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
   const [listData, setListData] = useState([
     {
       icon: 'add',
-      title: t("homeScreen.order"),
+      title: "homeScreen.order",
       navigate: 'InputInfo',
     },
     {
       icon: 'event-available',
-      title: t("homeScreen.useOrderForm"),
+      title: "homeScreen.useOrderForm",
       navigate: 'OrderTemplateList',
       useTemplate: true,
     },
     {
       icon: 'assignment',
-      title: t("homeScreen.manageOrderForm"),
+      title: "homeScreen.manageOrderForm",
       navigate: 'OrderTemplateList',
     },
     {
       icon: 'inventory',
-      title: t("homeScreen.manageParcelSamples"),
+      title: "homeScreen.manageParcelSamples",
       navigate: 'PackageTemplateList',
     },
   ]);

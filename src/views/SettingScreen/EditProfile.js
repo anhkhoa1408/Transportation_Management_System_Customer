@@ -216,7 +216,7 @@ const EditProfile = ({ navigation }) => {
         )}
 
         <TextField
-          title="Tên đường"
+          title={t("orderScreen.street")}
           value={formik.values.street}
           onChangeText={text => formik.setFieldValue('address', text)}
           error={formik.touched.street && formik.errors.street}
@@ -224,7 +224,7 @@ const EditProfile = ({ navigation }) => {
           onBlur={() => formik.setFieldTouched('street')}
         />
         <TextField
-          title="Phường / xã"
+          title={t("orderScreen.wards")}
           value={formik.values.ward}
           onChangeText={text => formik.setFieldValue('ward', text)}
           error={formik.touched.ward && formik.errors.ward}
@@ -233,7 +233,7 @@ const EditProfile = ({ navigation }) => {
         />
         
         <TextField
-          title="Quận / huyện"
+          title={t("orderScreen.province")}
           value={formik.values.province}
           onChangeText={text => formik.setFieldValue('province', text)}
           error={formik.touched.province && formik.errors.province}
@@ -241,7 +241,7 @@ const EditProfile = ({ navigation }) => {
           onBlur={() => formik.setFieldTouched('province')}
         />
         <TextField
-          title="Thành phố"
+          title={t("orderScreen.city")}
           value={formik.values.city}
           onChangeText={text => formik.setFieldValue('city', text)}
           error={formik.touched.city && formik.errors.city}

@@ -30,13 +30,15 @@ const Account = ({ navigation, userInfo }) => {
   );
   const dispatch = useDispatch();
   const [toggle, setToggle] = useState({
-    language: true,
+    language: i18n.language === "en",
     nightMode: false,
-    notification: false,
   });
 
   const toggleSwitch = (e, item) => {
     setToggle({ ...toggle, [item.name]: e });
+    if (item.name === "language") {
+      i18n.changeLanguage(i18n.language === "en" ? "vi" : "en")
+    }
   };
 
   const accountList = [

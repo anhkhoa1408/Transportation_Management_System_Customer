@@ -145,7 +145,6 @@ const InputPackage = ({ route, navigation }) => {
                   })
                 : setAlert(true);
             }}
-            buttonStyle={{ backgroundColor: COLORS.primary }}
           />
         </View>
       </View>
