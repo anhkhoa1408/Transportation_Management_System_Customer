@@ -36,6 +36,18 @@ export default function OrderDetail({ navigation, route }) {
     }
   }, []);
 
+  const handleCancel = () => {
+    if (item.state === 0) {
+      orderApi.update(item.id, {
+        state: 5
+      })
+      .then(response => {
+        navigation.goBack()
+      })
+      .catch(err => console.log(err));
+    }
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <Header
@@ -115,14 +127,15 @@ export default function OrderDetail({ navigation, route }) {
             containerStyle={[styles.btnOption]}
             buttonStyle={[{ backgroundColor: COLORS.success }]}
           />
-          <Button
+          {/* <Button
             title={t("orderScreen.edit")}
             containerStyle={[styles.btnOption]}
             buttonStyle={[{ backgroundColor: COLORS.warning }]}
-          />
+          /> */}
           <Button
             title={t("orderScreen.cancelOrder")}
             type="outline"
+            onPress={handleCancel}
             containerStyle={[styles.btnOption]}
             titleStyle={[{ color: COLORS.danger }]}
             buttonStyle={[{ borderColor: COLORS.danger, borderWidth: 2 }]}

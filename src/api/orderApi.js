@@ -6,6 +6,10 @@ class OrderApi {
     const url = MAIN_URL.concat(`/orders/${id}`);
     return axiosClient.put(url, data);
   };
+  update = (id, data) => {
+    const url = MAIN_URL.concat(`/orders/${id}`);
+    return axiosClient.put(url, data);
+  };
   orderInfo = id => {
     const url = MAIN_URL.concat(`/orders/${id}`);
     return axiosClient.get(url);
