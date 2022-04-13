@@ -156,19 +156,14 @@ const PackageTemplateList = ({ route, navigation }) => {
         <View style={{ padding: 20 }}>
           <PrimaryButton
             title={t("templateScreen.delete")}
-            buttonStyle={{
-              backgroundColor: COLORS.danger,
-            }}
             onPress={handleDelete}
+            backgroundColor={COLORS.danger}
           />
         </View>
       ) : (
         <View style={{ padding: 20 }}>
           <PrimaryButton
             title={t("templateScreen.addTemplatePackage")}
-            buttonStyle={{
-              backgroundColor: COLORS.primary,
-            }}
             onPress={() =>
               navigation.navigate('EditPackage', {
                 ...route.params,

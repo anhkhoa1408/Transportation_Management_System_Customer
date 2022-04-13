@@ -3,8 +3,10 @@ import React, { useState, useRef } from 'react';
 import { Picker } from '@react-native-picker/picker';
 import { primary } from '../../styles/color';
 import TextField from '../TextField';
+import { useTranslation } from 'react-i18next';
 
 const Select = props => {
+  const { t } = useTranslation("common")
   const { data, selected, setSelected, disabled = false } = props;
   const [selectedItem, setSelectedItem] = useState(selected);
 
@@ -30,7 +32,7 @@ const Select = props => {
             const name = item?.name ? item.name : item;
             const value = item?.value ? item.value : item;
             const label = item?.label ? item.label : name;
-            return <Picker.Item key={label} label={label} value={value} />;
+            return <Picker.Item key={label} label={t(label)} value={value} />;
           })}
         </Picker>
       </View>
