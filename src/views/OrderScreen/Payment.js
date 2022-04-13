@@ -118,9 +118,10 @@ const Payment = ({ navigation, route }) => {
                   borderRadius: 15,
                 }}
               />
-              <Text style={{ flex: 1 }}>{t("orderScreen.payByReceiver")}</Text>
+              <Text style={{ flex: 1 }}>{t("orderScreen.payBySender")}</Text>
               <ListItem.CheckBox
                 checked={check.sender}
+                onPress={() => handleCheck('sender')}
                 checkedIcon={<Icon name="check-box" color={COLORS.primary} />}
               />
             </TouchableOpacity>
@@ -140,9 +141,10 @@ const Payment = ({ navigation, route }) => {
                   borderRadius: 15,
                 }}
               />
-              <Text style={{ flex: 1 }}>{t("orderScreen.payBySender")}</Text>
+              <Text style={{ flex: 1 }}>{t("orderScreen.payByReceiver")}</Text>
               <ListItem.CheckBox
                 checked={check.receiver}
+                onPress={() => handleCheck('receiver')}
                 checkedIcon={<Icon name="check-box" color={COLORS.primary} />}
               />
             </TouchableOpacity>
@@ -179,6 +181,7 @@ const Payment = ({ navigation, route }) => {
               <Text style={{ flex: 1 }}>{t("orderScreen.momoE-wallet")}</Text>
               <ListItem.CheckBox
                 checked={check.momo}
+                onPress={() => handleCheck('momo')}
                 checkedIcon={<Icon name="check-box" color={COLORS.primary} />}
               />
             </TouchableOpacity>
@@ -188,7 +191,6 @@ const Payment = ({ navigation, route }) => {
       <View style={{ padding: 20 }}>
         <PrimaryButton
           title={t("orderScreen.agree")}
-          buttonStyle={{ backgroundColor: COLORS.primary }}
           onPress={handleSubmit}
         />
       </View>
