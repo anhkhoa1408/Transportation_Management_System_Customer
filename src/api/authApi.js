@@ -21,6 +21,17 @@ class AuthorApi {
     const url = MAIN_URL.concat(`/users/${id}`);
     return axiosClient.put(url, data);
   };
+  updateAvatar = async avatar => {
+    const url = MAIN_URL.concat('/users/avatar');
+
+    let formData = new FormData();
+    formData.append('avatar', {
+      uri: avatar.uri,
+      name: avatar.fileName,
+      type: avatar.type,
+    });
+    return axiosClient.put(url, formData);
+  };
   updateDeviceToken = async token => {
     const url = MAIN_URL.concat(`/users/device_token`);
     return axiosClient.put(url, { device_token: token });

@@ -22,7 +22,7 @@ const CustomInput = props => {
   };
 
   return (
-    <View style={{ marginBottom: 15 }}>
+    <View style={{ marginTop: 10, marginBottom: 5 }}>
       {props.title && <Text style={style.title}>{props.title}</Text>}
       <TextInput
         style={[style.container, focus]}
@@ -49,11 +49,11 @@ const style = StyleSheet.create({
     paddingHorizontal: 25,
     paddingVertical: 10,
     height: 100,
-    fontSize: 17,
+    fontSize: 15,
     color: '#000',
   },
   title: {
-    fontSize: 20,
+    fontSize: 15,
     color: '#000000',
   },
 });

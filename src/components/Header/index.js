@@ -8,7 +8,7 @@ const Header = ({ leftElement, headerText, rightElement }) => {
   return (
     <View style={{ ...header }}>
       <View style={{ minWidth: 30 }}>{leftElement}</View>
-      <Text h4 style={{ ...headerFont }}>
+      <Text h4 h4Style={{ ...headerFont }}>
         {headerText}
       </Text>
       <View style={{ minWidth: 30 }}>{rightElement}</View>

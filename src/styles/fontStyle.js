@@ -1,5 +1,5 @@
 export const headerFont = {
-  fontSize: 25,
+  fontSize: 22,
   color: '#000',
 };
 
