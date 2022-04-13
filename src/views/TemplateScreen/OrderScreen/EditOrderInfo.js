@@ -79,6 +79,7 @@ const EditOrderInfo = ({ navigation, route }) => {
             message: t("templateScreen.successfullyAddTemplate"),
           });
           setItem(response);
+          navigation.goBack()
         })
         .catch(error => {
           setLoading(null);

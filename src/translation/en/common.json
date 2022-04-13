@@ -318,5 +318,11 @@
     "pay": "Payment"
   },
   "search": "Search",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "packageType": {
+    "normal": "Normal",
+    "fragile": "Fragile",
+    "explosive": "Explosive",
+    "smell": "Smell"
+  }
 }

@@ -184,7 +184,7 @@
     "shipmenttHistory": "Lịch sử chuyến hàng",
     "shipping": "Đang chuyển hàng",
     "shipped": "Đã vận chuyển",
-    "noShippingHistoryYet": "Chưa có lịch sử vận chuyển",
+    "noShippingHistoryYet": "Chưa có lịch sử đặt hàng",
     "noShipmentHistoryYet": "Chưa có lịch sử giao hàng",
 
     "payBySender": "Thanh toán bởi người gửi",
@@ -318,5 +318,11 @@
     "pay": "Thanh toán"
   },
   "search": "Nhập",
-  "cancel": "Hủy"
+  "cancel": "Hủy",
+  "packageType": {
+    "normal": "Thông thường",
+    "fragile": "Dễ vỡ",
+    "explosive": "Dễ cháy nổ",
+    "smell": "Có mùi"
+  }
 }
