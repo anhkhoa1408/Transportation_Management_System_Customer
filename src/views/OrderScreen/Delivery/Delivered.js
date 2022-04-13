@@ -4,25 +4,27 @@ import { Text, Icon, ListItem, Rating } from 'react-native-elements';
 import { FONTS, COLORS } from '../../../styles';
 import { convertOrderState } from '../../../utils/order';
 import moment from 'moment';
+import { useTranslation } from 'react-i18next';
 
 const Delivered = ({ item, navigation }) => {
+  const { t, i18n } = useTranslation("common")
   console.log(JSON.stringify(item));
   return (
     // <TouchableOpacity>
     <ListItem containerStyle={styles.deliveredContainer}>
       <ListItem.Content style={{ flex: 2 }}>
         <ListItem.Title style={[FONTS.Big]}>
-          {item.name || item.id || 'Không có tên'}
+          {item.name || item.id || t("orderScreen.noName")}
         </ListItem.Title>
         <ListItem.Subtitle style={{ flex: 1, marginTop: 3 }}>
-          Đặt hàng: {moment(item.createdAt).format('DD/MM/YYYY')}
+          {t("orderScreen.order")}: {moment(item.createdAt).format('DD/MM/YYYY')}
         </ListItem.Subtitle>
         <Text
           style={{
             ...FONTS.SmolBold,
             color: COLORS.success,
           }}>
-          Đã giao vào {moment(item.updatedAt).format('DD/MM/YYYY')}
+          {t("orderScreen.deliveredIn")} {moment(item.updatedAt).format('DD/MM/YYYY')}
         </Text>
       </ListItem.Content>
 
@@ -50,7 +52,7 @@ const Delivered = ({ item, navigation }) => {
           }}>
           <Text
             style={[FONTS.Smol, { marginRight: 10, color: 'rgba(0,0,0,0.5)' }]}>
-            Đánh giá
+            {t("orderScreen.rate")}
           </Text>
           <Rating
             readonly

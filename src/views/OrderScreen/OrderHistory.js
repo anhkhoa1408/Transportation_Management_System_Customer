@@ -14,8 +14,10 @@ import { COLORS, FONTS } from '../../styles';
 import orderApi from './../../api/orderApi';
 import Delivered from './Delivery/Delivered';
 import Delivering from './Delivery/Delivering';
+import { useTranslation } from 'react-i18next';
 
 export default function OrderHistory({ navigation }) {
+  const { t, i18n } = useTranslation("common")
   const [deliveredList, setDelivered] = useState([]);
   const [deliveringList, setDelivering] = useState([]);
   const [index, setIndex] = useState(0);
@@ -48,7 +50,7 @@ export default function OrderHistory({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       {loading}
-      <Header headerText="Lịch sử gửi hàng" />
+      <Header headerText={t("orderScreen.shipmenttHistory")} />
       <View style={{ paddingHorizontal: 15, height: 62 }}>
         <Tab
           value={index}
@@ -57,7 +59,7 @@ export default function OrderHistory({ navigation }) {
             height: 0,
           }}>
           <Tab.Item
-            title="Đang vận chuyển"
+            title={t("orderScreen.shipping")}
             titleStyle={{ fontSize: 12, color: COLORS.primary }}
             containerStyle={{
               backgroundColor: COLORS.gray,
@@ -70,7 +72,7 @@ export default function OrderHistory({ navigation }) {
             ]}
           />
           <Tab.Item
-            title="Đã vận chuyển"
+            title={t("orderScreen.shipped")}
             titleStyle={{ fontSize: 12, color: COLORS.primary }}
             containerStyle={[
               {
@@ -101,7 +103,7 @@ export default function OrderHistory({ navigation }) {
             renderItem={renderDeliveringItem}
             ListEmptyComponent={
               <View style={styles.noData}>
-                <Text>Chưa có lịch sử vận chuyển</Text>
+                <Text>{t("orderScreen.noShippingHistoryYet")}</Text>
               </View>
             }
           />
@@ -119,7 +121,7 @@ export default function OrderHistory({ navigation }) {
             }}
             ListEmptyComponent={
               <View style={styles.noData}>
-                <Text>Chưa có lịch sử vận chuyển</Text>
+                <Text>{t("orderScreen.noShipmentHistoryYet")}</Text>
               </View>
             }
           />

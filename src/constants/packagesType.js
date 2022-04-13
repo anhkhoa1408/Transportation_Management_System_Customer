@@ -1,18 +1,18 @@
 export const packagesType = [
   {
-    label: 'Thông thường',
+    label: 'packageType.normal',
     value: 'normal',
   },
   {
-    label: 'Dễ vỡ',
+    label: 'packageType.fragile',
     value: 'fragile',
   },
   {
-    label: 'Dễ cháy nổ',
+    label: 'packageType.explosive',
     value: 'explosive',
   },
   {
-    label: 'Có mùi',
+    label: 'packageType.smell',
     value: 'smell',
   },
 ];

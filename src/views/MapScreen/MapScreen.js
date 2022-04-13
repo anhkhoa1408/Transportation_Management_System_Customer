@@ -6,6 +6,7 @@ import { StyleSheet, Dimensions, View } from 'react-native';
 import GooglePlacesInput from './GooglePlaceInput';
 import PrimaryButton from '../../components/CustomButton/PrimaryButton';
 import Geocoder from 'react-native-geocoding';
+import { useTranslation } from 'react-i18next';
 
 Geocoder.init(GOOGLE_MAPS_API_KEY, { language: 'vi' });
 
@@ -19,6 +20,7 @@ const DELTA = {
 };
 
 const MapScreen = ({ navigation, route }) => {
+  const { t, i18n } = useTranslation("common")
   const [coord, setCoord] = useState(null);
   const [name, setName] = useState('');
   const [isGeoCodeNeeded, setIsGeoCodeNeeded] = useState(true);
@@ -123,7 +125,7 @@ const MapScreen = ({ navigation, route }) => {
       </MapView>
       <PrimaryButton
         containerStyle={styles.button}
-        title="Chọn địa điểm"
+        title={t("mapScreen.choosePlace")}
         onPress={onChooseAddress}
       />
     </View>

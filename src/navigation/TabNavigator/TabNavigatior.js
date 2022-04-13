@@ -13,10 +13,12 @@ import VoucherScreen from '../../views/VoucherScreen/VoucherScreen';
 import OrderStackScreen from '../StackNavigator/OrderStack';
 
 import { COLORS } from '../../styles';
+import { useTranslation } from 'react-i18next';
 
 const Tab = createBottomTabNavigator();
 
 const TabNavigatior = () => {
+  const { t } = useTranslation('common');
   const CustomTabBarButton = props => {
     let { iconName, name, accessibilityState } = props;
     let focused = accessibilityState.selected;
@@ -99,23 +101,23 @@ const TabNavigatior = () => {
             switch (route.name) {
               case 'Voucher':
                 iconName = 'local-offer';
-                name = 'Khuyến mãi';
+                name = t("navigation.voucher");
                 break;
               case 'ChatStack':
                 iconName = 'chat';
-                name = 'Tin nhắn';
+                name = t("navigation.chat");
                 break;
               case 'HomeStack':
                 iconName = 'dashboard';
-                name = 'Trang chủ';
+                name = t("navigation.home");
                 break;
               case 'OrderStack':
                 iconName = 'history';
-                name = 'Lịch sử';
+                name = t("navigation.order");
                 break;
               case 'SettingStack':
                 iconName = 'account-circle';
-                name = 'Cá nhân';
+                name = t("navigation.account");
                 break;
             }
             return (

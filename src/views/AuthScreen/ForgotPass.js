@@ -9,8 +9,10 @@ import banner from '../../assets/images/password_banner.png';
 import Loading from './../../components/Loading';
 import PrimaryButton from '../../components/CustomButton/PrimaryButton';
 import { COLORS, STYLES, FONTS } from '../../styles';
+import { useTranslation } from 'react-i18next';
 
 const ForgotPass = ({ navigation, route }) => {
+  const { t, i18n } = useTranslation("common")
   const [phone, setPhone] = useState('');
   const [isFocus, setFocus] = useState('');
   const [loading, setLoading] = useState(false);
@@ -18,12 +20,12 @@ const ForgotPass = ({ navigation, route }) => {
 
   const routeMetas = {
     forgot: {
-      title: 'Quên mật khẩu',
+      title: t("authScreen.forgotPassword"),
       banner: '',
       navigate: 'resetPass',
     },
     signin: {
-      title: 'Đăng nhập',
+      title: t("authScreen.logIn"),
       banner: '',
       navigate: 'Signin',
     },
@@ -45,10 +47,10 @@ const ForgotPass = ({ navigation, route }) => {
     },
     validationSchema: Bonk.object({
       phone: Bonk.string()
-        .required('Thông tin bắt buộc')
-        .min(10, 'Tối thiểu 10 chữ số')
-        .max(11, 'Tối đa 11 chữ số')
-        .matches(/(0[0-9]{9,10})/g, 'Số điện thoại không hợp lệ'),
+        .required(t("authScreen.requiredInformation"))
+        .min(10, t("authScreen.minimum10Digits"))
+        .max(11, t("authScreen.max11Digits"))
+        .matches(/(0[0-9]{9,10})/g, t("authScreen.invalidPhoneNumber")),
     }),
     onSubmit: values => {
       handleSubmit(values);
@@ -80,12 +82,12 @@ const ForgotPass = ({ navigation, route }) => {
             fontSize: 15,
             color: 'rgba(0, 0, 0, 0.5)',
           }}>
-          Nhập số điện thoại của bạn
+          {t("authScreen.enterYourPhoneNumber")}
         </Text>
         <TextField
           keyboardType="numeric"
           icon="phone"
-          placeholder="Số điện thoại"
+          placeholder={t("authScreen.phoneNumber")}
           value={formik.values.phone}
           onChangeText={setPhone}
           error={formik.touched.phone && formik.errors.phone}
@@ -95,7 +97,7 @@ const ForgotPass = ({ navigation, route }) => {
         <PrimaryButton
           backgroundColor="#f55651"
           containerStyle={{ marginTop: 20 }}
-          title="Lấy mã OTP"
+          title={t("authScreen.getOTP")}
           onPress={formik.submitForm}
         />
       </View>

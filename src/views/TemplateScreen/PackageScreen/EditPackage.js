@@ -14,8 +14,10 @@ import { COLORS } from '../../../styles';
 import { container } from '../../../styles/layoutStyle';
 import ModalMess from './../../../components/ModalMess';
 import Loading from './../../../components/Loading';
+import { useTranslation } from 'react-i18next';
 
 const EditPackage = ({ route, navigation }) => {
+  const { t, i18n } = useTranslation("common")
   const order = route?.params?.order;
   const item = route?.params?.item;
   const type = route?.params?.type;
@@ -48,20 +50,20 @@ const EditPackage = ({ route, navigation }) => {
     },
     validationSchema: Bonk.object({
       len: Bonk.number()
-        .required('Bạn chưa nhập chiều dài')
-        .min(0, 'Chiều dài không hợp lệ'),
+        .required(t("templateScreen.youHaveNotEnteredTheLength"))
+        .min(0, t("templateScreen.invalidLength")),
       width: Bonk.number()
-        .required('Bạn chưa nhập chiều rộng')
-        .min(0, 'Chiều rộng không hợp lệ'),
+        .required(t("templateScreen.youHaveNotEnteredTheWidth"))
+        .min(0, t("templateScreen.invalidWidth")),
       height: Bonk.number()
-        .required('Bạn chưa nhập chiều cao')
-        .min(0, 'Chiều cao không hợp lệ'),
+        .required(t("templateScreen.youHaveNotEnteredYourHeight"))
+        .min(0, t("templateScreen.invalidHeight")),
       weight: Bonk.number()
-        .required('Bạn chưa nhập khối lượng')
-        .min(0, 'Khối lượng không hợp lệ'),
+        .required(t("templateScreen.youHaveNotEnteredTheVolume"))
+        .min(0, t("templateScreen.invalidVolume")),
       quantity: Bonk.number()
-        .required('Bạn chưa nhập số lượng')
-        .min(1, 'Khối lượng không hợp lệ'),
+        .required(t("templateScreen.youDidNotEnterANumber"))
+        .min(1, t("templateScreen.invalidQuantity")),
     }),
     onSubmit: values => {
       if (type === 'edit') handleEdit(values);
@@ -105,14 +107,14 @@ const EditPackage = ({ route, navigation }) => {
         setLoading(null);
         setAlert({
           type: 'success',
-          message: 'Cập nhật thành công',
+          message: t("templateScreen.updateSuccessful"),
         });
       })
       .catch(error => {
         setLoading(null);
         setAlert({
           type: 'danger',
-          message: 'Cập nhật thất bại',
+          message: t("templateScreen.updateFailure"),
         });
       });
   };
@@ -135,14 +137,14 @@ const EditPackage = ({ route, navigation }) => {
         setLoading(null);
         setAlert({
           type: 'success',
-          message: 'Thêm mẫu thành công',
+          message: t("templateScreen.successfullyAddTemplate"),
         });
       })
       .catch(error => {
         setLoading(null);
         setAlert({
           type: 'danger',
-          message: 'Thêm mẫu thất bại',
+          message: t("templateScreen.failureAddedTemplate"),
         });
       });
   };
@@ -162,7 +164,7 @@ const EditPackage = ({ route, navigation }) => {
         leftElement={
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
         }
-        headerText={order ? 'Thêm kiện hàng' : 'Chỉnh sửa'}
+        headerText={order ? t("templateScreen.addPackages") : t("templateScreen.edit")}
         rightElement={
           <Icon
             name="check"
@@ -175,12 +177,12 @@ const EditPackage = ({ route, navigation }) => {
       <KeyboardAwareScrollView enableAutomaticScroll enableOnAndroid>
         <View style={style.form}>
           <TextField
-            title="Tên (không bắt buộc)"
+            title={t("templateScreen.name(optional)")}
             value={formik.values.name}
             onChangeText={text => formik.setFieldValue('name', text)}
           />
           <TextField
-            title="Chiều dài"
+            title={t("templateScreen.length")}
             afterText="cm"
             keyboardType="numeric"
             value={formik.values.len.toString()}
@@ -192,7 +194,7 @@ const EditPackage = ({ route, navigation }) => {
             }
           />
           <TextField
-            title="Chiều rộng"
+            title={t("templateScreen.width")}
             afterText="cm"
             keyboardType="numeric"
             value={formik.values.width.toString()}
@@ -204,7 +206,7 @@ const EditPackage = ({ route, navigation }) => {
             }
           />
           <TextField
-            title="Chiều cao"
+            title={t("templateScreen.height")}
             afterText="cm"
             keyboardType="numeric"
             value={formik.values.height.toString()}
@@ -216,7 +218,7 @@ const EditPackage = ({ route, navigation }) => {
             }
           />
           <TextField
-            title="Khối lượng"
+            title={t("templateScreen.weight")}
             afterText="kg"
             keyboardType="numeric"
             value={formik.values.weight.toString()}
@@ -228,7 +230,7 @@ const EditPackage = ({ route, navigation }) => {
             }
           />
           <TextField
-            title="Số lượng"
+            title={t("templateScreen.quantity")}
             afterText="kiện"
             keyboardType="numeric"
             value={formik.values.quantity.toString()}
@@ -240,12 +242,12 @@ const EditPackage = ({ route, navigation }) => {
             }
           />
           <Select
-            title="Loại hàng hoá"
+            title={t("templateScreen.typeOfGoods")}
             data={packagesType}
             selected={selected}
             setSelected={setSelected}
           />
-          <CustomInput title="Ghi chú" />
+          <CustomInput title={t("templateScreen.note")} />
         </View>
       </KeyboardAwareScrollView>
     </SafeAreaView>

@@ -3,6 +3,7 @@ import React from 'react';
 import StepIndicator from 'react-native-step-indicator';
 import { Icon } from 'react-native-elements';
 import { COLORS } from '../../styles';
+import { useTranslation } from 'react-i18next';
 
 const indicatorStyle = {
   stepIndicatorSize: 30,
@@ -57,6 +58,7 @@ const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
 
 const OrderStep = props => {
   let { current, name } = props;
+  const { t } = useTranslation('common');
   const renderStepIndicator = params => (
     <Icon {...getStepIndicatorIconConfig(params)} />
   );
@@ -69,7 +71,11 @@ const OrderStep = props => {
         customStyles={indicatorStyle}
         currentPosition={current}
         renderStepIndicator={renderStepIndicator}
-        labels={['Nhập thông tin', 'Kiểm tra', 'Thanh toán']}
+        labels={[
+          t('orderIndicator.input'),
+          t('orderIndicator.check'),
+          t('orderIndicator.pay'),
+        ]}
       />
     </View>
   );

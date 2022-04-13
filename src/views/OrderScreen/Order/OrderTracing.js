@@ -6,8 +6,10 @@ import { container } from '../../../styles/layoutStyle';
 import * as Animatable from 'react-native-animatable';
 import { convertTracingState } from '../../../utils/order';
 import moment from 'moment';
+import { useTranslation } from 'react-i18next';
 
 const OrderTracing = props => {
+  const { t, i18n } = useTranslation('common');
   const stageRef = useRef([]);
   const heightRef = useRef([]);
   const indiRef = useRef([]);
@@ -17,24 +19,24 @@ const OrderTracing = props => {
 
   const [step, setStep] = useState([
     {
-      title: 'Đặt hàng',
-      subTitle: 'Đơn hàng đang được tiếp nhận và chờ xử lý',
-      content: 'Đang xử lý đơn hàng',
+      title: t('orderScreen.order'),
+      subTitle: t('orderScreen.ordersAreBeingReceivedAndPending'),
+      content: t('orderScreen.orderProcessing'),
     },
     {
-      title: 'Chuyển tới kho nội thành',
-      subTitle: 'Các kiện hàng đang được chuẩn bị',
-      content: 'Chuẩn bị vận chuyển',
+      title: t('orderScreen.moveToInnerCityWarehouse'),
+      subTitle: t('orderScreen.packagesAreBeingPrepared'),
+      content: t('orderScreen.preparingForShipping'),
     },
     {
-      title: 'Giao hàng',
-      subTitle: 'Các kiện hàng sẽ được chuyển đến người nhận vào hôm nay',
-      content: 'Sẵn sàng giao hàng',
+      title: t('orderScreen.delivery'),
+      subTitle: t('orderScreen.packagesWillBeDeliveredToRecipientsToday'),
+      content: t('orderScreen.readyToDeliver'),
     },
     {
-      title: 'Giao hàng thành công',
-      subTitle: 'Các kiện hàng sẽ được chuyển đến người nhận',
-      content: 'Nhận hàng thành công',
+      title: t('orderScreen.deliverySccessful'),
+      subTitle: t('orderScreen.packagesWillBeDeliveredToTheReceiver'),
+      content: t('orderScreen.receivedGoodsSuccessfully'),
     },
   ]);
 
@@ -59,15 +61,20 @@ const OrderTracing = props => {
           { length: trace.tracingResult.length },
           (item, index) => {
             return {
-              title: 'Chuyển tới kho trung chuyển',
-              subTitle: `Các kiện hàng được trung chuyển đến ${
+              title: t('orderScreen.transferToTransitWarehouse'),
+              subTitle: `${t('orderScreen.packagesAreShippedTo')} ${
                 Object.values(trace.tracingResult[index])[0]
               }`,
-              content: `${convertTracingState(
-                trace.tracingResult[index].status,
-              )} - ${moment(
-                Object.values(trace.tracingResult[index])[2],
-              ).format('DD/MM/YYYY HH:mm')}`,
+              content: `${t(
+                convertTracingState(trace.tracingResult[index].status),
+              )} ${
+                Object.values(trace.tracingResult[index])[2]
+                  ? '-' +
+                    moment(Object.values(trace.tracingResult[index])[2]).format(
+                      'DD/MM/YYYY HH:mm',
+                    )
+                  : ''
+              }`,
             };
           },
         );
@@ -77,27 +84,34 @@ const OrderTracing = props => {
           { length: trace.tracingResult.length - 1 },
           (item, index) => {
             return {
-              title: 'Chuyển tới kho trung chuyển',
-              subTitle: `Các kiện hàng đang được trung chuyển đến ${
+              title: t('orderScreen.transferToTransitWarehouse'),
+              subTitle: `${t('orderScreen.packagesAreBeingShippedTo')} ${
                 Object.values(trace.tracingResult[index])[0]
               }`,
-              content: `${convertTracingState(
-                trace.tracingResult[index].status,
-              )} - ${moment(
-                Object.values(trace.tracingResult[index])[2],
-              ).format('DD/MM/YYYY HH:mm')}`,
+              content: `${t(
+                convertTracingState(trace.tracingResult[index].status),
+              )} ${
+                Object.values(trace.tracingResult[index])[2]
+                  ? '-' +
+                    moment(Object.values(trace.tracingResult[index])[2]).format(
+                      'DD/MM/YYYY HH:mm',
+                    )
+                  : ''
+              }`,
             };
           },
         );
         temp.push({
-          title: 'Vận chuyển đến kho nội thành',
-          subTitle: `Các kiện hàng sẽ đến ${
+          title: t('orderScreen.shippingToInnerCityWarehouse'),
+          subTitle: `${t('orderScreen.packagesWillArrive')} ${
             Object.values(
               trace.tracingResult[trace.tracingResult.length - 1],
             )[0]
           }`,
-          content: `${convertTracingState(
-            trace.tracingResult[trace.tracingResult.length - 1].status,
+          content: `${t(
+            convertTracingState(
+              trace.tracingResult[trace.tracingResult.length - 1].status,
+            ),
           )} - ${moment(
             Object.values(
               trace.tracingResult[trace.tracingResult.length - 1],

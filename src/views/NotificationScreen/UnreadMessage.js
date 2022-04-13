@@ -4,11 +4,13 @@ import {
   findNotificationById,
   addMessage,
 } from '../../utils/notificationUtils';
+import { useTranslation } from 'react-i18next';
 
 export async function newUnreadMessage(message, channelId) {
+  const { t, i18n } = useTranslation("common")
   return notifee.displayNotification({
     id: message?.user?._id,
-    title: `Tin nhắn mới từ ${message?.user?.name}`,
+    title: `${t("notificationScreen.newMessageFrom")} ${message?.user?.name}`,
     body: message?.text,
     android: {
       smallIcon: 'ic_small_icon',

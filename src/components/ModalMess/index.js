@@ -1,30 +1,31 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, StyleSheet } from 'react-native';
 import { Button, Icon, Text } from 'react-native-elements';
 import Modal from 'react-native-modal';
 import { danger, success, warning } from '../../styles/color';
-import PillButton from '../CustomButton/PillButton';
 
 const ModalMess = props => {
   const { alert, setAlert } = props;
+  const { t } = useTranslation('common');
   const iconStyle = [
     {
       type: 'warning',
       name: 'error',
       color: warning,
-      title: 'Cảnh báo',
+      title: 'warning',
     },
     {
       type: 'success',
       name: 'check-circle',
       color: success,
-      title: 'Thành công',
+      title: 'success',
     },
     {
       type: 'danger',
       name: 'cancel',
       color: danger,
-      title: 'Thất bại',
+      title: 'failed',
     },
   ];
   const modalType = iconStyle.find(element => element.type === props.type);
@@ -50,7 +51,7 @@ const ModalMess = props => {
             style={{ marginBottom: 10 }}
           />
           <Text h4 h4Style={{ textAlign: 'center', marginBottom: 10 }}>
-            {modalType.title}
+            {t(modalType.title)}
           </Text>
           <Text style={{ textAlign: 'center', marginBottom: 10 }}>
             {props.message}

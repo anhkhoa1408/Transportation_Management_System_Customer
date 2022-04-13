@@ -47,10 +47,10 @@ const SignIn = ({ navigation, route }) => {
       password: password,
     },
     validationSchema: Bonk.object({
-      email: Bonk.string().required('Thông tin bắt buộc'),
+      email: Bonk.string().required(t("authScreen.requiredInformation")),
       password: Bonk.string()
-        .required('Thông tin bắt buộc')
-        .min(8, 'Mật khẩu phải tối thiểu 8 ký tự'),
+        .required(t("authScreen.requiredInformation"))
+        .min(8, t("authScreen.passwordMustBeAtLeast8Characters")),
     }),
     onSubmit: values => {
       handleSubmit(values);
@@ -99,17 +99,17 @@ const SignIn = ({ navigation, route }) => {
           if (message === 'Auth.form.error.email.taken')
             setAlert({
               type: 'warning',
-              message: 'Email đã được sử dụng!',
+              message: t("authScreen.emailAlreadyInUse!"),
             });
           else
             setAlert({
               type: 'warning',
-              message: 'Tài khoản hoặc mật khẩu không đúng!',
+              message: t("authScreen.incorrectAccountOrPassword!"),
             });
         } catch (error) {
           setAlert({
             type: 'warning',
-            message: 'Xác thực thất bại!',
+            message: t("authScreen.authenticationFailed"),
           });
         }
         setLoading(null);
@@ -141,10 +141,10 @@ const SignIn = ({ navigation, route }) => {
         />
         <View style={{ alignItems: 'center' }}>
           <Text h2 style={{ marginBottom: 10 }}>
-            Xin chào
+          {t("authScreen.hello")}
           </Text>
           <Text style={styles.subTitle}>
-            Đăng nhập để bắt đầu sử dụng dịch vụ của chúng tôi
+            {t("authScreen.signInToStartUsingOurService")}
           </Text>
         </View>
 
@@ -152,7 +152,7 @@ const SignIn = ({ navigation, route }) => {
           <TextField
             name="email"
             icon="person-outline"
-            placeholder="Tên đăng nhập"
+            placeholder={t("authScreen.userName")}
             value={formik.values.email}
             onChangeText={setEmail}
             onBlur={() => {
@@ -165,7 +165,7 @@ const SignIn = ({ navigation, route }) => {
           <TextField
             name="password"
             icon="https"
-            placeholder="Mật khẩu"
+            placeholder={t("authScreen.password")}
             value={formik.values.password}
             secureTextEntry={!showPass}
             onChangeText={setPassword}
@@ -186,10 +186,10 @@ const SignIn = ({ navigation, route }) => {
             onPress={() =>
               navigation.navigate('forgotPassword', { type: 'forgot' })
             }>
-            <Text style={styles.forgot}>Quên mật khẩu?</Text>
+            <Text style={styles.forgot}>{t("authScreen.forgotPassword")}?</Text>
           </TouchableOpacity>
           <PrimaryButton
-            title={t("login")}
+            title={t("authScreen.login")}
             onPress={formik.submitForm}
             disabled={disabled}
           />
@@ -210,7 +210,7 @@ const SignIn = ({ navigation, route }) => {
             marginTop: 10,
             flex: 1,
           }}>
-          <Text style={styles.subTitle}>Hoặc đăng nhập với</Text>
+          <Text style={styles.subTitle}>{t("authScreen.orLoginWith")}</Text>
           <View
             style={{
               flexDirection: 'row',
@@ -248,10 +248,10 @@ const SignIn = ({ navigation, route }) => {
           </View>
         </View>
         <View style={[styles.container1]}>
-          <Text style={[FONTS.Medium]}>Chưa có tài khoản? </Text>
+          <Text style={[FONTS.Medium]}>{t("authScreen.doNotHaveAnAccount")}? </Text>
           <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
             <Text style={{ ...FONTS.BigBold, color: COLORS.primary }}>
-              Đăng ký
+              {t("authScreen.registration")}
             </Text>
           </TouchableOpacity>
         </View>

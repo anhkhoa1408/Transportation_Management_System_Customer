@@ -17,8 +17,10 @@ import Detail from './Order/Detail';
 import PackageList from './Order/PakageList';
 import OrderTracing from './Order/OrderTracing';
 import orderApi from '../../api/orderApi';
+import { useTranslation } from 'react-i18next';
 
 export default function OrderDetail({ navigation, route }) {
+  const { t, i18n } = useTranslation("common")
   const [index, setIndex] = useState(0);
   const [option, setOption] = useState(false);
   const [rating, setRating] = useState(false);
@@ -34,13 +36,25 @@ export default function OrderDetail({ navigation, route }) {
     }
   }, []);
 
+  const handleCancel = () => {
+    if (item.state === 0) {
+      orderApi.update(item.id, {
+        state: 5
+      })
+      .then(response => {
+        navigation.goBack()
+      })
+      .catch(err => console.log(err));
+    }
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <Header
         leftElement={
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
         }
-        headerText="Chi tiết"
+        headerText={t("orderScreen.detail")}
       />
 
       {/* Customer info and option */}
@@ -105,7 +119,7 @@ export default function OrderDetail({ navigation, route }) {
           visible={option}
           onBackdropPress={() => setOption(!option)}>
           <Button
-            title="Đánh giá"
+            title={t("orderScreen.rate")}
             onPress={() => {
               setRating(true);
               setOption(false);
@@ -113,14 +127,15 @@ export default function OrderDetail({ navigation, route }) {
             containerStyle={[styles.btnOption]}
             buttonStyle={[{ backgroundColor: COLORS.success }]}
           />
-          <Button
-            title="Chỉnh sửa"
+          {/* <Button
+            title={t("orderScreen.edit")}
             containerStyle={[styles.btnOption]}
             buttonStyle={[{ backgroundColor: COLORS.warning }]}
-          />
+          /> */}
           <Button
-            title="Huỷ đơn hàng"
+            title={t("orderScreen.cancelOrder")}
             type="outline"
+            onPress={handleCancel}
             containerStyle={[styles.btnOption]}
             titleStyle={[{ color: COLORS.danger }]}
             buttonStyle={[{ borderColor: COLORS.danger, borderWidth: 2 }]}
@@ -140,7 +155,7 @@ export default function OrderDetail({ navigation, route }) {
           }}
           variant="default">
           <Tab.Item
-            title=" Theo dõi"
+            title={t("orderScreen.follow")}
             titleStyle={{
               fontSize: 12,
               color: COLORS.primary,
@@ -157,7 +172,7 @@ export default function OrderDetail({ navigation, route }) {
             ]}
           />
           <Tab.Item
-            title="Chi tiết"
+            title={t("orderScreen.detail")}
             titleStyle={{
               fontSize: 12,
               color: COLORS.primary,
@@ -174,7 +189,7 @@ export default function OrderDetail({ navigation, route }) {
             ]}
           />
           <Tab.Item
-            title="Kiện hàng"
+            title={t("orderScreen.package")}
             titleStyle={{
               fontSize: 12,
               color: COLORS.primary,

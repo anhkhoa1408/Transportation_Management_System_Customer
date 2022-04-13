@@ -12,8 +12,10 @@ import Loading from './../../components/Loading';
 import PrimaryButton from '../../components/CustomButton/PrimaryButton';
 import { Divider, Image, Text } from 'react-native-elements';
 import { getPhoneNumberVerificator, getPhoneToken } from '../../config/OAuth';
+import { useTranslation } from 'react-i18next';
 
 const InputOtp = ({ navigation, route }) => {
+  const { t, i18n } = useTranslation("common")
   const { meta, phone } = route.params;
   const [vCode, setVCode] = useState('');
   const [timer, setTimer] = useState(60);
@@ -27,8 +29,8 @@ const InputOtp = ({ navigation, route }) => {
     },
     validationSchema: Bonk.object({
       code: Bonk.string()
-        .required('Thông tin bắt buộc')
-        .length(6, 'Mã xác nhận gồm 6 chữ số'),
+        .required(t("authScreen.requiredInformation"))
+        .length(6, t("authScreen.6-digitConfirmationCode")),
     }),
     onSubmit: values => {
       handleSubmit(values);
@@ -83,12 +85,12 @@ const InputOtp = ({ navigation, route }) => {
             marginBottom: 5,
             color: 'rgba(0,0,0,0.5)',
           }}>
-          Kiểm tra điện thoại của bạn và nhập mã OTP từ tin nhắn
+          {t("authScreen.checkYourPhoneAndEnterTheOTPFromTheMessage")}
         </Text>
         <TextField
           keyboardType="numeric"
           icon="phone"
-          placeholder="Nhập mã OTP"
+          placeholder={t("authScreen.enterOTP")}
           value={formik.values.code}
           onChangeText={setVCode}
           error={formik.touched.code && formik.errors.code}
@@ -96,7 +98,7 @@ const InputOtp = ({ navigation, route }) => {
         />
 
         <PrimaryButton
-          title="Xác nhận"
+          title={t("authScreen.confirm")}
           backgroundColor={COLORS.header}
           onPress={formik.submitForm}
         />
@@ -107,7 +109,7 @@ const InputOtp = ({ navigation, route }) => {
             style={{ marginVertical: 20, flex: 1 }}
             color={COLORS.header}
           />
-          <Text style={{ paddingHorizontal: 20 }}>hoặc</Text>
+          <Text style={{ paddingHorizontal: 20 }}>{t("authScreen.or")}</Text>
           <Divider
             width={1}
             style={{ marginVertical: 20, flex: 1 }}
@@ -120,7 +122,7 @@ const InputOtp = ({ navigation, route }) => {
           disabledStyle={{
             backgroundColor: COLORS.neutralWarning,
           }}
-          title={`Gửi lại mã ${timer ? '(' + timer + ')' : ''}`}
+          title={`${t("authScreen.resendCode")} ${timer ? '(' + timer + ')' : ''}`}
           backgroundColor={COLORS.warning}
           onPress={reSent}
         />

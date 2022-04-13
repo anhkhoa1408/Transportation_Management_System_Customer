@@ -12,8 +12,10 @@ import { container } from '../../../styles/layoutStyle';
 import Loading from './../../../components/Loading';
 import ModalMess from './../../../components/ModalMess';
 import { joinAddress, simplifyString } from './../../../utils/address.js';
+import { useTranslation } from 'react-i18next';
 
 const EditOrderInfo = ({ navigation, route }) => {
+  const { t, i18n } = useTranslation("common")
   const [from_address, setFrom] = useState(route?.params?.item?.from_address);
   const [to_address, setTo] = useState(route?.params?.item?.to_address);
 
@@ -31,9 +33,9 @@ const EditOrderInfo = ({ navigation, route }) => {
     enableReinitialize: true,
     initialValues: item,
     validationSchema: Bonk.object({
-      receiver_name: Bonk.string().required('Bạn cần nhập tên người nhận'),
+      receiver_name: Bonk.string().required(t("templateScreen.youNeedToEnterTheReceiver'sName")),
       receiver_phone: Bonk.string().required(
-        'Bạn cần nhập số điện thoại người nhận',
+        t("templateScreen.youNeedToEnterTheReceiver'sPhoneNumber"),
       ),
     }),
     onSubmit: values => handleSubmit(values),
@@ -74,15 +76,16 @@ const EditOrderInfo = ({ navigation, route }) => {
           setLoading(null);
           setAlert({
             type: 'success',
-            message: 'Thêm mẫu thành công',
+            message: t("templateScreen.successfullyAddTemplate"),
           });
           setItem(response);
+          navigation.goBack()
         })
         .catch(error => {
           setLoading(null);
           setAlert({
             type: 'danger',
-            message: 'Thêm mẫu thất bại',
+            message: t("templateScreen.failureAddedTemplate"),
           });
         });
     } else {
@@ -91,7 +94,7 @@ const EditOrderInfo = ({ navigation, route }) => {
           setLoading(null);
           setAlert({
             type: 'success',
-            message: 'Cập nhật thành công',
+            message: t("templateScreen.updateSuccessful"),
           });
           setItem(response);
         })
@@ -99,7 +102,7 @@ const EditOrderInfo = ({ navigation, route }) => {
           setLoading(null);
           setAlert({
             type: 'error',
-            message: 'Cập nhật thất bại',
+            message: t("templateScreen.updateFailure"),
           });
         });
     }
@@ -120,7 +123,7 @@ const EditOrderInfo = ({ navigation, route }) => {
         leftElement={
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
         }
-        headerText={'Mẫu đơn hàng'}
+        headerText={t("templateScreen.orderForm")}
         rightElement={
           <Icon
             name="check"
@@ -135,10 +138,10 @@ const EditOrderInfo = ({ navigation, route }) => {
         enableOnAndroid
         contentContainerStyle={style.form}>
         <Text style={[FONTS.BigBold, { marginBottom: 10 }]}>
-          Nhập thông tin kiện hàng
+          {t("templateScreen.enterPackageInformation")}
         </Text>
         <TextField
-          title="Tên (không bắt buộc)"
+          title={t("templateScreen.name(optional)")}
           value={formik.values.name}
           onChangeText={text => formik.setFieldValue('name', text)}
         />
@@ -156,8 +159,8 @@ const EditOrderInfo = ({ navigation, route }) => {
               from_address && simplifyString(joinAddress(from_address), 30)
             }
             editable={false}
-            title="Nơi gửi hàng"
-            placeholder="Nhấn để thêm"
+            title={t("templateScreen.placeOfDelivery")}
+            placeholder={t("templateScreen.tapToAdd")}
             afterComponent={<ListItem.Chevron size={25} />}
           />
         </TouchableOpacity>
@@ -173,13 +176,13 @@ const EditOrderInfo = ({ navigation, route }) => {
           <TextField
             value={to_address && simplifyString(joinAddress(to_address), 30)}
             editable={false}
-            title="Nơi nhận hàng"
-            placeholder="Nhấn để thêm"
+            title={t("templateScreen.placeOfDelivery")}
+            placeholder={t("templateScreen.tapToAdd")}
             afterComponent={<ListItem.Chevron size={25} />}
           />
         </TouchableOpacity>
         <TextField
-          title="Tên người nhận"
+          title={t("templateScreen.receiver'sName")}
           value={formik.values.receiver_name}
           onChangeText={text => formik.setFieldValue('receiver_name', text)}
           onBlur={() => formik.setFieldTouched('receiver_name')}
@@ -187,7 +190,7 @@ const EditOrderInfo = ({ navigation, route }) => {
           errorMessage={formik.errors.receiver_name}
         />
         <TextField
-          title="SDT người nhận"
+          title={t("templateScreen.receiver'sPhone")}
           keyboardType="numeric"
           value={formik.values.receiver_phone}
           onChangeText={text => formik.setFieldValue('receiver_phone', text)}

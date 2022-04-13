@@ -10,8 +10,10 @@ import TextField from '../../../components/TextField';
 import { provinces } from '../../../constants/province';
 import { COLORS, FONTS } from '../../../styles';
 import { container } from '../../../styles/layoutStyle';
+import { useTranslation } from 'react-i18next';
 
 const EditOrderAddress = ({ navigation, route }) => {
+  const { t, i18n } = useTranslation("common")
   const { item = {}, type } = route?.params;
 
   const initializeAddress = useMemo(() => {
@@ -93,7 +95,7 @@ const EditOrderAddress = ({ navigation, route }) => {
       street: item[type]?.street || '',
     },
     validationSchema: Bonk.object({
-      street: Bonk.string().required('Bạn chưa nhập tên đường'),
+      street: Bonk.string().required(t("templateScreen.youHaveNotEnteredTheStreetName")),
     }),
     onSubmit: values => {
       handleSubmit(values);
@@ -162,7 +164,7 @@ const EditOrderAddress = ({ navigation, route }) => {
         leftElement={
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
         }
-        headerText={'Mẫu đơn hàng'}
+        headerText={t("templateScreen.orderForm")}
         rightElement={
           <Icon
             name="check"
@@ -175,27 +177,27 @@ const EditOrderAddress = ({ navigation, route }) => {
       <KeyboardAwareScrollView contentContainerStyle={style.form}>
         <Text style={[FONTS.BigBold, { marginBottom: 10 }]}>Nhập địa chỉ</Text>
         <Select
-          title="Thành phố"
+          title={t("templateScreen.city")}
           selected={selectCity}
           setSelected={handleSelectCity}
           data={cities}
         />
         <Select
           disabled={!districts && !districts.length}
-          title="Quận / huyện"
+          title={t("templateScreen.province")}
           selected={selectDistrict}
           setSelected={handleSelectDistrict}
           data={districts}
         />
         <Select
           disabled={!wards && !wards.length}
-          title="Phường / xã"
+          title={t("templateScreen.wards")}
           selected={selectWard}
           setSelected={handleSelectWard}
           data={wards}
         />
         <TextField
-          title="Tên đường, số nhà"
+          title={t("templateScreen.houseNumber,StreetName")}
           value={formik.values.street}
           error={formik.touched.street && formik.errors.street}
           errorMessage={formik.errors.street}

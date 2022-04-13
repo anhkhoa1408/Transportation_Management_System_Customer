@@ -13,8 +13,10 @@ import { danger, primary } from '../../styles/color';
 import { connect } from 'react-redux';
 import NotiItem from './components/NotiItem';
 import { cleanNotification, removeNotification } from '../../actions/actions';
+import { useTranslation } from 'react-i18next';
 
 const NotificationScreen = props => {
+  const { t, i18n } = useTranslation("common")
   const { noties, navigation } = props;
 
   const [count, setCount] = useState(5);
@@ -50,7 +52,7 @@ const NotificationScreen = props => {
             onPress={() => {
               props.removeNoti(item.id);
             }}
-            title="Xoá"
+            title={t("notificationScreen.delete")}
             icon={{ name: 'delete', color: 'white' }}
             buttonStyle={{ minHeight: '100%', backgroundColor: 'red' }}
           />
@@ -69,7 +71,7 @@ const NotificationScreen = props => {
         leftElement={
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
         }
-        headerText="Thông báo"
+        headerText={t("notificationScreen.notify")}
         rightElement={
           <TouchableOpacity
             onPress={() => {
@@ -94,7 +96,7 @@ const NotificationScreen = props => {
             <View>
               <Icon name="more-horiz" color={primary} size={30} />
               <Button
-                title={`Xem thêm (${deleteData.length - count})`}
+                title={`${t("notificationScreen.seeMore")} (${deleteData.length - count})`}
                 buttonStyle={{ backgroundColor: primary }}
                 onPress={handleShowMore}
               />

@@ -15,6 +15,7 @@ import TextField from '../../components/TextField';
 import { store } from '../../config/configureStore';
 import { COLORS } from '../../styles';
 import { danger, success } from '../../styles/color';
+import { useTranslation } from 'react-i18next';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import PrimaryButton from '../../components/CustomButton/PrimaryButton';
 import { MAIN_URL } from '../../api/config';
@@ -23,6 +24,7 @@ import { getAvatarFromUser, getNameFromUser } from '../../utils/avatarUltis';
 
 
 const EditProfile = ({ navigation }) => {
+  const { t, i18n } = useTranslation("common")
   const [data, setData] = useState({
     name: '',
     email: '',
@@ -51,11 +53,11 @@ const EditProfile = ({ navigation }) => {
       city: data.address.city,
     },
     validationSchema: Bonk.object({
-      name: Bonk.string().required('Thông tin bắt buộc'),
+      name: Bonk.string().required(t("settingScreen.requiredInformation")),
       email: Bonk.string()
-        .required('Thông tin bắt buộc')
-        .email('Email không hợp lệ'),
-      phone: Bonk.string().required('Thông tin bắt buộc'),
+        .required(t("settingScreen.requiredInformation"))
+        .email(t("settingScreen.invalidEmail")),
+      phone: Bonk.string().required(t("settingScreen.requiredInformation")),
     }),
     onSubmit: values => {
       handleSubmit(values);
@@ -92,14 +94,14 @@ const EditProfile = ({ navigation }) => {
         setData(response);
         setAlert({
           type: 'success',
-          message: 'Cập nhật thông tin thành công',
+          message: t("settingScreen.successfullyUpdated"),
         });
       })
       .catch(err => {
         setLoading(false);
         setAlert({
           type: 'error',
-          message: 'Cập nhật thông tin thất bại',
+          message: t("settingScreen.updateFailedInformation"),
         });
       });
   };
@@ -121,7 +123,7 @@ const EditProfile = ({ navigation }) => {
         leftElement={
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
         }
-        headerText="Thông tin cá nhân"
+        headerText={t("settingScreen.personalInformation")}
       />
 
       <KeyboardAwareScrollView
@@ -174,7 +176,7 @@ const EditProfile = ({ navigation }) => {
         </View>
 
         <TextField
-          title="Tên"
+          title={t("settingScreen.name")}
           onChangeText={text => {
             formik.setFieldValue('name', text);
           }}
@@ -195,7 +197,7 @@ const EditProfile = ({ navigation }) => {
 
         <TextField
           keyboardType="numeric"
-          title="Số điện thoại"
+          title={t("settingScreen.phoneNumber")}
           value={formik.values.phone}
           onChangeText={text => formik.setFieldValue('phone', text)}
           error={formik.touched.phone && formik.errors.phone}
@@ -203,16 +205,18 @@ const EditProfile = ({ navigation }) => {
           onBlur={() => formik.setFieldTouched('phone')}
         />
 
+
+
         {formik.values.birthday && (
           <DatePicker
-            title="Ngày sinh của bạn"
+            title={t("settingScreen.yourBirthday")}
             date={formik.values.birthday}
             setDate={date => formik.setFieldValue('birthday', date)}
           />
         )}
 
         <TextField
-          title="Tên đường"
+          title={t("orderScreen.street")}
           value={formik.values.street}
           onChangeText={text => formik.setFieldValue('address', text)}
           error={formik.touched.street && formik.errors.street}
@@ -220,15 +224,16 @@ const EditProfile = ({ navigation }) => {
           onBlur={() => formik.setFieldTouched('street')}
         />
         <TextField
-          title="Phường / xã"
+          title={t("orderScreen.wards")}
           value={formik.values.ward}
           onChangeText={text => formik.setFieldValue('ward', text)}
           error={formik.touched.ward && formik.errors.ward}
           errorMessage={formik.errors.ward}
           onBlur={() => formik.setFieldTouched('ward')}
         />
+        
         <TextField
-          title="Quận / huyện"
+          title={t("orderScreen.province")}
           value={formik.values.province}
           onChangeText={text => formik.setFieldValue('province', text)}
           error={formik.touched.province && formik.errors.province}
@@ -236,7 +241,7 @@ const EditProfile = ({ navigation }) => {
           onBlur={() => formik.setFieldTouched('province')}
         />
         <TextField
-          title="Thành phố"
+          title={t("orderScreen.city")}
           value={formik.values.city}
           onChangeText={text => formik.setFieldValue('city', text)}
           error={formik.touched.city && formik.errors.city}

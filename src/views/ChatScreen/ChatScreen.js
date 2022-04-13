@@ -8,8 +8,10 @@ import { connect } from 'react-redux';
 import { socket } from '../../config/socketIO';
 import { getAvatarFromUri, getAvatarFromUser } from '../../utils/avatarUltis';
 import { formatDate } from '../../utils/dateUtils';
+import { useTranslation } from 'react-i18next';
 
 const ChatScreen = props => {
+  const { t, i18n } = useTranslation("common")
   const { userInfo, messenger, navigation, customerInfo } = props;
 
   const [historyChatList, setHistoryChatList] = React.useState([]);
@@ -42,7 +44,7 @@ const ChatScreen = props => {
   return (
     <View style={chatScreenStyle.container}>
       <View style={chatScreenStyle.header}>
-        <Text h4>Tin nhắn</Text>
+        <Text h4>{t("chatScreen.message")}</Text>
         <Avatar
           rounded
           size="small"

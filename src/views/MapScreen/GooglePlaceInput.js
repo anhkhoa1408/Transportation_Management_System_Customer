@@ -2,11 +2,13 @@ import React from 'react';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { GOOGLE_MAPS_API_KEY } from '@env';
 import { Dimensions } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 const GooglePlacesInput = ({ handleResult }) => {
+  const { t, i18n } = useTranslation("common")
   return (
     <GooglePlacesAutocomplete
-      placeholder="Tìm kiếm địa điểm"
+      placeholder={t("mapScreen.searchForAPlace")}
       onPress={(data, details = null) => {
         handleResult(data, details);
       }}

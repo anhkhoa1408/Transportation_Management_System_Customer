@@ -4,8 +4,10 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Icon, ListItem, Text } from 'react-native-elements';
 import { COLORS, FONTS } from './../../../../styles';
 import { primary } from './../../../../styles/color';
+import { useTranslation } from 'react-i18next';
 
 const Template = ({ check, index, item, navigation, onCheck, route }) => {
+  const { t, i18n } = useTranslation("common")
   const useTemplate = route?.params?.useTemplate;
   return (
     <TouchableOpacity
@@ -38,9 +40,9 @@ const Template = ({ check, index, item, navigation, onCheck, route }) => {
             />
           </View>
           <ListItem.Content>
-            <ListItem.Title>{item.name || 'Chưa đặt tên'}</ListItem.Title>
+            <ListItem.Title>{item.name || t("templateScreen.unnamed")}</ListItem.Title>
             <ListItem.Subtitle>
-              {'Ngày tạo: ' + moment(item.createdAt).format('DD/MM/YYYY')}
+              {t("templateScreen.dateCreated")+': ' + moment(item.createdAt).format('DD/MM/YYYY')}
             </ListItem.Subtitle>
           </ListItem.Content>
           {check.some(item => item === true) ? (
@@ -73,7 +75,7 @@ const Template = ({ check, index, item, navigation, onCheck, route }) => {
               });
             }}>
             <Text style={[FONTS.BigBold, { color: COLORS.primary }]}>
-              Sử dụng
+              {t("templateScreen.use")}
             </Text>
           </TouchableOpacity>
         )}

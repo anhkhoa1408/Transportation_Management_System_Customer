@@ -5,6 +5,7 @@ import { primaryColor } from '../../styles/color';
 import { containerOverlay } from '../../styles/layoutStyle';
 import { Text } from 'react-native-elements';
 import { COLORS } from '../../styles';
+import { useTranslation } from 'react-i18next';
 
 const Loading = () => {
   //   const [visible, setVisible] = useState(true);
@@ -14,6 +15,7 @@ const Loading = () => {
   //       clearTimeout(time);
   //     };
   //   }, [visible]);
+  const {t} = useTranslation("common")
 
   return (
     <SafeAreaView style={[styles.container, styles.containerOverlay]}>
@@ -24,7 +26,7 @@ const Loading = () => {
         type="ThreeBounce"
         color={COLORS.primary}
       />
-      <Text style={styles.text}>Xin vui lòng đợi</Text>
+      <Text style={styles.text}>{t("loading.pleaseWait")}</Text>
     </SafeAreaView>
   );
 };
