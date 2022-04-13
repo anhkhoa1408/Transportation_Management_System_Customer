@@ -9,7 +9,7 @@ import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 
 const OrderTracing = props => {
-  const { t, i18n } = useTranslation("common")
+  const { t, i18n } = useTranslation('common');
   const stageRef = useRef([]);
   const heightRef = useRef([]);
   const indiRef = useRef([]);
@@ -19,24 +19,24 @@ const OrderTracing = props => {
 
   const [step, setStep] = useState([
     {
-      title: t("orderScreen.order"),
-      subTitle: t("orderScreen.ordersAreBeingReceivedAndPending"),
-      content: t("orderScreen.orderProcessing"),
+      title: t('orderScreen.order'),
+      subTitle: t('orderScreen.ordersAreBeingReceivedAndPending'),
+      content: t('orderScreen.orderProcessing'),
     },
     {
-      title: t("orderScreen.moveToInnerCityWarehouse"),
-      subTitle: t("orderScreen.packagesAreBeingPrepared"),
-      content: t("orderScreen.preparingForShipping"),
+      title: t('orderScreen.moveToInnerCityWarehouse'),
+      subTitle: t('orderScreen.packagesAreBeingPrepared'),
+      content: t('orderScreen.preparingForShipping'),
     },
     {
-      title: t("orderScreen.delivery"),
-      subTitle: t("orderScreen.packagesWillBeDeliveredToRecipientsToday"),
-      content: t("orderScreen.readyToDeliver"),
+      title: t('orderScreen.delivery'),
+      subTitle: t('orderScreen.packagesWillBeDeliveredToRecipientsToday'),
+      content: t('orderScreen.readyToDeliver'),
     },
     {
-      title: t("orderScreen.deliverySccessful"),
-      subTitle: t("orderScreen.packagesWillBeDeliveredToTheReceiver"),
-      content: t("orderScreen.receivedGoodsSuccessfully"),
+      title: t('orderScreen.deliverySccessful'),
+      subTitle: t('orderScreen.packagesWillBeDeliveredToTheReceiver'),
+      content: t('orderScreen.receivedGoodsSuccessfully'),
     },
   ]);
 
@@ -61,15 +61,20 @@ const OrderTracing = props => {
           { length: trace.tracingResult.length },
           (item, index) => {
             return {
-              title: t("orderScreen.transferToTransitWarehouse"),
-              subTitle: `${t("orderScreen.packagesAreShippedTo")} ${
+              title: t('orderScreen.transferToTransitWarehouse'),
+              subTitle: `${t('orderScreen.packagesAreShippedTo')} ${
                 Object.values(trace.tracingResult[index])[0]
               }`,
-              content: `${t(convertTracingState(
-                trace.tracingResult[index].status,
-              ))} - ${moment(
-                Object.values(trace.tracingResult[index])[2],
-              ).format('DD/MM/YYYY HH:mm')}`,
+              content: `${t(
+                convertTracingState(trace.tracingResult[index].status),
+              )} ${
+                Object.values(trace.tracingResult[index])[2]
+                  ? '-' +
+                    moment(Object.values(trace.tracingResult[index])[2]).format(
+                      'DD/MM/YYYY HH:mm',
+                    )
+                  : ''
+              }`,
             };
           },
         );
@@ -79,30 +84,35 @@ const OrderTracing = props => {
           { length: trace.tracingResult.length - 1 },
           (item, index) => {
             return {
-              title: t("orderScreen.transferToTransitWarehouse"),
-              subTitle: `${t("orderScreen.packagesAreBeingShippedTo")} ${
+              title: t('orderScreen.transferToTransitWarehouse'),
+              subTitle: `${t('orderScreen.packagesAreBeingShippedTo')} ${
                 Object.values(trace.tracingResult[index])[0]
               }`,
               content: `${t(
-                convertTracingState(
-                trace.tracingResult[index].status,
-              ) 
-              )} - ${moment(
-                Object.values(trace.tracingResult[index])[2],
-              ).format('DD/MM/YYYY HH:mm')}`,
+                convertTracingState(trace.tracingResult[index].status),
+              )} ${
+                Object.values(trace.tracingResult[index])[2]
+                  ? '-' +
+                    moment(Object.values(trace.tracingResult[index])[2]).format(
+                      'DD/MM/YYYY HH:mm',
+                    )
+                  : ''
+              }`,
             };
           },
         );
         temp.push({
-          title: t("orderScreen.shippingToInnerCityWarehouse"),
-          subTitle: `${t("orderScreen.packagesWillArrive")} ${
+          title: t('orderScreen.shippingToInnerCityWarehouse'),
+          subTitle: `${t('orderScreen.packagesWillArrive')} ${
             Object.values(
               trace.tracingResult[trace.tracingResult.length - 1],
             )[0]
           }`,
-          content: `${t(convertTracingState(
-            trace.tracingResult[trace.tracingResult.length - 1].status,
-          ))} - ${moment(
+          content: `${t(
+            convertTracingState(
+              trace.tracingResult[trace.tracingResult.length - 1].status,
+            ),
+          )} - ${moment(
             Object.values(
               trace.tracingResult[trace.tracingResult.length - 1],
             )[2],
