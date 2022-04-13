@@ -211,7 +211,25 @@
 
   },
   "settingScreen":{
+    "requiredInformation":"Thông tin bắt buộc",
+    "invalidPassword":"Mật khẩu không hợp lệ",
+    "passwordMustBeAtLeast8Characters":"Mật khẩu cần dài tối thiểu 8 ký tự",
+    "passwordAndConfirmPasswordDoNotMatch":"Mật khẩu và mật khẩu xác nhận không khớp",
+    "changePassword": "Đổi mật khẩu",
+    "newPasswordMustBeAtLeast8Characters,IncludingCapitalLetters":"Mật khẩu mới phải có ít nhất 8 ký tự, bao gồm cả chữ in hoa",
+    "currentPassword":"Mật khẩu hiện tại",
+    "newPassword":"Mật khẩu mới",
+    "confirmPassword":"Xác nhận mật khẩu",
+    "update":"Cập nhật",
 
+    "invalidEmail":"Email không hợp lệ",
+    "successfullyUpdated":"Cập nhật thông tin thành công",
+    "updateFailedInformation":"Cập nhật thông tin thất bại",
+    "personalInformation":"Thông tin cá nhân",
+    "name":"Tên",
+    "phoneNumber":"Số điện thoại",
+    "yourBirthday":"Ngày sinh của bạn",
+    "address":"Địa chỉ"
   },
   "templateScreen":{
 

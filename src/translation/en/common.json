@@ -210,7 +210,25 @@
     "agree":"Agree"
   },
   "settingScreen":{
+    "requiredInformation":"Required Information",
+    "invalidPassword":"Invalid password",
+    "passwordMustBeAtLeast8Characters":"Password must be at least 8 characters long",
+    "passwordAndConfirmPasswordDoNotMatch":"Password and confirmation password do not match",
+    "changePassword": "Change Password",
+    "newPasswordMustBeAtLeast8Characters,IncludingCapitalLetters":"New password must be at least 8 characters, including capital letters",
+    "currentPassword":"Current password",
+    "newPassword":"New password",
+    "confirmPassword":"Confirm password",
+    "update":"Update",
 
+    "invalidEmail":"Invalid email",
+    "successfullyUpdated":"Successfully updated",
+    "updateFailedInformation":"Update failed information",
+    "personalInformation":"Personal information",
+    "name":"Name",
+    "phoneNumber":"Phone number",
+    "yourBirthday":"Your birthday",
+    "address":"Address"
   },
   "templateScreen":{
 

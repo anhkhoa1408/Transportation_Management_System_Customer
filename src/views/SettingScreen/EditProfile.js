@@ -15,8 +15,10 @@ import TextField from '../../components/TextField';
 import { store } from '../../config/configureStore';
 import { COLORS } from '../../styles';
 import { danger, success } from '../../styles/color';
+import { useTranslation } from 'react-i18next';
 
 const EditProfile = ({ navigation }) => {
+  const { t, i18n } = useTranslation("common")
   const [data, setData] = useState({
     name: '',
     email: '',
@@ -36,11 +38,11 @@ const EditProfile = ({ navigation }) => {
     enableReinitialize: true,
     initialValues: data,
     validationSchema: Bonk.object({
-      name: Bonk.string().required('Thông tin bắt buộc'),
+      name: Bonk.string().required(t("settingScreen.requiredInformation")),
       email: Bonk.string()
-        .required('Thông tin bắt buộc')
-        .email('Email không hợp lệ'),
-      phone: Bonk.string().required('Thông tin bắt buộc'),
+        .required(t("settingScreen.requiredInformation"))
+        .email(t("settingScreen.invalidEmail")),
+      phone: Bonk.string().required(t("settingScreen.requiredInformation")),
     }),
     onSubmit: values => {
       handleSubmit(values);
@@ -73,14 +75,14 @@ const EditProfile = ({ navigation }) => {
         dispatch(saveInfo({ user: response }));
         setAlert({
           type: 'success',
-          message: 'Cập nhật thông tin thành công',
+          message: t("settingScreen.successfullyUpdated"),
         });
       })
       .catch(err => {
         setLoading(false);
         setAlert({
           type: 'error',
-          message: 'Cập nhật thông tin thất bại',
+          message: t("settingScreen.updateFailedInformation"),
         });
       });
   };
@@ -100,7 +102,7 @@ const EditProfile = ({ navigation }) => {
         leftElement={
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
         }
-        headerText="Thông tin cá nhân"
+        headerText={t("settingScreen.personalInformation")}
       />
 
       <ScrollView contentContainerStyle={{ padding: 25 }}>
@@ -121,7 +123,7 @@ const EditProfile = ({ navigation }) => {
         </View>
 
         <TextField
-          title="Tên"
+          title={t("settingScreen.name")}
           style={styles.fsize}
           onChangeText={text => {
             formik.setFieldValue('name', text);
@@ -150,7 +152,7 @@ const EditProfile = ({ navigation }) => {
 
         <TextField
           keyboardType="numeric"
-          title="Số điện thoại"
+          title={t("settingScreen.phoneNumber")}
           style={styles.fsize}
           value={formik.values.phone}
           onChangeText={text => formik.setFieldValue('phone', text)}
@@ -162,10 +164,10 @@ const EditProfile = ({ navigation }) => {
           </Text>
         ) : null}
 
-        <DatePicker title="Ngày sinh của bạn" />
+        <DatePicker title={t("settingScreen.yourBirthday")} />
 
         <TextField
-          title="Địa chỉ"
+          title={t("settingScreen.address")}
           style={styles.fsize}
           value={formik.values.address}
           onChangeText={text => formik.setFieldValue('address', text)}
@@ -173,7 +175,7 @@ const EditProfile = ({ navigation }) => {
       </ScrollView>
       <View style={{ padding: 20 }}>
         <PillButton
-          title="Cập nhật"
+          title={t("settingScreen.update")}
           buttonStyle={{ backgroundColor: success }}
           onPress={formik.submitForm}
         />

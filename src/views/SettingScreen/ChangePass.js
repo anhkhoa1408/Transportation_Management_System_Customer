@@ -11,8 +11,10 @@ import TextField from '../../components/TextField';
 import { store } from '../../config/configureStore';
 import { COLORS } from '../../styles';
 import { danger, success } from '../../styles/color';
+import { useTranslation } from 'react-i18next';
 
 const ChangePass = ({ navigation }) => {
+  const { t, i18n } = useTranslation("common")
   const [data, setData] = useState({
     currPass: '',
     password: '',
@@ -26,18 +28,18 @@ const ChangePass = ({ navigation }) => {
     enableReinitialize: true,
     initialValues: data,
     validationSchema: Bonk.object({
-      currPass: Bonk.string().required('Thông tin bắt buộc'),
+      currPass: Bonk.string().required(t("settingScreen.requiredInformation")),
       password: Bonk.string()
-        .required('Thông tin bắt buộc')
-        .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/, 'Mật khẩu không hợp lệ')
-        .min(8, 'Mật khẩu phải tối thiểu 8 ký tự'),
+        .required(t("settingScreen.requiredInformation"))
+        .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/, t("settingScreen.invalidPassword"))
+        .min(8, t("settingScreen.passwordMustBeAtLeast8Characters")),
       confirmPassword: Bonk.string()
-        .required('Thông tin bắt buộc')
+        .required(t("settingScreen.requiredInformation"))
         .oneOf(
           [Bonk.ref('password'), null],
-          'Mật khẩu và xác nhận mật khẩu không khớp',
+          t("settingScreen.passwordAndConfirmPasswordDoNotMatch"),
         )
-        .min(8, 'Mật khẩu phải tối thiểu 8 ký tự'),
+        .min(8, t("settingScreen.passwordMustBeAtLeast8Characters")),
     }),
     onSubmit: values => {
       handleSubmit(values);
@@ -101,7 +103,7 @@ const ChangePass = ({ navigation }) => {
         leftElement={
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
         }
-        headerText="Đổi mật khẩu"
+        headerText={t("settingScreen.changePassword")}
       />
 
       <ScrollView contentContainerStyle={{ padding: 25 }}>
@@ -110,12 +112,11 @@ const ChangePass = ({ navigation }) => {
             textAlign: 'center',
             marginBottom: 25,
           }}>
-          Mật khẩu mới phải tối thiểu 8 ký tự, bao gồm chữ in hoa, số và khác
-          với mật khẩu hiện tại
+          {t("settingScreen.newPasswordMustBeAtLeast8Characters,IncludingCapitalLetters")}
         </Text>
 
         <TextField
-          title="Mật khẩu hiện tại"
+          title={t("settingScreen.currentPassword")}
           style={styles.fsize}
           value={formik.values.currPass}
           secureTextEntry
@@ -129,7 +130,7 @@ const ChangePass = ({ navigation }) => {
         ) : null}
 
         <TextField
-          title="Mật khẩu mới"
+          title={t("settingScreen.newPassword")}
           style={styles.fsize}
           value={formik.values.password}
           secureTextEntry
@@ -143,7 +144,7 @@ const ChangePass = ({ navigation }) => {
         ) : null}
 
         <TextField
-          title="Xác nhận mật khẩu"
+          title={t("settingScreen.confirmPassword")}
           style={styles.fsize}
           value={formik.values.confirmPassword}
           secureTextEntry
@@ -157,7 +158,7 @@ const ChangePass = ({ navigation }) => {
         ) : null}
 
         <PillButton
-          title="Cập nhật"
+          title={t("settingScreen.update")}
           buttonStyle={{ backgroundColor: success }}
           onPress={formik.submitForm}
         />
