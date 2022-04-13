@@ -15,26 +15,41 @@ import TextField from '../../components/TextField';
 import { store } from '../../config/configureStore';
 import { COLORS } from '../../styles';
 import { danger, success } from '../../styles/color';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import PrimaryButton from '../../components/CustomButton/PrimaryButton';
+import { MAIN_URL } from '../../api/config';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { getAvatarFromUser, getNameFromUser } from '../../utils/avatarUltis';
+
 
 const EditProfile = ({ navigation }) => {
   const [data, setData] = useState({
     name: '',
     email: '',
     phone: '',
-    address: '183/14 Bui Vien',
+    address: {
+      street: '',
+      ward: '',
+      province: '',
+      city: '',
+    },
   });
-  const [avatar, setAvatar] = useState(
-    'https://res.cloudinary.com/dfnoohdaw/image/upload/v1638692549/avatar_default_de42ce8b3d.png',
-  );
   const [dataChange, setDataChange] = useState(true);
   const [user, setUser] = useState({});
   const dispatch = useDispatch();
   const { userInfo } = store.getState();
+  const [avatar, setAvatar] = useState(getAvatarFromUser(userInfo?.user));
   const [alert, setAlert] = useState(null);
   const [loading, setLoading] = useState(false);
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: data,
+    initialValues: {
+      ...data,
+      street: data.address.street,
+      ward: data.address.ward,
+      province: data.address.province,
+      city: data.address.city,
+    },
     validationSchema: Bonk.object({
       name: Bonk.string().required('Thông tin bắt buộc'),
       email: Bonk.string()
@@ -50,27 +65,31 @@ const EditProfile = ({ navigation }) => {
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       setUser(userInfo);
-      setData({
-        ...data,
-        name: userInfo.user.name,
-        email: userInfo.user.email,
-        phone: userInfo.user.phone,
-      });
-      if ('avatar' in userInfo.user)
-        if ('url' in userInfo.user.avatar) setAvatar(userInfo.user.avatar.url);
+      setData(userInfo.user);
       setDataChange(false);
       setDataChange(true);
     });
     return unsubscribe;
-  }, [navigation]);
+  }, []);
 
   const handleSubmit = values => {
     setLoading(true);
+    let data = {
+      ...values,
+      address: {
+        ...values.address,
+        street: values.street,
+        ward: values.ward,
+        province: values.province,
+        city: values.city,
+      },
+    };
     authApi
-      .update(user.user.id, values)
+      .update(user.user.id, data)
       .then(response => {
         setLoading(false);
         dispatch(saveInfo({ user: response }));
+        setData(response);
         setAlert({
           type: 'success',
           message: 'Cập nhật thông tin thành công',
@@ -84,6 +103,8 @@ const EditProfile = ({ navigation }) => {
         });
       });
   };
+
+  // console.log(formik.values.birthday)
 
   return (
     <SafeAreaView style={styles.screen}>
@@ -103,7 +124,10 @@ const EditProfile = ({ navigation }) => {
         headerText="Thông tin cá nhân"
       />
 
-      <ScrollView contentContainerStyle={{ padding: 25 }}>
+      <KeyboardAwareScrollView
+        enableOnAndroid
+        enableAutomaticScroll
+        contentContainerStyle={{ paddingHorizontal: 25 }}>
         <View style={{ alignItems: 'center' }}>
           <Avatar
             size={150}
@@ -116,68 +140,115 @@ const EditProfile = ({ navigation }) => {
               style={{ backgroundColor: COLORS.primary }}
               color={COLORS.white}
               size={35}
+              onPress={() =>
+                launchImageLibrary({
+                  mediaTypes: 'photo',
+                  quality: 1,
+                }).then(data => {
+                  if (data.assets && data.assets.length > 0) {
+                    setLoading(true);
+                    authApi
+                      .updateAvatar(data.assets[0])
+                      .then(response => {
+                        setLoading(false);
+                        dispatch(saveInfo({ user: response }));
+                        setAlert({
+                          type: 'success',
+                          message: 'Cập nhật ảnh đại diện thành công',
+                        });
+                        setAvatar(MAIN_URL + response.avatar.url);
+                      })
+                      .catch(err => {
+                        console.error(err);
+                        setLoading(false);
+                        setAlert({
+                          type: 'danger',
+                          message: 'Cập nhật ảnh đại diện thất bại',
+                        });
+                      });
+                  }
+                })
+              }
             />
           </Avatar>
         </View>
 
         <TextField
           title="Tên"
-          style={styles.fsize}
           onChangeText={text => {
             formik.setFieldValue('name', text);
           }}
           value={formik.values.name}
+          error={formik.touched.name && formik.errors.name}
+          errorMessage={formik.errors.name}
+          onBlur={() => formik.setFieldTouched('name')}
         />
-
-        {formik.touched.name && formik.errors.name ? (
-          <Text style={{ color: danger, marginBottom: 10 }}>
-            {formik.errors.name}
-          </Text>
-        ) : null}
 
         <TextField
           title="Email"
-          style={styles.fsize}
           value={formik.values.email}
           onChangeText={text => formik.setFieldValue('email', text)}
+          error={formik.touched.email && formik.errors.email}
+          errorMessage={formik.errors.email}
+          onBlur={() => formik.setFieldTouched('email')}
         />
-
-        {formik.touched.email && formik.errors.email ? (
-          <Text style={{ color: danger, marginBottom: 10 }}>
-            {formik.errors.email}
-          </Text>
-        ) : null}
 
         <TextField
           keyboardType="numeric"
           title="Số điện thoại"
-          style={styles.fsize}
           value={formik.values.phone}
           onChangeText={text => formik.setFieldValue('phone', text)}
+          error={formik.touched.phone && formik.errors.phone}
+          errorMessage={formik.errors.phone}
+          onBlur={() => formik.setFieldTouched('phone')}
         />
 
-        {formik.touched.phone && formik.errors.phone ? (
-          <Text style={{ color: danger, marginBottom: 10 }}>
-            {formik.errors.phone}
-          </Text>
-        ) : null}
-
-        <DatePicker title="Ngày sinh của bạn" />
+        {formik.values.birthday && (
+          <DatePicker
+            title="Ngày sinh của bạn"
+            date={formik.values.birthday}
+            setDate={date => formik.setFieldValue('birthday', date)}
+          />
+        )}
 
         <TextField
-          title="Địa chỉ"
-          style={styles.fsize}
-          value={formik.values.address}
+          title="Tên đường"
+          value={formik.values.street}
           onChangeText={text => formik.setFieldValue('address', text)}
+          error={formik.touched.street && formik.errors.street}
+          errorMessage={formik.errors.street}
+          onBlur={() => formik.setFieldTouched('street')}
         />
-      </ScrollView>
-      <View style={{ padding: 20 }}>
-        <PillButton
+        <TextField
+          title="Phường / xã"
+          value={formik.values.ward}
+          onChangeText={text => formik.setFieldValue('ward', text)}
+          error={formik.touched.ward && formik.errors.ward}
+          errorMessage={formik.errors.ward}
+          onBlur={() => formik.setFieldTouched('ward')}
+        />
+        <TextField
+          title="Quận / huyện"
+          value={formik.values.province}
+          onChangeText={text => formik.setFieldValue('province', text)}
+          error={formik.touched.province && formik.errors.province}
+          errorMessage={formik.errors.province}
+          onBlur={() => formik.setFieldTouched('province')}
+        />
+        <TextField
+          title="Thành phố"
+          value={formik.values.city}
+          onChangeText={text => formik.setFieldValue('city', text)}
+          error={formik.touched.city && formik.errors.city}
+          errorMessage={formik.errors.city}
+          onBlur={() => formik.setFieldTouched('city')}
+        />
+
+        <PrimaryButton
           title="Cập nhật"
-          buttonStyle={{ backgroundColor: success }}
-          onPress={formik.submitForm}
-        />
-      </View>
+          backgroundColor={COLORS.success}
+          onPress={formik.submitForm}></PrimaryButton>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 };

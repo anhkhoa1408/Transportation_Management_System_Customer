@@ -16,7 +16,7 @@ import {
   Switch,
 } from 'react-native-elements';
 import { container } from '../../styles/layoutStyle';
-import { COLORS, FONTS } from '../../styles';
+import { COLORS, FONTS, STYLES } from '../../styles';
 import { useDispatch } from 'react-redux';
 import color, { success, danger } from '../../styles/color';
 import { connect } from 'react-redux';
@@ -73,13 +73,13 @@ const Account = ({ navigation, userInfo }) => {
       state: toggle.nightMode,
       color: '#000',
     },
-    {
-      title: 'Thông báo',
-      icon: 'notifications',
-      name: 'notification',
-      state: toggle.notification,
-      color: COLORS.primary,
-    },
+    // {
+    //   title: 'Thông báo',
+    //   icon: 'notifications',
+    //   name: 'notification',
+    //   state: toggle.notification,
+    //   color: COLORS.primary,
+    // },
   ];
 
   const keyExtractor = (item, index) => index.toString();
@@ -97,23 +97,22 @@ const Account = ({ navigation, userInfo }) => {
           containerStyle={{
             width: '100%',
             display: 'flex',
-            paddingVertical: 20,
+            paddingVertical: 15,
           }}
           bottomDivider>
           <View
             style={{
               backgroundColor: item.color,
-              padding: 12,
-              borderRadius: 20,
+              padding: 10,
+              borderRadius: 12,
             }}>
             <Icon name={item.icon} color="#FFF" size={22} />
           </View>
           <ListItem.Title
-            style={{
+            style={[FONTS.Medium, {
               flex: 1,
-              fontSize: 18,
               marginLeft: 10,
-            }}>
+            }]}>
             {item.title}
           </ListItem.Title>
 
@@ -130,23 +129,22 @@ const Account = ({ navigation, userInfo }) => {
           containerStyle={{
             width: '100%',
             display: 'flex',
-            paddingVertical: 20,
+            paddingVertical: 15,
           }}
           bottomDivider>
           <View
             style={{
               backgroundColor: item.color,
-              padding: 12,
-              borderRadius: 20,
+              padding: 10,
+              borderRadius: 12,
             }}>
             <Icon name={item.icon} color="#FFF" size={22} />
           </View>
           <ListItem.Title
-            style={{
+            style={[FONTS.Medium, {
               flex: 1,
-              fontSize: 18,
               marginLeft: 10,
-            }}>
+            }]}>
             {item.title}
           </ListItem.Title>
 
@@ -202,9 +200,9 @@ const Account = ({ navigation, userInfo }) => {
         <Text style={[styles.smallText, { marginBottom: 5 }]}>
           Điểm thành viên của bạn
         </Text>
-        <Text style={[FONTS.Big, { marginBottom: 35, fontSize: 19 }]}>
+        <Text style={[FONTS.Big, { marginBottom: 35, fontSize: 16 }]}>
           Bạn chỉ còn{' '}
-          <Text style={[{ color: COLORS.primary, fontSize: 30 }]}>
+          <Text style={[{ color: COLORS.primary, fontSize: 25 }]}>
             {100 - progress}
           </Text>{' '}
           điểm nữa để tăng lên vị trí thành viên {nextState()}
@@ -357,7 +355,7 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   smallText: {
-    fontSize: 15,
+    fontSize: 13,
     color: 'rgba(0, 0, 0, 0.5)',
   },
   editBtn: {
@@ -369,7 +367,7 @@ const styles = StyleSheet.create({
   statusText: {
     color: success,
     fontWeight: 'bold',
-    fontSize: 17,
+    fontSize: 16,
   },
   sectionText: {
     alignSelf: 'flex-start',
