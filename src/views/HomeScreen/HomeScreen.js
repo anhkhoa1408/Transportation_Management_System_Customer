@@ -23,7 +23,7 @@ import InfoCard from './InfoCard';
 import { useTranslation } from 'react-i18next';
 import orderApi from '../../api/orderApi';
 import { convertOrderState } from '../../utils/order';
-import { joinAddress } from '../../utils/address';
+import { joinAddress, simplifyString } from '../../utils/address';
 
 function HomeScreen({ navigation, userInfo, noties, ...props }) {
   const [badge, setBadge] = useState(null);
@@ -198,7 +198,8 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
                 }}>
                 Theo dõi
               </Text>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('HomeOrderHistory')}>
                 <View
                   style={{
                     padding: 6,
@@ -242,7 +243,7 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
                       style={{
                         opacity: 0.5,
                       }}>
-                      Đến: {joinAddress(item.to_address)}
+                      Đến: {simplifyString(joinAddress(item.to_address), 30)}
                     </Text>
                   </View>
                   <View
