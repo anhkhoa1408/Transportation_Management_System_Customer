@@ -114,7 +114,6 @@ const OrderRating = ({ visible, onSwipeComplete, ...props }) => {
         <PrimaryButton
           title={t("orderScreen.send")}
           onPress={handleSubmit}
-          buttonStyle={{ backgroundColor: COLORS.header }}
         />
       </View>
     </Modal>

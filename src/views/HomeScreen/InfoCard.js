@@ -34,41 +34,28 @@ const InfoCard = ({ item, navigation }) => {
     <Animatable.View ref={ref} duration={500} easing="ease">
       <TouchableWithoutFeedback onPress={() => handlePress(item.navigate)}>
         <ListItem containerStyle={styles.listItem}>
-          <ListItem.Content
+        <View
             style={{
-              height: '100%',
-              width: '100%',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'space-evenly',
-              backgroundColor: primary,
+              padding: 5,
+              borderRadius: 50,
+              backgroundColor: 'rgba(255, 255, 255, 0.4)',
             }}>
-            <View
-              style={{
-                backgroundColor: 'rgba(255, 255, 255, 0.3)',
-                padding: 10,
-                borderRadius: 15,
-                marginBottom: 5,
-              }}>
-              <View
-                style={{
-                  backgroundColor: '#FFF',
-                  padding: 5,
-                  borderRadius: 10,
-                }}>
-                <Icon name={item.icon} color={primary} />
-              </View>
-            </View>
-            <Text
-              style={{
-                color: '#FFF',
-                fontSize: 16,
-                textAlign: 'center',
-              }}>
-              {t(item.title)}
-            </Text>
-          </ListItem.Content>
+            <Icon
+              name={item.icon}
+              reverseColor={COLORS.primary}
+              reverse
+              size={17}
+              color={COLORS.white}
+            />
+          </View>
+          <Text
+            style={{
+              color: '#000',
+              fontSize: 13,
+              marginTop: 5,
+            }}>
+            {t(item.title)}
+          </Text>
         </ListItem>
       </TouchableWithoutFeedback>
     </Animatable.View>
@@ -77,22 +64,20 @@ const InfoCard = ({ item, navigation }) => {
 
 const styles = StyleSheet.create({
   listItem: {
-    width: 165,
-    height: 130,
+    height: '100%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
-    backgroundColor: COLORS.primary,
     borderColor: '#000',
-    paddingVertical: 15,
-    marginHorizontal: 15,
-    marginVertical: 20,
-    borderRadius: 12,
+    backgroundColor: 'transparent',
+    zIndex: -999,
   },
-  titleFont: {
-    fontSize: 16,
-    color: '#737373',
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    backgroundColor: COLORS.white,
   },
 });
 

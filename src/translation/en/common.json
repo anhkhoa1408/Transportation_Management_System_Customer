@@ -87,8 +87,8 @@
   "homeScreen": {
     "order": "Order",
     "useOrderForm": "Use order templates",
-    "manageOrderForm": "Manage order templates",
-    "manageParcelSamples": "Manage package templates",
+    "manageOrderForm": "Order templates",
+    "manageParcelSamples": "Package templates",
     "hello": "Hello "
   },
   "mapScreen": {
@@ -116,7 +116,7 @@
     "youHaveNotEnteredTheCityName": "Missing city name",
     "address": "Address",
     "enterAddress": "",
-    "send": "Enter sender's address",
+    "send": "Send",
     "receive": "Enter receiver's address",
     "houseNumber,StreetName": "House number, street name",
     "street": "Street",
@@ -288,9 +288,9 @@
     "addTemplatePackage": "Add package template"
   },
   "voucherScreen": {
-    "discount": "discount",
+    "discount": "Discount",
     "max": "Max",
-    "minimumOrder": "Minimum Order",
+    "minimumOrder": "Minimum order's fee",
     "reducedShippingFees": "Reduced shipping fees",
     "useItNow": "Use it now",
     "to": "To",

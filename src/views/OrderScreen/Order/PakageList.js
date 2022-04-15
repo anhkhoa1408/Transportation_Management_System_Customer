@@ -7,16 +7,13 @@ import { COLORS, FONTS } from './../../../styles';
 import { useTranslation } from 'react-i18next';
 
 const PackageList = ({ navigation, item, ...props }) => {
-  const { t, i18n } = useTranslation("common")
+  const { t, i18n } = useTranslation('common');
   const [data, setData] = useState(item.packages);
 
   return (
     <ScrollView contentContainerStyle={{ paddingHorizontal: 10 }}>
       {data.map((item, index) => (
-        <TouchableOpacity
-          activeOpacity={1}
-          key={item.id}
-          onPress={() => navigation.navigate('EditPackage')}>
+        <TouchableOpacity activeOpacity={1} key={item.id}>
           <View key={item.id} style={styles.package}>
             <View style={{ ...styles.vehicle }}>
               <Icon
@@ -32,16 +29,16 @@ const PackageList = ({ navigation, item, ...props }) => {
                   alignItems: 'flex-start',
                 }}>
                 <Text style={{ ...FONTS.BigBold }}>
-                  {item.name || t("orderScreen.unnamed")}
+                  {item.name || t('orderScreen.unnamed')}
                 </Text>
                 <Text style={{ ...FONTS.Medium }}>
-                  {t("orderScreen.quantity")}:{' '}
+                  {t('orderScreen.quantity')}:{' '}
                   <Text style={{ ...styles.info }}>
-                    {item.quantity + t("orderScreen.package")}
+                    {item.quantity + t('orderScreen.package')}
                   </Text>
                 </Text>
                 <Text style={{ ...FONTS.Medium }}>
-                  {t("orderScreen.currentLocation")}:{' '}
+                  {t('orderScreen.currentLocation')}:{' '}
                   <Text style={{ ...styles.info }}>
                     {item?.current_address &&
                       joinAddress(item?.current_address)}

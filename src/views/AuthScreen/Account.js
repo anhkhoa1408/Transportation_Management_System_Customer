@@ -24,38 +24,38 @@ import { getAvatarFromUser } from '../../utils/avatarUltis';
 import { useTranslation } from 'react-i18next';
 
 const Account = ({ navigation, userInfo }) => {
-  const { t, i18n } = useTranslation("common")
+  const { t, i18n } = useTranslation('common');
   const [progress, setProgress] = useState(
     userInfo?.user?.point ? userInfo?.user?.point : 0,
   );
   const dispatch = useDispatch();
   const [toggle, setToggle] = useState({
-    language: i18n.language === "en",
+    language: i18n.language && i18n.language === 'en',
     nightMode: false,
   });
 
   const toggleSwitch = (e, item) => {
     setToggle({ ...toggle, [item.name]: e });
-    if (item.name === "language") {
-      i18n.changeLanguage(i18n.language === "en" ? "vi" : "en")
+    if (item.name === 'language') {
+      i18n.changeLanguage(i18n.language === 'en' ? 'vi' : 'en');
     }
   };
 
   const accountList = [
     {
-      title: t("authScreen.editInformation"),
+      title: t('authScreen.editInformation'),
       icon: 'edit',
       navigate: 'EditProfile',
       color: '#CCC',
     },
     {
-      title: t("authScreen.changePassword"),
+      title: t('authScreen.changePassword'),
       icon: 'lock',
       navigate: 'ChangePass',
       color: '#fc6603',
     },
     {
-      title: t("authScreen.logOut"),
+      title: t('authScreen.logOut'),
       icon: 'logout',
       navigate: '',
       color: danger,
@@ -64,14 +64,14 @@ const Account = ({ navigation, userInfo }) => {
 
   const appList = [
     {
-      title: t("authScreen.engLish"),
+      title: t('authScreen.engLish'),
       icon: 'language',
       name: 'language',
       state: toggle.language,
       color: '#ac4ff7',
     },
     {
-      title: t("authScreen.darkMode"),
+      title: t('authScreen.darkMode'),
       icon: 'nightlight-round',
       name: 'nightMode',
       state: toggle.nightMode,
@@ -113,10 +113,13 @@ const Account = ({ navigation, userInfo }) => {
             <Icon name={item.icon} color="#FFF" size={22} />
           </View>
           <ListItem.Title
-            style={[FONTS.Medium, {
-              flex: 1,
-              marginLeft: 10,
-            }]}>
+            style={[
+              FONTS.Medium,
+              {
+                flex: 1,
+                marginLeft: 10,
+              },
+            ]}>
             {item.title}
           </ListItem.Title>
 
@@ -145,10 +148,13 @@ const Account = ({ navigation, userInfo }) => {
             <Icon name={item.icon} color="#FFF" size={22} />
           </View>
           <ListItem.Title
-            style={[FONTS.Medium, {
-              flex: 1,
-              marginLeft: 10,
-            }]}>
+            style={[
+              FONTS.Medium,
+              {
+                flex: 1,
+                marginLeft: 10,
+              },
+            ]}>
             {item.title}
           </ListItem.Title>
 
@@ -173,28 +179,28 @@ const Account = ({ navigation, userInfo }) => {
   const currentState = () => {
     switch (userInfo?.user.type) {
       case 'User':
-        return t("authScreen.copper");
+        return t('authScreen.copper');
       case 'Iron':
-        return t("authScreen.silver");
+        return t('authScreen.silver');
       case 'Gold':
-        return t("authScreen.gold");
+        return t('authScreen.gold');
       case 'Diamond':
-        return t("authScreen.diamond");
+        return t('authScreen.diamond');
       default:
-        return t("authScreen.copper");
+        return t('authScreen.copper');
     }
   };
 
   const nextState = () => {
     switch (userInfo?.user.type) {
       case 'User':
-        return t("authScreen.silver");
+        return t('authScreen.silver');
       case 'Iron':
-        return t("authScreen.gold");
+        return t('authScreen.gold');
       case 'Gold':
-        return t("authScreen.diamond");
+        return t('authScreen.diamond');
       default:
-        return t("authScreen.copper");
+        return t('authScreen.copper');
     }
   };
 
@@ -202,14 +208,14 @@ const Account = ({ navigation, userInfo }) => {
     <>
       <View style={{ padding: 25 }}>
         <Text style={[styles.smallText, { marginBottom: 5 }]}>
-        {t("authScreen.yourMembershipPoints")}
+          {t('authScreen.yourMembershipPoints')}
         </Text>
         <Text style={[FONTS.Big, { marginBottom: 35, fontSize: 16 }]}>
-        {t("authScreen.youOnlyHave")}{' '}
+          {t('authScreen.youOnlyHave')}{' '}
           <Text style={[{ color: COLORS.primary, fontSize: 25 }]}>
             {100 - progress}
           </Text>{' '}
-          {t("authScreen.morePointsToIncreaseToMemberPosition")} {nextState()}
+          {t('authScreen.morePointsToIncreaseToMemberPosition')} {nextState()}
         </Text>
         <View
           style={{
@@ -218,7 +224,7 @@ const Account = ({ navigation, userInfo }) => {
             elevation: 10,
             shadowColor: COLORS.primary,
             backgroundColor: '#FFF',
-            borderRadius: 12,
+            borderRadius: 8,
           }}>
           <Slider
             maximumValue={100}
@@ -228,32 +234,36 @@ const Account = ({ navigation, userInfo }) => {
             step={1}
             value={progress}
             onValueChange={setProgress}
+            disabled
             allowTouchTrack
             trackStyle={{
-              height: 10,
+              height: 7,
               backgroundColor: 'transparent',
               borderRadius: 20,
             }}
             thumbStyle={{
               height: 50,
+              width: 0,
               backgroundColor: 'transparent',
             }}
             thumbProps={{
               children: (
                 <View style={{ position: 'relative', alignItems: 'center' }}>
-                  <Icon
-                    name="room"
-                    size={15}
-                    reverse
-                    containerStyle={{ bottom: 30 }}
-                    color={COLORS.header}
-                  />
-                  {progress !== 100 && (
-                    <Text
-                      style={{ position: 'absolute', top: 45, ...FONTS.Big }}>
+                  <View
+                    style={{
+                      backgroundColor: COLORS.header,
+                      borderRadius: 18,
+                      width: 35,
+                      height: 35,
+                      bottom: 25,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <Text style={{ color: 'white', fontWeight: 'bold' }}>
                       {progress}
                     </Text>
-                  )}
+                  </View>
                 </View>
               ),
             }}
@@ -261,7 +271,7 @@ const Account = ({ navigation, userInfo }) => {
           <Text style={{ alignSelf: 'flex-end', ...FONTS.Big }}>{100}</Text>
         </View>
       </View>
-      <Text style={styles.sectionText}>{t("authScreen.account")}</Text>
+      <Text style={styles.sectionText}>{t('authScreen.account')}</Text>
       <FlatList
         listKey="A"
         nestedScrollEnabled
@@ -275,7 +285,7 @@ const Account = ({ navigation, userInfo }) => {
         data={accountList}
         renderItem={renderItem}
       />
-      <Text style={styles.sectionText}>{t("authScreen.application")}</Text>
+      <Text style={styles.sectionText}>{t('authScreen.application')}</Text>
       <FlatList
         listKey="B"
         nestedScrollEnabled
@@ -303,10 +313,10 @@ const Account = ({ navigation, userInfo }) => {
           }}
         />
         <View style={{ marginLeft: 20, flex: 1 }}>
-          <Text style={styles.smallText}>{t("authScreen.hello")}</Text>
+          <Text style={styles.smallText}>{t('authScreen.hello')}</Text>
           <Text style={styles.bigText}>{userInfo?.user?.name}</Text>
           <Text style={[styles.statusText, { color: COLORS.warning }]}>
-            {t("authScreen.member")} {currentState()}
+            {t('authScreen.member')} {currentState()}
           </Text>
         </View>
         <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>

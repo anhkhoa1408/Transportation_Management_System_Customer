@@ -86,9 +86,9 @@
   },
   "homeScreen": {
     "order": "Đặt hàng",
-    "useOrderForm": "Dùng mẫu đơn hàng",
-    "manageOrderForm": "Quản lý mẫu đơn hàng",
-    "manageParcelSamples": "Quản lý mẫu kiện hàng",
+    "useOrderForm": "Sử dụng mẫu",
+    "manageOrderForm": "Mẫu đơn hàng",
+    "manageParcelSamples": "Mẫu kiện hàng",
     "hello": "Xin chào "
   },
   "mapScreen": {
@@ -116,7 +116,7 @@
     "youHaveNotEnteredTheCityName": "Bạn chưa nhập tên thành phố",
     "address": "Địa chỉ",
     "enterAddress": "",
-    "send": "Nhập địa chỉ người gửi",
+    "send": "Gửi",
     "receive": "Nhập địa chỉ người nhận",
     "houseNumber,StreetName": "Số nhà, tên đường",
     "street": "Tên đường",
@@ -288,9 +288,9 @@
     "addTemplatePackage": "Thêm mẫu kiện hàng"
   },
   "voucherScreen": {
-    "discount": "Giảm ",
+    "discount": "Giảm",
     "max": "Tối đa",
-    "minimumOrder": "Số đơn tối thiểu",
+    "minimumOrder": "Phí vận chuyển tối thiểu",
     "reducedShippingFees": "Giảm phí vận chuyển",
     "useItNow": "Dùng ngay",
     "to": "Đến",
