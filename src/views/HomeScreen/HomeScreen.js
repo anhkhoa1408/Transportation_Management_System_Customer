@@ -19,16 +19,19 @@ import { COLORS, STYLES } from '../../styles';
 import { container, shadowCard } from '../../styles/layoutStyle';
 import { getAvatarFromUser, getNameFromUser } from '../../utils/avatarUltis';
 import banner from './../../assets/images/customer_home.png';
+import nothing_img from './../../assets/images/nothing.png';
 import InfoCard from './InfoCard';
 import { useTranslation } from 'react-i18next';
 import orderApi from '../../api/orderApi';
 import { convertOrderState } from '../../utils/order';
 import { joinAddress, simplifyString } from '../../utils/address';
+import moment from 'moment';
 
 function HomeScreen({ navigation, userInfo, noties, ...props }) {
   const [badge, setBadge] = useState(null);
   const { t, i18n } = useTranslation('common');
   const [orders, setOrders] = useState([]);
+  const [awaitFeedback, setFeedbacks] = useState([]);
 
   const mapStateToStyle = state => {
     switch (state) {
@@ -56,11 +59,17 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
           color: COLORS.bolderGray,
           neutralColor: COLORS.gray,
         };
+      case 4:
+        return {
+          icon: 'thumb-up-alt',
+          color: COLORS.warning,
+          neutralColor: COLORS.neutralWarning,
+        };
       default:
         return {
           icon: 'storefront',
-          color: COLORS.header,
-          neutralColor: COLORS.neutralHeader,
+          color: COLORS.bolderGray,
+          neutralColor: COLORS.gray,
         };
     }
   };
@@ -71,17 +80,32 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      orderApi.deliveringOrders().then(response => {
-        console.log(response);
-        setOrders(
-          response.map(item => {
-            return {
-              ...item,
-              style: mapStateToStyle(item.state),
-            };
-          }),
-        );
-      });
+      let date = new Date();
+      Promise.all([
+        orderApi.getList({
+          state_in: [0, 1, 2, 3],
+        }),
+        orderApi.getList({
+          state: 4,
+          rating_note_null: true,
+          rating_point_null: true,
+          updatedAt_gte: moment(
+            new Date(date.getFullYear(), date.getMonth(), date.getDate() - 7),
+          ).format('YYYY-MM-DD[T]HH:mm:ss[Z]'),
+        }),
+      ])
+        .then(response => {
+          setOrders(
+            response[0].map(item => {
+              return {
+                ...item,
+                style: mapStateToStyle(item.state),
+              };
+            }),
+          );
+          setFeedbacks(response[1]);
+        })
+        .catch(error => console.log(error));
     });
 
     return unsubscribe;
@@ -167,7 +191,6 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
                 contentContainerStyle={{
                   display: 'flex',
                   flexDirection: 'row',
-                  width: '100%',
                   justifyContent: 'space-evenly',
                   alignItems: 'center',
                 }}
@@ -181,6 +204,8 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
               />
             </View>
           </View>
+
+          {/* Tracing section */}
           <View style={{ paddingHorizontal: 15, marginTop: 15 }}>
             <View
               style={{
@@ -196,7 +221,7 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
                   fontWeight: '800',
                   letterSpacing: 1,
                 }}>
-                Theo dõi
+                {t('homeScreen.tracing')}
               </Text>
               <TouchableOpacity
                 onPress={() => navigation.navigate('HomeOrderHistory')}>
@@ -210,69 +235,189 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
                     flexDirection: 'row',
                     borderRadius: 10,
                   }}>
-                  <Text style={{ fontWeight: '800' }}>Chi tiết</Text>
+                  <Text style={{ fontWeight: '800' }}>
+                    {t('homeScreen.detail')}
+                  </Text>
                   <Icon name="chevron-right" />
                 </View>
               </TouchableOpacity>
             </View>
-            {orders.map(item => {
-              let { icon, neutralColor, color } = item.style;
-              return (
-                <View key={item.id} style={homeStyle.trackItem}>
-                  <View
-                    style={[
-                      homeStyle.trackItemIcon,
-                      { backgroundColor: neutralColor },
-                    ]}>
-                    <Icon name={icon} color={color} />
-                  </View>
-                  <View
-                    style={{
-                      flex: 1,
-                      paddingHorizontal: 15,
-                    }}>
-                    <Text
+            {orders.length ? (
+              orders.map(item => {
+                let { icon, neutralColor, color } = item.style;
+                return (
+                  <View key={item.id} style={homeStyle.trackItem}>
+                    <View
+                      style={[
+                        homeStyle.trackItemIcon,
+                        { backgroundColor: neutralColor },
+                      ]}>
+                      <Icon name={icon} color={color} />
+                    </View>
+                    <View
                       style={{
-                        fontSize: 17,
-                        fontWeight: 'bold',
-                        letterSpacing: 1,
+                        flex: 1,
+                        paddingLeft: 15,
                       }}>
-                      {item.name || 'Chưa đặt tên'}
-                    </Text>
-                    <Text
-                      style={{
-                        opacity: 0.5,
-                      }}>
-                      Đến: {simplifyString(joinAddress(item.to_address), 30)}
-                    </Text>
-                  </View>
-                  <View
-                    style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+                      <Text
+                        style={{
+                          fontSize: 17,
+                          fontWeight: 'bold',
+                          letterSpacing: 1,
+                        }}>
+                        {item.name || 'Chưa đặt tên'}
+                      </Text>
+                      <Text
+                        style={{
+                          opacity: 0.5,
+                        }}>
+                        {t("homeScreen.to")}: {simplifyString(joinAddress(item.to_address), 22)}
+                      </Text>
+                    </View>
                     <View
                       style={{
                         flexDirection: 'row',
-                        alignItems: 'center',
+                        alignItems: 'flex-start',
                       }}>
                       <View
                         style={{
-                          borderRadius: 5,
-                          padding: 3,
-                          marginRight: 6,
-                          backgroundColor: neutralColor,
-                        }}></View>
-                      <Text
-                        style={{
-                          textAlign: 'right',
-                          fontWeight: 'bold',
-                          color: color,
+                          flexDirection: 'row',
+                          alignItems: 'center',
                         }}>
-                        {t(convertOrderState(item.state))}
-                      </Text>
+                        <View
+                          style={{
+                            borderRadius: 5,
+                            padding: 3,
+                            marginRight: 6,
+                            backgroundColor: neutralColor,
+                          }}></View>
+                        <Text
+                          style={{
+                            textAlign: 'right',
+                            fontWeight: 'bold',
+                            color: color,
+                          }}>
+                          {t(convertOrderState(item.state))}
+                        </Text>
+                      </View>
                     </View>
                   </View>
+                );
+              })
+            ) : (
+              <View style={homeStyle.nothing}>
+                <Image source={nothing_img} style={homeStyle.nothingImg} />
+                <Text style={{ opacity: 0.5 }}>{t("homeScreen.noOrder")}</Text>
+              </View>
+            )}
+          </View>
+
+          {/* Await feedback section */}
+          <View style={{ paddingHorizontal: 15, marginTop: 25 }}>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: 15,
+              }}>
+              <Text
+                style={{
+                  fontSize: 19,
+                  fontWeight: '800',
+                  letterSpacing: 1,
+                }}>
+                {t('homeScreen.feedback')}
+              </Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('HomeOrderHistory')}>
+                <View
+                  style={{
+                    padding: 6,
+                    backgroundColor: COLORS.gray,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    borderRadius: 10,
+                  }}>
+                  <Text style={{ fontWeight: '800' }}>
+                    {t('homeScreen.detail')}
+                  </Text>
+                  <Icon name="chevron-right" />
                 </View>
-              );
-            })}
+              </TouchableOpacity>
+            </View>
+
+            {awaitFeedback.length ? (
+              awaitFeedback.map(item => {
+                let { icon, neutralColor, color } = mapStateToStyle(item.state);
+                return (
+                  <View key={item.id} style={homeStyle.trackItem}>
+                    <View
+                      style={[
+                        homeStyle.trackItemIcon,
+                        { backgroundColor: neutralColor },
+                      ]}>
+                      <Icon name={icon} color={color} />
+                    </View>
+                    <View
+                      style={{
+                        flex: 1,
+                        paddingLeft: 15,
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: 17,
+                          fontWeight: 'bold',
+                          letterSpacing: 1,
+                        }}>
+                        {item.name || 'Chưa đặt tên'}
+                      </Text>
+                      <Text
+                        style={{
+                          opacity: 0.5,
+                        }}>
+                        Đến: {simplifyString(joinAddress(item.to_address), 22)}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'flex-start',
+                      }}>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                        }}>
+                        <View
+                          style={{
+                            borderRadius: 5,
+                            padding: 3,
+                            marginRight: 6,
+                            backgroundColor: neutralColor,
+                          }}></View>
+                        <Text
+                          style={{
+                            textAlign: 'right',
+                            fontWeight: 'bold',
+                            color: color,
+                          }}>
+                          {t('homeScreen.await')}
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                );
+              })
+            ) : (
+              <View style={homeStyle.nothing}>
+                <Image source={nothing_img} style={homeStyle.nothingImg} />
+                <Text style={{ opacity: 0.5 }}>{t("homeScreen.noFeedback")}</Text>
+              </View>
+            )}
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -286,14 +431,14 @@ const homeStyle = StyleSheet.create({
   },
   listInfo: {
     width: '100%',
-    height: 120,
+    height: 108,
     display: 'flex',
     flexDirection: 'row',
     backgroundColor: COLORS.gray,
     borderTopLeftRadius: 50,
     borderBottomLeftRadius: 50,
     zIndex: 99,
-    paddingHorizontal: 10,
+    paddingLeft: 12,
     marginBottom: 25,
   },
   banner: {
@@ -318,6 +463,17 @@ const homeStyle = StyleSheet.create({
   trackItemIcon: {
     padding: 20,
     borderRadius: 15,
+  },
+  nothing: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  nothingImg: {
+    width: 150,
+    height: 150,
+    resizeMode: 'contain',
   },
 });
 
