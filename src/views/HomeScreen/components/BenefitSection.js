@@ -19,15 +19,15 @@ const BenefitSection = props => {
       banner: money,
     },
     {
-      title: 'Vận chuyển an toàn',
+      title: 'An toàn',
       subTitle: 'Đảm bảo an toàn cho hàng hóa của bạn',
       color: COLORS.primary,
       neutral: COLORS.neutralPrimary,
       banner: safe_img,
     },
     {
-      title: 'Theo dõi đơn hàng',
-      subTitle: 'Theo dõi thông tin đơn hàng mọi lúc',
+      title: 'Tin cậy',
+      subTitle: 'Theo dõi thông tin đơn hàng mọi lúc mọi nơi',
       color: COLORS.primary,
       neutral: COLORS.neutralPrimary,
       banner: trace,
@@ -69,7 +69,7 @@ const BenefitSection = props => {
         layout={'default'}
         data={data}
         sliderWidth={width}
-        itemWidth={(4 * width) / 5}
+        itemWidth={(5 * width) / 6}
         renderItem={renderItem}
         firstItem={0}
         onSnapToItem={index => setActiveIndex(index)}
@@ -88,9 +88,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 150,
     marginVertical: 25,
-    marginHorizontal: 25,
+    marginHorizontal: 20,
     borderRadius: 15,
-    borderWidth: 2,
+    borderWidth: 0.9,
     borderColor: COLORS.gray,
     width: '100%',
   },
@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
     opacity: 0.75,
     letterSpacing: 2,
     fontWeight: 'bold',
+    marginBottom: 5
   },
   subTextItem: {
     fontSize: 14,
