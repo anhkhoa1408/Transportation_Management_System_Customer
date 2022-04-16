@@ -9,7 +9,7 @@
     "successfullyExporting": "Successfully exported",
     "transporting": "Transporting",
     "processing": "Processing",
-    "prepareThePackage": "Preparing packages",
+    "prepareThePackage": "Collecting packages",
     "preparingForDelivery": "Preparing for delivery",
     "delivered": "Delivered",
     "canceled": "Canceled"
@@ -89,7 +89,14 @@
     "useOrderForm": "Use order templates",
     "manageOrderForm": "Order templates",
     "manageParcelSamples": "Package templates",
-    "hello": "Hello "
+    "hello": "Hello ",
+    "to": "To",
+    "tracing": "Tracing",
+    "feedback": "Feedback",
+    "detail": "Detail",
+    "await": "Await feedback",
+    "noFeedback": "No feedback yet",
+    "noOrder": "No order yet"
   },
   "mapScreen": {
     "searchForAPlace": "Search for a place",
@@ -116,7 +123,7 @@
     "youHaveNotEnteredTheCityName": "Missing city name",
     "address": "Address",
     "enterAddress": "",
-    "send": "Send",
+    "send": "Enter sender's address",
     "receive": "Enter receiver's address",
     "houseNumber,StreetName": "House number, street name",
     "street": "Street",
@@ -207,7 +214,8 @@
     "pleaseChooseOneOfTheFollowingPaymentMethods": "Please choose one of the following payment methods",
     "offlinePayment": "Directly",
     "onlinePayment": "Pay online",
-    "agree": "Agree"
+    "agree": "Agree",
+    "sendFeedback": "Send feedback"
   },
   "settingScreen": {
     "requiredInformation": "Required information",

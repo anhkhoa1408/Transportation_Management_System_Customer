@@ -13,19 +13,19 @@ const ModalMess = props => {
       type: 'warning',
       name: 'error',
       color: warning,
-      title: 'warning',
+      title: 'modalMess.warning',
     },
     {
       type: 'success',
       name: 'check-circle',
       color: success,
-      title: 'success',
+      title: 'modalMess.success',
     },
     {
       type: 'danger',
       name: 'cancel',
       color: danger,
-      title: 'failed',
+      title: 'modalMess.fail',
     },
   ];
   const modalType = iconStyle.find(element => element.type === props.type);

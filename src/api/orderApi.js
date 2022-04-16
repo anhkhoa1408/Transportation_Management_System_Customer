@@ -2,6 +2,10 @@ import axiosClient from './axiosClient';
 import { MAIN_URL } from './config';
 
 class OrderApi {
+  getList = params => {
+    const url = MAIN_URL.concat(`/orders`);
+    return axiosClient.get(url, { params });
+  };
   feedback = (id, data) => {
     const url = MAIN_URL.concat(`/orders/${id}`);
     return axiosClient.put(url, data);

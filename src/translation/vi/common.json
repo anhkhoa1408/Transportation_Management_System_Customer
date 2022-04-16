@@ -9,7 +9,7 @@
     "successfullyExporting": "Xuất kho thành công",
     "transporting": "Đang vận chuyển",
     "processing": "Đang xử lý",
-    "prepareThePackage": "Chuẩn bị kiện hàng",
+    "prepareThePackage": "Đang gom hàng",
     "preparingForDelivery": "Chuẩn bị giao hàng",
     "delivered": "Đã giao hàng",
     "canceled": "Đã hủy"
@@ -81,7 +81,7 @@
     "alreadyHaveAnAccount?": "Đã có tài khoản?"
   },
   "chatScreen": {
-    "message": "Tin hắn",
+    "message": "Tin nhắn",
     "enter": "Nhập"
   },
   "homeScreen": {
@@ -89,7 +89,14 @@
     "useOrderForm": "Sử dụng mẫu",
     "manageOrderForm": "Mẫu đơn hàng",
     "manageParcelSamples": "Mẫu kiện hàng",
-    "hello": "Xin chào "
+    "hello": "Xin chào ",
+    "to": "Đến",
+    "tracing": "Theo dõi",
+    "feedback": "Đánh giá",
+    "detail": "Chi tiết",
+    "await": "Chưa đánh giá",
+    "noFeedback": "Chưa có đánh giá",
+    "noOrder": "Chưa có đơn hàng"
   },
   "mapScreen": {
     "searchForAPlace": "Tìm kiếm một địa điểm",
@@ -116,7 +123,7 @@
     "youHaveNotEnteredTheCityName": "Bạn chưa nhập tên thành phố",
     "address": "Địa chỉ",
     "enterAddress": "",
-    "send": "Gửi",
+    "send": "Nhập địa chỉ ngườI gửi",
     "receive": "Nhập địa chỉ người nhận",
     "houseNumber,StreetName": "Số nhà, tên đường",
     "street": "Tên đường",
@@ -207,7 +214,8 @@
     "pleaseChooseOneOfTheFollowingPaymentMethods": "Xin hãy chọn một trong các phương thức thanh toán sau đây",
     "offlinePayment": "Thanh toán offline",
     "onlinePayment": "Thanh toán online",
-    "agree": "Đồng ý"
+    "agree": "Đồng ý",
+    "sendFeedback": "Gửi đánh giá"
   },
   "settingScreen": {
     "requiredInformation": "Thông tin bắt buộc",
