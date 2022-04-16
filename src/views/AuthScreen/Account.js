@@ -1,27 +1,19 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   FlatList,
   SafeAreaView,
   StyleSheet,
-  TouchableOpacity,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
-import {
-  Avatar,
-  Icon,
-  LinearProgress,
-  Slider,
-  ListItem,
-  Switch,
-} from 'react-native-elements';
+import { Avatar, Icon, ListItem, Slider, Switch } from 'react-native-elements';
+import { connect, useDispatch } from 'react-redux';
+import { COLORS, FONTS } from '../../styles';
+import { danger, success } from '../../styles/color';
 import { container } from '../../styles/layoutStyle';
-import { COLORS, FONTS, STYLES } from '../../styles';
-import { useDispatch } from 'react-redux';
-import color, { success, danger } from '../../styles/color';
-import { connect } from 'react-redux';
 import { getAvatarFromUser } from '../../utils/avatarUltis';
-import { useTranslation } from 'react-i18next';
 
 const Account = ({ navigation, userInfo }) => {
   const { t, i18n } = useTranslation('common');
@@ -46,19 +38,22 @@ const Account = ({ navigation, userInfo }) => {
       title: t('authScreen.editInformation'),
       icon: 'edit',
       navigate: 'EditProfile',
-      color: '#CCC',
+      color: COLORS.primary,
+      neutral: COLORS.neutralPrimary,
     },
     {
       title: t('authScreen.changePassword'),
       icon: 'lock',
       navigate: 'ChangePass',
-      color: '#fc6603',
+      color: COLORS.warning,
+      neutral: COLORS.neutralWarning,
     },
     {
       title: t('authScreen.logOut'),
       icon: 'logout',
       navigate: '',
-      color: danger,
+      color: COLORS.danger,
+      neutral: COLORS.neutralDanger,
     },
   ];
 
@@ -68,15 +63,16 @@ const Account = ({ navigation, userInfo }) => {
       icon: 'language',
       name: 'language',
       state: toggle.language,
-      color: '#ac4ff7',
+      color: COLORS.purple,
+      neutral: COLORS.neutralPurple
     },
-    {
-      title: t('authScreen.darkMode'),
-      icon: 'nightlight-round',
-      name: 'nightMode',
-      state: toggle.nightMode,
-      color: '#000',
-    },
+    // {
+    //   title: t('authScreen.darkMode'),
+    //   icon: 'nightlight-round',
+    //   name: 'nightMode',
+    //   state: toggle.nightMode,
+    //   color: '#000',
+    // },
     // {
     //   title: 'Thông báo',
     //   icon: 'notifications',
@@ -106,11 +102,11 @@ const Account = ({ navigation, userInfo }) => {
           bottomDivider>
           <View
             style={{
-              backgroundColor: item.color,
+              backgroundColor: item.neutral,
               padding: 10,
               borderRadius: 12,
             }}>
-            <Icon name={item.icon} color="#FFF" size={22} />
+            <Icon name={item.icon} color={item.color} size={22} />
           </View>
           <ListItem.Title
             style={[
@@ -123,7 +119,13 @@ const Account = ({ navigation, userInfo }) => {
             {item.title}
           </ListItem.Title>
 
-          <ListItem.Chevron size={22} />
+          <View style={{
+            padding: 10,
+            backgroundColor: COLORS.gray,
+            borderRadius: 12
+          }}>
+            <ListItem.Chevron size={22} />
+          </View>
         </ListItem>
       </TouchableOpacity>
     );
@@ -141,11 +143,11 @@ const Account = ({ navigation, userInfo }) => {
           bottomDivider>
           <View
             style={{
-              backgroundColor: item.color,
+              backgroundColor: item.neutral,
               padding: 10,
               borderRadius: 12,
             }}>
-            <Icon name={item.icon} color="#FFF" size={22} />
+            <Icon name={item.icon} color={item.color} size={22} />
           </View>
           <ListItem.Title
             style={[
@@ -167,7 +169,7 @@ const Account = ({ navigation, userInfo }) => {
             <Switch
               onValueChange={e => toggleSwitch(e, item)}
               thumbColor="#FFF"
-              trackColor={{ false: '#CCC', true: success }}
+              trackColor={{ false: COLORS.gray, true: success }}
               value={item.state}
             />
           </View>
@@ -253,9 +255,9 @@ const Account = ({ navigation, userInfo }) => {
                     style={{
                       backgroundColor: COLORS.header,
                       borderRadius: 18,
-                      width: 35,
+                      width: 36,
                       height: 35,
-                      bottom: 25,
+                      bottom: 18,
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -306,8 +308,13 @@ const Account = ({ navigation, userInfo }) => {
     <SafeAreaView style={styles.container}>
       <View nestedScrollEnabled style={styles.header}>
         <Avatar
-          rounded
-          size="large"
+          avatarStyle={{
+            borderRadius: 25,
+          }}
+          containerStyle={{
+            width: 50,
+            height: 50,
+          }}
           source={{
             uri: getAvatarFromUser(userInfo?.user),
           }}
@@ -365,7 +372,7 @@ const styles = StyleSheet.create({
   },
   bigText: {
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: 18,
     color: '#000',
   },
   smallText: {
@@ -397,6 +404,6 @@ const styles = StyleSheet.create({
     backgroundColor: success,
   },
   switchOff: {
-    backgroundColor: '#CCC',
+    backgroundColor: COLORS.gray,
   },
 });

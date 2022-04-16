@@ -14,7 +14,9 @@ export const neutralSuccess = '#bfffcc';
 export const neutralWarning = '#ffeecc';
 export const neutralDanger = '#ffd4d9';
 export const neutralHeader = '#def1fc';
-export const bolderGray = '#d4d4d4'
+export const bolderGray = '#d4d4d4';
+export const purple = '#ac4ff7';
+export const neutralPurple = '#f6ebff';
 
 export default {
   primary,
@@ -33,5 +35,7 @@ export default {
   neutralWarning,
   neutralDanger,
   neutralHeader,
-  bolderGray
+  bolderGray,
+  purple,
+  neutralPurple
 };
