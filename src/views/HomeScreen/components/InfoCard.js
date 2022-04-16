@@ -3,8 +3,8 @@ import { StyleSheet, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { Icon, ListItem, Text } from 'react-native-elements';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { COLORS } from '../../styles';
-import { primary } from '../../styles/color';
+import { COLORS } from '../../../styles';
+import { primary } from '../../../styles/color';
 import { useTranslation } from 'react-i18next';
 
 const InfoCard = ({ item, navigation }) => {

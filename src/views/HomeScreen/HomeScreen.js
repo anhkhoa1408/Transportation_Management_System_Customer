@@ -20,12 +20,13 @@ import { container, shadowCard } from '../../styles/layoutStyle';
 import { getAvatarFromUser, getNameFromUser } from '../../utils/avatarUltis';
 import banner from './../../assets/images/customer_home.png';
 import nothing_img from './../../assets/images/nothing.png';
-import InfoCard from './InfoCard';
+import InfoCard from './components/InfoCard';
 import { useTranslation } from 'react-i18next';
 import orderApi from '../../api/orderApi';
 import { convertOrderState } from '../../utils/order';
 import { joinAddress, simplifyString } from '../../utils/address';
 import moment from 'moment';
+import BenefitSection from './components/BenefitSection';
 
 function HomeScreen({ navigation, userInfo, noties, ...props }) {
   const [badge, setBadge] = useState(null);
@@ -175,6 +176,8 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
             <Image style={homeStyle.banner} source={banner} />
           </View>
 
+          <BenefitSection />
+
           {/* Info Cards Section */}
           <View style={{ paddingLeft: 15 }}>
             <Text
@@ -271,7 +274,8 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
                         style={{
                           opacity: 0.5,
                         }}>
-                        {t("homeScreen.to")}: {simplifyString(joinAddress(item.to_address), 22)}
+                        {t('homeScreen.to')}:{' '}
+                        {simplifyString(joinAddress(item.to_address), 22)}
                       </Text>
                     </View>
                     <View
@@ -307,7 +311,7 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
             ) : (
               <View style={homeStyle.nothing}>
                 <Image source={nothing_img} style={homeStyle.nothingImg} />
-                <Text style={{ opacity: 0.5 }}>{t("homeScreen.noOrder")}</Text>
+                <Text style={{ opacity: 0.5 }}>{t('homeScreen.noOrder')}</Text>
               </View>
             )}
           </View>
@@ -415,7 +419,9 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
             ) : (
               <View style={homeStyle.nothing}>
                 <Image source={nothing_img} style={homeStyle.nothingImg} />
-                <Text style={{ opacity: 0.5 }}>{t("homeScreen.noFeedback")}</Text>
+                <Text style={{ opacity: 0.5 }}>
+                  {t('homeScreen.noFeedback')}
+                </Text>
               </View>
             )}
           </View>
