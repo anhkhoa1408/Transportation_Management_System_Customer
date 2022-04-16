@@ -10,23 +10,23 @@ import ModalMess from '../../../components/ModalMess';
 import orderApi from '../../../api/orderApi';
 import { useTranslation } from 'react-i18next';
 
-const OrderRating = ({ visible, onSwipeComplete, ...props }) => {
+const OrderRating = ({ visible, onSwipeComplete, item, onChangeItem, ...props }) => {
   const [height, setHeight] = useState(220);
   const [point, setPoint] = useState(0);
   const [comment, setComment] = useState('');
   const [alert, setAlert] = useState(null);
-  const id_order = '61a982b712c1a7001641524f';
   const { t, i18n } = useTranslation("common")
   const handleSubmit = () => {
     setHeight(220);
     Keyboard.dismiss();
     orderApi
-      .feedback(id_order, {
+      .feedback(item.id, {
         rating_point: point,
         rating_note: comment,
       })
       .then(data => {
         setAlert(alertType.success);
+        onChangeItem(data)
       })
       .catch(error => {
         setAlert(alertType.error);
@@ -112,7 +112,7 @@ const OrderRating = ({ visible, onSwipeComplete, ...props }) => {
         />
 
         <PrimaryButton
-          title={t("orderScreen.send")}
+          title={t("orderScreen.sendFeedback")}
           onPress={handleSubmit}
         />
       </View>

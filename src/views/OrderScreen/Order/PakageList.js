@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 
 const PackageList = ({ navigation, item, ...props }) => {
   const { t, i18n } = useTranslation('common');
-  const [data, setData] = useState(item.packages);
+  const [data, setData] = useState(item.packages || []);
 
   return (
     <ScrollView contentContainerStyle={{ paddingHorizontal: 10 }}>
@@ -78,10 +78,10 @@ const styles = StyleSheet.create({
   package: {
     paddingVertical: 15,
     paddingHorizontal: 15,
-    marginVertical: 15,
+    marginVertical: 10,
     borderRadius: 12,
     backgroundColor: COLORS.white,
-    elevation: 12,
+    elevation: 10,
     shadowColor: COLORS.primary,
   },
   btnOption: {
@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     padding: 15,
     elevation: 5,
+    shadowColor: COLORS.primary,
     borderRadius: 20,
   },
 });

@@ -20,33 +20,34 @@ import orderApi from '../../api/orderApi';
 import { useTranslation } from 'react-i18next';
 
 export default function OrderDetail({ navigation, route }) {
-  const { t, i18n } = useTranslation("common")
+  const { t, i18n } = useTranslation('common');
   const [index, setIndex] = useState(0);
   const [option, setOption] = useState(false);
   const [rating, setRating] = useState(false);
   const [trace, setTrace] = useState(null);
-  const { item } = route?.params;
+  const [item, setItem] = useState(route?.params.item);
 
   useEffect(() => {
-    if (item.id) {
+    if (item.id && item.state !== 5) {
       orderApi
         .tracing(item.id)
         .then(response => setTrace(response))
-        .catch(err => console.log(err));
+        .catch(err => console.log(err, 'aaaaa'));
     }
   }, []);
 
   const handleCancel = () => {
     if (item.state === 0) {
-      orderApi.update(item.id, {
-        state: 5
-      })
-      .then(response => {
-        navigation.goBack()
-      })
-      .catch(err => console.log(err));
+      orderApi
+        .update(item.id, {
+          state: 5,
+        })
+        .then(response => {
+          navigation.goBack();
+        })
+        .catch(err => console.log(err));
     }
-  }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -54,14 +55,19 @@ export default function OrderDetail({ navigation, route }) {
         leftElement={
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
         }
-        headerText={t("orderScreen.detail")}
+        headerText={t('orderScreen.detail')}
       />
 
       {/* Customer info and option */}
       <View
         style={[
           styles.rowContainer,
-          { paddingHorizontal: 25, position: 'relative' },
+          {
+            paddingHorizontal: 25,
+            position: 'relative',
+            display: 'flex',
+            alignItems: 'center',
+          },
         ]}>
         <Avatar
           size="medium"
@@ -81,8 +87,9 @@ export default function OrderDetail({ navigation, route }) {
           containerStyle={{
             padding: 10,
             backgroundColor: '#FFF',
-            elevation: 5,
-            borderRadius: 15,
+            elevation: 8,
+            shadowColor: COLORS.primary,
+            borderRadius: 10,
             marginRight: 10,
             justifyContent: 'center',
           }}
@@ -94,8 +101,9 @@ export default function OrderDetail({ navigation, route }) {
           containerStyle={{
             padding: 10,
             backgroundColor: '#FFF',
-            elevation: 5,
-            borderRadius: 15,
+            elevation: 8,
+            shadowColor: COLORS.primary,
+            borderRadius: 10,
             justifyContent: 'center',
           }}
           onPress={() => setOption(!option)}
@@ -107,6 +115,7 @@ export default function OrderDetail({ navigation, route }) {
             top: 150,
             zIndex: 9999,
             backgroundColor: COLORS.white,
+            borderRadius: 8,
             elevation: 8,
             paddingHorizontal: 20,
             paddingVertical: 10,
@@ -119,13 +128,18 @@ export default function OrderDetail({ navigation, route }) {
           visible={option}
           onBackdropPress={() => setOption(!option)}>
           <Button
-            title={t("orderScreen.rate")}
+            title={
+              item.rating_note || item.rating_point
+                ? 'Đã đánh giá'
+                : t('orderScreen.rate')
+            }
+            disabled={item.rating_note || item.rating_point}
             onPress={() => {
               setRating(true);
               setOption(false);
             }}
             containerStyle={[styles.btnOption]}
-            buttonStyle={[{ backgroundColor: COLORS.success }]}
+            buttonStyle={[{ backgroundColor: COLORS.success, borderRadius: 8 }]}
           />
           {/* <Button
             title={t("orderScreen.edit")}
@@ -133,12 +147,14 @@ export default function OrderDetail({ navigation, route }) {
             buttonStyle={[{ backgroundColor: COLORS.warning }]}
           /> */}
           <Button
-            title={t("orderScreen.cancelOrder")}
+            title={t('orderScreen.cancelOrder')}
             type="outline"
             onPress={handleCancel}
             containerStyle={[styles.btnOption]}
             titleStyle={[{ color: COLORS.danger }]}
-            buttonStyle={[{ borderColor: COLORS.danger, borderWidth: 2 }]}
+            buttonStyle={[
+              { borderColor: COLORS.danger, borderWidth: 2, borderRadius: 8 },
+            ]}
           />
         </Overlay>
       </View>
@@ -155,7 +171,7 @@ export default function OrderDetail({ navigation, route }) {
           }}
           variant="default">
           <Tab.Item
-            title={t("orderScreen.follow")}
+            title={t('orderScreen.follow')}
             titleStyle={{
               fontSize: 12,
               color: COLORS.primary,
@@ -172,7 +188,7 @@ export default function OrderDetail({ navigation, route }) {
             ]}
           />
           <Tab.Item
-            title={t("orderScreen.detail")}
+            title={t('orderScreen.detail')}
             titleStyle={{
               fontSize: 12,
               color: COLORS.primary,
@@ -189,7 +205,7 @@ export default function OrderDetail({ navigation, route }) {
             ]}
           />
           <Tab.Item
-            title={t("orderScreen.package")}
+            title={t('orderScreen.package')}
             titleStyle={{
               fontSize: 12,
               color: COLORS.primary,
@@ -224,7 +240,12 @@ export default function OrderDetail({ navigation, route }) {
       </TabView>
 
       {/* Rating */}
-      <OrderRating visible={rating} onSwipeComplete={() => setRating(false)} />
+      <OrderRating
+        item={item}
+        onChangeItem={setItem}
+        visible={rating}
+        onSwipeComplete={() => setRating(false)}
+      />
     </SafeAreaView>
   );
 }

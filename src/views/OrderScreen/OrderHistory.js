@@ -5,8 +5,16 @@ import {
   FlatList,
   SafeAreaView,
   VirtualizedList,
+  TouchableOpacity,
 } from 'react-native';
-import { Text, Tab, TabView } from 'react-native-elements';
+import {
+  Text,
+  Tab,
+  TabView,
+  ListItem,
+  Icon,
+  Rating,
+} from 'react-native-elements';
 import { container } from '../../styles/layoutStyle';
 import Loading from '../../components/Loading';
 import Header from '../../components/Header';
@@ -15,9 +23,10 @@ import orderApi from './../../api/orderApi';
 import Delivered from './Delivery/Delivered';
 import Delivering from './Delivery/Delivering';
 import { useTranslation } from 'react-i18next';
+import moment from 'moment';
 
 export default function OrderHistory({ navigation }) {
-  const { t, i18n } = useTranslation("common")
+  const { t, i18n } = useTranslation('common');
   const [deliveredList, setDelivered] = useState([]);
   const [deliveringList, setDelivering] = useState([]);
   const [index, setIndex] = useState(0);
@@ -50,7 +59,7 @@ export default function OrderHistory({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       {loading}
-      <Header headerText={t("orderScreen.shipmenttHistory")} />
+      <Header headerText={t('orderScreen.shipmenttHistory')} />
       <View style={{ paddingHorizontal: 15, height: 62 }}>
         <Tab
           value={index}
@@ -59,7 +68,7 @@ export default function OrderHistory({ navigation }) {
             height: 0,
           }}>
           <Tab.Item
-            title={t("orderScreen.shipping")}
+            title={t('orderScreen.shipping')}
             titleStyle={{ fontSize: 12, color: COLORS.primary }}
             containerStyle={{
               backgroundColor: COLORS.gray,
@@ -72,7 +81,7 @@ export default function OrderHistory({ navigation }) {
             ]}
           />
           <Tab.Item
-            title={t("orderScreen.shipped")}
+            title={t('orderScreen.shipped')}
             titleStyle={{ fontSize: 12, color: COLORS.primary }}
             containerStyle={[
               {
@@ -90,8 +99,9 @@ export default function OrderHistory({ navigation }) {
       </View>
 
       <TabView value={index} onChange={setIndex} animationType="spring">
-        <TabView.Item style={{ width: '100%' }}>
-          <VirtualizedList
+        <TabView.Item style={{ width: '100%', height: '100%' }}>
+          {/* <VirtualizedList
+            keyboardShouldPersistTaps="always"
             initialNumToRender={3}
             data={deliveringList}
             contentContainerStyle={styles.flatContent}
@@ -103,12 +113,17 @@ export default function OrderHistory({ navigation }) {
             renderItem={renderDeliveringItem}
             ListEmptyComponent={
               <View style={styles.noData}>
-                <Text>{t("orderScreen.noShippingHistoryYet")}</Text>
+                <Text>{t('orderScreen.noShippingHistoryYet')}</Text>
               </View>
             }
+          /> */}
+          <FlatList 
+            keyExtractor={item => `${item.id}`}
+            data={deliveringList}
+            renderItem={renderDeliveringItem}
           />
         </TabView.Item>
-        <TabView.Item style={{ width: '100%' }}>
+        <TabView.Item style={{ width: '100%', height: '100%' }}>
           <VirtualizedList
             initialNumToRender={3}
             contentContainerStyle={styles.flatContent}
@@ -121,7 +136,7 @@ export default function OrderHistory({ navigation }) {
             }}
             ListEmptyComponent={
               <View style={styles.noData}>
-                <Text>{t("orderScreen.noShipmentHistoryYet")}</Text>
+                <Text>{t('orderScreen.noShipmentHistoryYet')}</Text>
               </View>
             }
           />

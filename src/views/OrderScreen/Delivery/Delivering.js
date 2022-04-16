@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { View, StyleSheet, TouchableHighlight } from 'react-native';
+import { View, StyleSheet, TouchableHighlight, TouchableOpacity } from 'react-native';
 import { Text, Icon, ListItem } from 'react-native-elements';
 import { FONTS, COLORS } from '../../../styles';
 import { convertOrderState } from '../../../utils/order';
@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     elevation: 10,
+    zIndex: -99,
     shadowColor: COLORS.primary,
   },
 });

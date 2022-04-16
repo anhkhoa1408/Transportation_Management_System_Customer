@@ -11,10 +11,10 @@ import { useTranslation } from 'react-i18next';
 const Detail = ({ navigation, item, ...props }) => {
   const { t, i18n } = useTranslation("common")
   const quantity = useMemo(() => {
-    return item.packages.reduce(
+    return item.packages ? item.packages.reduce(
       (total, item) => total + item.weight * item.quantity,
       0,
-    );
+    ) : 0;
   }, [item]);
 
   return (
