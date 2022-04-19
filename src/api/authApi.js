@@ -36,6 +36,10 @@ class AuthorApi {
     const url = MAIN_URL.concat(`/users/device_token`);
     return axiosClient.put(url, { device_token: token });
   };
+  getPointLevel = () => {
+    const url = MAIN_URL.concat(`/config/point`);
+    return axiosClient.get(url);
+  }
 }
 const authApi = new AuthorApi();
 export default authApi;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   FlatList,
@@ -10,16 +10,19 @@ import {
 } from 'react-native';
 import { Avatar, Icon, ListItem, Slider, Switch } from 'react-native-elements';
 import { connect, useDispatch } from 'react-redux';
+import authApi from '../../api/authApi';
 import { COLORS, FONTS } from '../../styles';
 import { danger, success } from '../../styles/color';
 import { container } from '../../styles/layoutStyle';
 import { getAvatarFromUser } from '../../utils/avatarUltis';
+import AppSetting from './components/AppSetting';
+import Setting from './components/Setting';
 
 const Account = ({ navigation, userInfo }) => {
   const { t, i18n } = useTranslation('common');
-  const [progress, setProgress] = useState(
-    userInfo?.user?.point ? userInfo?.user?.point : 0,
-  );
+  const [progress, setProgress] = useState(0);
+  const [max, setMax] = useState(0);
+  const [min, setMin] = useState(0);
   const dispatch = useDispatch();
   const [toggle, setToggle] = useState({
     language: i18n.language && i18n.language === 'en',
@@ -64,7 +67,7 @@ const Account = ({ navigation, userInfo }) => {
       name: 'language',
       state: toggle.language,
       color: COLORS.purple,
-      neutral: COLORS.neutralPurple
+      neutral: COLORS.neutralPurple,
     },
     // {
     //   title: t('authScreen.darkMode'),
@@ -85,97 +88,11 @@ const Account = ({ navigation, userInfo }) => {
   const keyExtractor = (item, index) => index.toString();
 
   const renderItem = ({ item }) => {
-    return (
-      <TouchableOpacity
-        onPress={() => {
-          item.navigate
-            ? navigation.navigate(item.navigate)
-            : dispatch({ type: 'CLEAN_STORE' });
-        }}
-        style={{ width: '100%' }}>
-        <ListItem
-          containerStyle={{
-            width: '100%',
-            display: 'flex',
-            paddingVertical: 15,
-          }}
-          bottomDivider>
-          <View
-            style={{
-              backgroundColor: item.neutral,
-              padding: 10,
-              borderRadius: 12,
-            }}>
-            <Icon name={item.icon} color={item.color} size={22} />
-          </View>
-          <ListItem.Title
-            style={[
-              FONTS.Medium,
-              {
-                flex: 1,
-                marginLeft: 10,
-              },
-            ]}>
-            {item.title}
-          </ListItem.Title>
-
-          <View style={{
-            padding: 10,
-            backgroundColor: COLORS.gray,
-            borderRadius: 12
-          }}>
-            <ListItem.Chevron size={22} />
-          </View>
-        </ListItem>
-      </TouchableOpacity>
-    );
+    return <Setting item={item} />;
   };
 
   const renderAppItem = ({ item }) => {
-    return (
-      <View style={{ width: '100%' }}>
-        <ListItem
-          containerStyle={{
-            width: '100%',
-            display: 'flex',
-            paddingVertical: 15,
-          }}
-          bottomDivider>
-          <View
-            style={{
-              backgroundColor: item.neutral,
-              padding: 10,
-              borderRadius: 12,
-            }}>
-            <Icon name={item.icon} color={item.color} size={22} />
-          </View>
-          <ListItem.Title
-            style={[
-              FONTS.Medium,
-              {
-                flex: 1,
-                marginLeft: 10,
-              },
-            ]}>
-            {item.title}
-          </ListItem.Title>
-
-          <View
-            style={
-              item.state
-                ? [styles.switchContainer, styles.switchOn]
-                : [styles.switchContainer, styles.switchOff]
-            }>
-            <Switch
-              onValueChange={e => toggleSwitch(e, item)}
-              thumbColor="#FFF"
-              trackColor={{ false: COLORS.gray, true: success }}
-              value={item.state}
-            />
-          </View>
-        </ListItem>
-      </View>
-    );
+    return <AppSetting item={item} toggleSwitch={toggleSwitch} />;
   };
 
   const currentState = () => {
@@ -188,6 +105,8 @@ const Account = ({ navigation, userInfo }) => {
         return t('authScreen.gold');
       case 'Diamond':
         return t('authScreen.diamond');
+      case 'Platinum':
+        return t('authScreen.platinum');
       default:
         return t('authScreen.copper');
     }
@@ -201,108 +120,127 @@ const Account = ({ navigation, userInfo }) => {
         return t('authScreen.gold');
       case 'Gold':
         return t('authScreen.diamond');
+      case 'Diamond':
+        return t('authScreen.platinum');
       default:
         return t('authScreen.copper');
     }
   };
 
-  const footerComponent = (
-    <>
-      <View style={{ padding: 25 }}>
-        <Text style={[styles.smallText, { marginBottom: 5 }]}>
-          {t('authScreen.yourMembershipPoints')}
-        </Text>
-        <Text style={[FONTS.Big, { marginBottom: 35, fontSize: 16 }]}>
-          {t('authScreen.youOnlyHave')}{' '}
-          <Text style={[{ color: COLORS.primary, fontSize: 25 }]}>
-            {100 - progress}
-          </Text>{' '}
-          {t('authScreen.morePointsToIncreaseToMemberPosition')} {nextState()}
-        </Text>
-        <View
-          style={{
-            padding: 10,
-            paddingHorizontal: 20,
-            elevation: 10,
-            shadowColor: COLORS.primary,
-            backgroundColor: '#FFF',
-            borderRadius: 8,
-          }}>
-          <Slider
-            maximumValue={100}
-            minimumValue={0}
-            minimumTrackTintColor={COLORS.header}
-            maximumTrackTintColor="#F0F0F0"
-            step={1}
-            value={progress}
-            onValueChange={setProgress}
-            disabled
-            allowTouchTrack
-            trackStyle={{
-              height: 7,
-              backgroundColor: 'transparent',
-              borderRadius: 20,
-            }}
-            thumbStyle={{
-              height: 50,
-              width: 0,
-              backgroundColor: 'transparent',
-            }}
-            thumbProps={{
-              children: (
-                <View style={{ position: 'relative', alignItems: 'center' }}>
-                  <View
-                    style={{
-                      backgroundColor: COLORS.header,
-                      borderRadius: 18,
-                      width: 36,
-                      height: 35,
-                      bottom: 18,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
-                    <Text style={{ color: 'white', fontWeight: 'bold' }}>
-                      {progress}
-                    </Text>
+  const footerComponent = useCallback(() => {
+    return (
+      <>
+        <View style={{ padding: 25 }}>
+          <Text style={[styles.smallText, { marginBottom: 5 }]}>
+            {t('authScreen.yourMembershipPoints')}
+          </Text>
+          <Text style={[FONTS.Big, { marginBottom: 35, fontSize: 16 }]}>
+            {t('authScreen.youOnlyHave')}{' '}
+            <Text style={[{ color: COLORS.primary, fontSize: 25 }]}>
+              {max - progress}
+            </Text>{' '}
+            {t('authScreen.morePointsToIncreaseToMemberPosition')} {nextState()}
+          </Text>
+          <View
+            style={{
+              padding: 10,
+              paddingHorizontal: 20,
+              elevation: 10,
+              shadowColor: COLORS.primary,
+              backgroundColor: '#FFF',
+              borderRadius: 8,
+            }}>
+            <Slider
+              maximumValue={max}
+              minimumValue={min}
+              minimumTrackTintColor={COLORS.header}
+              maximumTrackTintColor="#F0F0F0"
+              step={1}
+              value={progress}
+              onValueChange={setProgress}
+              disabled
+              allowTouchTrack
+              trackStyle={{
+                height: 7,
+                backgroundColor: 'transparent',
+                borderRadius: 20,
+              }}
+              thumbStyle={{
+                height: 50,
+                width: 0,
+                backgroundColor: 'transparent',
+              }}
+              thumbProps={{
+                children: (
+                  <View style={{ position: 'relative', alignItems: 'center' }}>
+                    <View
+                      style={{
+                        backgroundColor: COLORS.header,
+                        borderRadius: 18,
+                        width: 36,
+                        height: 35,
+                        bottom: 18,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                      <Text style={{ color: 'white', fontWeight: 'bold' }}>
+                        {progress}
+                      </Text>
+                    </View>
                   </View>
-                </View>
-              ),
-            }}
-          />
-          <Text style={{ alignSelf: 'flex-end', ...FONTS.Big }}>{100}</Text>
+                ),
+              }}
+            />
+            <Text style={{ alignSelf: 'flex-end', ...FONTS.Big }}>{max}</Text>
+          </View>
         </View>
-      </View>
-      <Text style={styles.sectionText}>{t('authScreen.account')}</Text>
-      <FlatList
-        listKey="A"
-        nestedScrollEnabled
-        style={{
-          width: '100%',
-          paddingHorizontal: 20,
-          flexGrow: 0,
-          marginBottom: 20,
-        }}
-        keyExtractor={keyExtractor}
-        data={accountList}
-        renderItem={renderItem}
-      />
-      <Text style={styles.sectionText}>{t('authScreen.application')}</Text>
-      <FlatList
-        listKey="B"
-        nestedScrollEnabled
-        style={{
-          width: '100%',
-          paddingHorizontal: 20,
-          flexGrow: 0,
-          marginBottom: 20,
-        }}
-        keyExtractor={keyExtractor}
-        data={appList}
-        renderItem={renderAppItem}
-      />
-    </>
-  );
+        <Text style={styles.sectionText}>{t('authScreen.account')}</Text>
+        <FlatList
+          listKey="A"
+          nestedScrollEnabled
+          style={{
+            width: '100%',
+            paddingHorizontal: 20,
+            flexGrow: 0,
+            marginBottom: 20,
+          }}
+          keyExtractor={keyExtractor}
+          data={accountList}
+          renderItem={renderItem}
+        />
+        <Text style={styles.sectionText}>{t('authScreen.application')}</Text>
+        <FlatList
+          listKey="B"
+          nestedScrollEnabled
+          style={{
+            width: '100%',
+            paddingHorizontal: 20,
+            flexGrow: 0,
+            marginBottom: 20,
+          }}
+          keyExtractor={keyExtractor}
+          data={appList}
+          renderItem={renderAppItem}
+        />
+      </>
+    );
+  }, [progress, max, min]);
+
+  useEffect(() => {
+    authApi.getPointLevel().then(response => {
+      let max = Object.values(response.point)
+        .filter(level => level >= progress)
+        .sort((a, b) => a - b > 0)[0];
+      setMax(max);
+      let min = Object.values(response.point)
+        .filter(level => level < progress)
+        .sort((a, b) => b - a > 0)[0];
+      min = !min || min === 500 ? 0 : min;
+      setMin(min);
+      setProgress(userInfo?.user?.point);
+    });
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -323,7 +261,7 @@ const Account = ({ navigation, userInfo }) => {
           <Text style={styles.smallText}>{t('authScreen.hello')}</Text>
           <Text style={styles.bigText}>{userInfo?.user?.name}</Text>
           <Text style={[styles.statusText, { color: COLORS.warning }]}>
-            {t('authScreen.member')} {currentState()}
+            {t('authScreen.member')} {nextState()}
           </Text>
         </View>
         <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
@@ -332,6 +270,7 @@ const Account = ({ navigation, userInfo }) => {
       </View>
 
       <FlatList
+        extraData={progress}
         style={styles.scrollContainer}
         data={[]}
         renderItem={() => null}
