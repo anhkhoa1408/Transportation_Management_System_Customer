@@ -6,13 +6,13 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
-import { Avatar, Icon, ListItem, Slider, Switch } from 'react-native-elements';
-import { connect, useDispatch } from 'react-redux';
+import { Avatar, Icon, Slider } from 'react-native-elements';
+import { connect } from 'react-redux';
 import authApi from '../../api/authApi';
 import { COLORS, FONTS } from '../../styles';
-import { danger, success } from '../../styles/color';
+import { success } from '../../styles/color';
 import { container } from '../../styles/layoutStyle';
 import { getAvatarFromUser } from '../../utils/avatarUltis';
 import AppSetting from './components/AppSetting';
@@ -23,10 +23,9 @@ const Account = ({ navigation, userInfo }) => {
   const [progress, setProgress] = useState(0);
   const [max, setMax] = useState(0);
   const [min, setMin] = useState(0);
-  const dispatch = useDispatch();
   const [toggle, setToggle] = useState({
-    language: i18n.language && i18n.language === 'en',
-    nightMode: false,
+    language: false,
+    // nightMode: false,
   });
 
   const toggleSwitch = (e, item) => {
@@ -75,13 +74,6 @@ const Account = ({ navigation, userInfo }) => {
     //   name: 'nightMode',
     //   state: toggle.nightMode,
     //   color: '#000',
-    // },
-    // {
-    //   title: 'Thông báo',
-    //   icon: 'notifications',
-    //   name: 'notification',
-    //   state: toggle.notification,
-    //   color: COLORS.primary,
     // },
   ];
 
@@ -225,7 +217,7 @@ const Account = ({ navigation, userInfo }) => {
         />
       </>
     );
-  }, [progress, max, min]);
+  }, [progress, max, min, toggle]);
 
   useEffect(() => {
     authApi.getPointLevel().then(response => {
@@ -261,7 +253,7 @@ const Account = ({ navigation, userInfo }) => {
           <Text style={styles.smallText}>{t('authScreen.hello')}</Text>
           <Text style={styles.bigText}>{userInfo?.user?.name}</Text>
           <Text style={[styles.statusText, { color: COLORS.warning }]}>
-            {t('authScreen.member')} {nextState()}
+            {t('authScreen.member')} {currentState()}
           </Text>
         </View>
         <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
