@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   FlatList,
   SafeAreaView,
@@ -9,19 +10,20 @@ import {
 import { Icon, Text } from 'react-native-elements';
 import CustomSearch from '../../../components/CustomSearch/CustomSearch';
 import Header from '../../../components/Header';
+import Loading from '../../../components/Loading';
 import { COLORS } from '../../../styles';
 import { container, header } from '../../../styles/layoutStyle';
 import templateApi from './../../../api/templateApi';
 import PrimaryButton from './../../../components/CustomButton/PrimaryButton';
 import Template from './TemplateItem/Template';
-import Loading from '../../../components/Loading';
-import { useTranslation } from 'react-i18next';
 
 const PackageTemplateList = ({ route, navigation }) => {
-  const { t, i18n } = useTranslation("common")
+  const { t, i18n } = useTranslation('common');
   const [data, setData] = useState([]);
   const [deleteList, setDelList] = useState([]);
   const [loading, setLoading] = useState(null);
+  const [field, setField] = useState('_q');
+  const [value, setValue] = useState('');
 
   const [check, setCheck] = useState(
     Array.from({ length: data.length }, (_, index) => false),
@@ -65,6 +67,34 @@ const PackageTemplateList = ({ route, navigation }) => {
       .catch(error => console.log(error));
   };
 
+  const handleSearch = () => {
+    templateApi
+      .getPackages({ [field]: value })
+      .then(response => {
+        console.log(response);
+        setData(response);
+      })
+      .catch(error => {
+        setLoading(null);
+      });
+  };
+
+  const handleCancel = () => {
+    setValue('');
+  };
+
+  const handleClear = () => {
+    setValue('');
+    templateApi
+      .getPackages()
+      .then(response => {
+        setData(response);
+      })
+      .catch(error => {
+        setLoading(null);
+      });
+  };
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       setLoading(<Loading />);
@@ -101,7 +131,7 @@ const PackageTemplateList = ({ route, navigation }) => {
         leftElement={
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
         }
-        headerText={t("templateScreen.templatePackage")}
+        headerText={t('templateScreen.templatePackage')}
       />
       <View
         style={{
@@ -118,7 +148,7 @@ const PackageTemplateList = ({ route, navigation }) => {
                 marginRight: 10,
                 fontSize: 17,
               }}>
-              {t("templateScreen.cancel")}
+              {t('templateScreen.cancel')}
             </Text>
           </TouchableOpacity>
         ) : (
@@ -130,12 +160,18 @@ const PackageTemplateList = ({ route, navigation }) => {
                 marginRight: 10,
                 fontSize: 17,
               }}>
-              {t("templateScreen.selectAll")}
+              {t('templateScreen.selectAll')}
             </Text>
           </TouchableOpacity>
         )}
 
-        <CustomSearch />
+        <CustomSearch
+          value={value}
+          onChangeText={setValue}
+          onSubmitEditing={handleSearch}
+          onClear={handleClear}
+          onCancel={handleCancel}
+        />
       </View>
 
       <FlatList
@@ -155,7 +191,7 @@ const PackageTemplateList = ({ route, navigation }) => {
       {check.some(item => item === true) ? (
         <View style={{ padding: 20 }}>
           <PrimaryButton
-            title={t("templateScreen.delete")}
+            title={t('templateScreen.delete')}
             onPress={handleDelete}
             backgroundColor={COLORS.danger}
           />
@@ -163,7 +199,7 @@ const PackageTemplateList = ({ route, navigation }) => {
       ) : (
         <View style={{ padding: 20 }}>
           <PrimaryButton
-            title={t("templateScreen.addTemplatePackage")}
+            title={t('templateScreen.addTemplatePackage')}
             onPress={() =>
               navigation.navigate('EditPackage', {
                 ...route.params,

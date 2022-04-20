@@ -1,33 +1,33 @@
+import MaskedView from '@react-native-community/masked-view';
+import moment from 'moment';
 import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
   FlatList,
   SafeAreaView,
+  StyleSheet,
+  TouchableOpacity,
   TouchableWithoutFeedback,
-  MaskedViewComponent,
+  View,
 } from 'react-native';
-import { Text, ListItem, Icon, CheckBox, Avatar } from 'react-native-elements';
-import CustomSearch from '../../components/CustomSearch/CustomSearch';
-import { container } from '../../styles/layoutStyle';
-import Header from '../../components/Header';
-import { primary, danger } from '../../styles/color';
-import { COLORS } from '../../styles';
 import * as Animatable from 'react-native-animatable';
+import { Avatar, Icon, ListItem, Text } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
-import MaskedView from '@react-native-community/masked-view';
-import PillButton from '../../components/CustomButton/PillButton';
-import voucherApi from '../../api/voucherApi';
-import { formatCash } from '../../utils/order';
-import moment from 'moment';
 import { MAIN_URL } from '../../api/config';
+import voucherApi from '../../api/voucherApi';
+import CustomSearch from '../../components/CustomSearch/CustomSearch';
+import Header from '../../components/Header';
+import { COLORS } from '../../styles';
+import { primary } from '../../styles/color';
+import { container } from '../../styles/layoutStyle';
+import { formatCash } from '../../utils/order';
 import voucherImg from './../../assets/images/voucher_alt.jpg';
-import { useTranslation } from 'react-i18next';
 
 const VoucherScreen = ({ route, navigation }) => {
-  const { t, i18n } = useTranslation("common")
+  const { t, i18n } = useTranslation('common');
   const useVoucher = route?.params?.useVoucher;
+  const [field, setField] = useState('_q');
+  const [value, setValue] = useState('');
 
   const [data, setData] = useState([]);
 
@@ -45,6 +45,34 @@ const VoucherScreen = ({ route, navigation }) => {
         scale: 1,
       },
     });
+  };
+
+  const handleSearch = () => {
+    voucherApi
+      .getList({ [field]: value })
+      .then(response => {
+        console.log(response);
+        setData(response);
+      })
+      .catch(error => {
+        setLoading(null);
+      });
+  };
+
+  const handleCancel = () => {
+    setValue('');
+  };
+
+  const handleClear = () => {
+    setValue('');
+    voucherApi
+      .getList()
+      .then(response => {
+        setData(response);
+      })
+      .catch(error => {
+        setLoading(null);
+      });
   };
 
   const renderItem = ({ item, index }) => (
@@ -66,7 +94,7 @@ const VoucherScreen = ({ route, navigation }) => {
                 <MaskedView
                   maskElement={
                     <Text style={[style.discountText]}>
-                      {t("voucherScreen.discount")}{' '}
+                      {t('voucherScreen.discount')}{' '}
                       {item && item.sale_type === 'value'
                         ? formatCash(item.sale.toString())
                         : item.sale + ' %'}
@@ -77,7 +105,7 @@ const VoucherScreen = ({ route, navigation }) => {
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 0 }}>
                     <Text style={[style.discountText, { opacity: 0 }]}>
-                      {t("voucherScreen.discount")}{' '}
+                      {t('voucherScreen.discount')}{' '}
                       {item && item.sale_type === 'value'
                         ? formatCash(item.sale.toString())
                         : item.sale + ' %'}
@@ -87,7 +115,9 @@ const VoucherScreen = ({ route, navigation }) => {
                 <MaskedView
                   maskElement={
                     <Text>
-                      {t("voucherScreen.max")}: {formatCash(item.sale_max.toString())} - {t("voucherScreen.minimumOrder")}:{' '}
+                      {t('voucherScreen.max')}:{' '}
+                      {formatCash(item.sale_max.toString())} -{' '}
+                      {t('voucherScreen.minimumOrder')}:{' '}
                       {item.minimum_order &&
                         formatCash(item.minimum_order.toString())}
                     </Text>
@@ -97,7 +127,9 @@ const VoucherScreen = ({ route, navigation }) => {
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 0 }}>
                     <Text style={[{ opacity: 0 }]}>
-                    {t("voucherScreen.max")}: {formatCash(item.sale_max.toString())} - {t("voucherScreen.minimumOrder")}:{' '}
+                      {t('voucherScreen.max')}:{' '}
+                      {formatCash(item.sale_max.toString())} -{' '}
+                      {t('voucherScreen.minimumOrder')}:{' '}
                       {item.minimum_order &&
                         formatCash(item.minimum_order.toString())}
                     </Text>
@@ -134,12 +166,13 @@ const VoucherScreen = ({ route, navigation }) => {
                     navigation.navigate('OrderSummary', {
                       ...route.params,
                       voucher: {
-                        title: `${t("voucherScreen.reducedShippingFees")} ${item.sale_type === 'value'
-                        ? formatCash(item.sale.toString())
-                        : item.sale + " %"}`,
-                        data: item
-                      }
-                        
+                        title: `${t('voucherScreen.reducedShippingFees')} ${
+                          item.sale_type === 'value'
+                            ? formatCash(item.sale.toString())
+                            : item.sale + ' %'
+                        }`,
+                        data: item,
+                      },
                     })
                   }>
                   <Text
@@ -150,7 +183,7 @@ const VoucherScreen = ({ route, navigation }) => {
                         fontSize: 15,
                       },
                     ]}>
-                    {t("voucherScreen.useItNow")}
+                    {t('voucherScreen.useItNow')}
                   </Text>
                 </TouchableOpacity>
               )}
@@ -162,7 +195,8 @@ const VoucherScreen = ({ route, navigation }) => {
                 color: primary,
                 fontWeight: 'bold',
               }}>
-              {t("voucherScreen.to")} {moment(item.expired).format('DD/MM/YYYY')}
+              {t('voucherScreen.to')}{' '}
+              {moment(item.expired).format('DD/MM/YYYY')}
             </ListItem.Subtitle>
           </View>
         </ListItem>
@@ -192,7 +226,7 @@ const VoucherScreen = ({ route, navigation }) => {
   return (
     <SafeAreaView style={style.container}>
       <Header
-        headerText={t("voucherScreen.yourVoucher")}
+        headerText={t('voucherScreen.yourVoucher')}
         leftElement={
           useVoucher && (
             <Icon name="west" size={30} onPress={() => navigation.goBack()} />
@@ -201,7 +235,13 @@ const VoucherScreen = ({ route, navigation }) => {
       />
 
       <View style={{ width: '100%', paddingHorizontal: 10, display: 'flex' }}>
-        <CustomSearch />
+        <CustomSearch
+          value={value}
+          onChangeText={setValue}
+          onSubmitEditing={handleSearch}
+          onClear={handleClear}
+          onCancel={handleCancel}
+        />
       </View>
 
       <FlatList
@@ -222,7 +262,7 @@ const VoucherScreen = ({ route, navigation }) => {
               justifyContent: 'center',
               paddingTop: '50%',
             }}>
-            <Text>{t("voucherScreen.noQualifyingVoucher")}</Text>
+            <Text>{t('voucherScreen.noQualifyingVoucher')}</Text>
           </View>
         }
       />

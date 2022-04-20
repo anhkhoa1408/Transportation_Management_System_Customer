@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   FlatList,
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
 import { Icon, Text } from 'react-native-elements';
 import templateApi from '../../../api/templateApi';
@@ -16,14 +17,15 @@ import { container, header } from '../../../styles/layoutStyle';
 import PrimaryButton from './../../../components/CustomButton/PrimaryButton';
 import Loading from './../../../components/Loading';
 import Template from './TemplateItem/Template';
-import { useTranslation } from 'react-i18next';
 
 const OrderTemplateList = ({ route, navigation }) => {
-  const { t, i18n } = useTranslation("common")
+  const { t, i18n } = useTranslation('common');
   const [data, setData] = useState([]);
   const [_start, setStart] = useState(0);
   const [loading, setLoading] = useState(null);
   const [deleteList, setDelList] = useState([]);
+  const [field, setField] = useState('_q');
+  const [value, setValue] = useState('');
 
   const [check, setCheck] = useState(
     Array.from({ length: data.length }, (_, index) => false),
@@ -67,6 +69,34 @@ const OrderTemplateList = ({ route, navigation }) => {
       .catch(error => console.log(error));
   };
 
+  const handleSearch = () => {
+    templateApi
+      .getOrders({ [field]: value })
+      .then(response => {
+        console.log(response);
+        setData(response);
+      })
+      .catch(error => {
+        setLoading(null);
+      });
+  };
+
+  const handleCancel = () => {
+    setValue('');
+  };
+
+  const handleClear = () => {
+    setValue('');
+    templateApi
+      .getOrders()
+      .then(response => {
+        setData(response);
+      })
+      .catch(error => {
+        setLoading(null);
+      });
+  };
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       setLoading(<Loading />);
@@ -102,7 +132,7 @@ const OrderTemplateList = ({ route, navigation }) => {
         leftElement={
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
         }
-        headerText={t("templateScreen.orderForm")}
+        headerText={t('templateScreen.orderForm')}
       />
       <View
         style={{
@@ -119,7 +149,7 @@ const OrderTemplateList = ({ route, navigation }) => {
                 marginRight: 10,
                 fontSize: 17,
               }}>
-              {t("templateScreen.cancel")}
+              {t('templateScreen.cancel')}
             </Text>
           </TouchableOpacity>
         ) : (
@@ -131,12 +161,18 @@ const OrderTemplateList = ({ route, navigation }) => {
                 marginRight: 10,
                 fontSize: 17,
               }}>
-              {t("templateScreen.selectAll")}
+              {t('templateScreen.selectAll')}
             </Text>
           </TouchableOpacity>
         )}
 
-        <CustomSearch />
+        <CustomSearch
+          value={value}
+          onChangeText={setValue}
+          onSubmitEditing={handleSearch}
+          onClear={handleClear}
+          onCancel={handleCancel}
+        />
       </View>
 
       <FlatList
@@ -157,14 +193,14 @@ const OrderTemplateList = ({ route, navigation }) => {
               justifyContent: 'center',
               paddingTop: '50%',
             }}>
-            <Text>{t("templateScreen.noTemplateYet")}</Text>
+            <Text>{t('templateScreen.noTemplateYet')}</Text>
           </View>
         }
       />
       {check.some(item => item === true) ? (
         <View style={{ padding: 20 }}>
           <PrimaryButton
-            title={t("templateScreen.delete")}
+            title={t('templateScreen.delete')}
             onPress={handleDelete}
             backgroundColor={COLORS.danger}
           />
@@ -172,7 +208,7 @@ const OrderTemplateList = ({ route, navigation }) => {
       ) : (
         <View style={{ padding: 20 }}>
           <PrimaryButton
-            title={t("templateScreen.addOrderTemplate")}
+            title={t('templateScreen.addOrderTemplate')}
             onPress={() =>
               navigation.navigate('EditOrderInfo', {
                 action: 'add',
