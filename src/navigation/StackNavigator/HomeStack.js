@@ -20,6 +20,8 @@ import Error from '../../views/OrderScreen/Status/Error';
 import MapScreen from '../../views/MapScreen/MapScreen';
 import Account from '../../views/AuthScreen/Account';
 import OrderHistory from '../../views/OrderScreen/OrderHistory';
+import OrderDetail from '../../views/OrderScreen/OrderDetail';
+import MessageScreen from '../../views/ChatScreen/MessageScreen';
 
 const HomeStack = createStackNavigator();
 
@@ -55,7 +57,8 @@ const HomeStackScreen = () => {
       <HomeStack.Screen name="Error" component={Error} />
       <HomeStack.Screen name="MapScreen" component={MapScreen} />
       <HomeStack.Screen name="HomeOrderHistory" component={OrderHistory} />
-
+      <HomeStack.Screen name="OrderDetail" component={OrderDetail} />
+      <HomeStack.Screen name="MessageScreen" component={MessageScreen} />
     </HomeStack.Navigator>
   );
 };

@@ -1,35 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
-  View,
-  StyleSheet,
   FlatList,
   SafeAreaView,
+  StyleSheet,
+  View,
   VirtualizedList,
-  TouchableOpacity,
 } from 'react-native';
-import {
-  Text,
-  Tab,
-  TabView,
-  ListItem,
-  Icon,
-  Rating,
-} from 'react-native-elements';
-import { container } from '../../styles/layoutStyle';
-import Loading from '../../components/Loading';
+import { Icon, Tab, TabView, Text } from 'react-native-elements';
 import Header from '../../components/Header';
-import { COLORS, FONTS } from '../../styles';
+import Loading from '../../components/Loading';
+import { COLORS } from '../../styles';
+import { container } from '../../styles/layoutStyle';
 import orderApi from './../../api/orderApi';
 import Delivered from './Delivery/Delivered';
 import Delivering from './Delivery/Delivering';
-import { useTranslation } from 'react-i18next';
-import moment from 'moment';
 
-export default function OrderHistory({ navigation }) {
+export default function OrderHistory({ navigation, route }) {
   const { t, i18n } = useTranslation('common');
   const [deliveredList, setDelivered] = useState([]);
   const [deliveringList, setDelivering] = useState([]);
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(route?.params?.tab || 0);
   const [loading, setLoading] = useState(<Loading />);
 
   useEffect(() => {
@@ -59,7 +50,14 @@ export default function OrderHistory({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       {loading}
-      <Header headerText={t('orderScreen.shipmenttHistory')} />
+      <Header
+        headerText={t('orderScreen.shipmenttHistory')}
+        leftElement={
+          route?.params?.homeNav ? (
+            <Icon name="west" onPress={() => navigation.goBack()} />
+          ) : null
+        }
+      />
       <View style={{ paddingHorizontal: 15, height: 62 }}>
         <Tab
           value={index}
@@ -117,7 +115,7 @@ export default function OrderHistory({ navigation }) {
               </View>
             }
           /> */}
-          <FlatList 
+          <FlatList
             keyExtractor={item => `${item.id}`}
             data={deliveringList}
             renderItem={renderDeliveringItem}

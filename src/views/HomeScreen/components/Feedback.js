@@ -30,7 +30,10 @@ const Feedback = ({ awaitFeedback }) => {
           {t('homeScreen.feedback')}
         </Text>
         <TouchableOpacity
-          onPress={() => navigation.navigate('HomeOrderHistory')}>
+          onPress={() => navigation.navigate('HomeOrderHistory', {
+            homeNav: true,
+            tab: 1
+          })}>
           <View
             style={{
               padding: 6,

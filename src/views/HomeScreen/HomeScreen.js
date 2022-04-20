@@ -87,6 +87,7 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
           _sort: 'createdAt:DESC',
         }),
         orderApi.getList({
+          remain_fee: 0,
           state: 4,
           rating_note_null: true,
           rating_point_null: true,

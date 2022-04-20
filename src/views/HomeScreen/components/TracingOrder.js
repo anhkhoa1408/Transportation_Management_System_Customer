@@ -11,7 +11,7 @@ import nothing_img from './../../../assets/images/nothing.png';
 const TracingOrder = ({ orders }) => {
   const { t } = useTranslation('common');
   const navigation = useNavigation();
-  
+
   return (
     <View style={{ paddingHorizontal: 15, marginTop: 15 }}>
       <View
@@ -31,7 +31,11 @@ const TracingOrder = ({ orders }) => {
           {t('homeScreen.tracing')}
         </Text>
         <TouchableOpacity
-          onPress={() => navigation.navigate('HomeOrderHistory')}>
+          onPress={() =>
+            navigation.navigate('HomeOrderHistory', {
+              homeNav: true,
+            })
+          }>
           <View
             style={{
               padding: 6,
