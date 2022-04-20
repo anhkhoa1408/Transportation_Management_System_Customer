@@ -1,32 +1,30 @@
 // Import Component
-import React, { useState, useEffect } from 'react';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   FlatList,
   Image,
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import { Icon, Text, withBadge } from 'react-native-elements';
 // Import Function
 import { connect } from 'react-redux';
+import orderApi from '../../api/orderApi';
 import Header from '../../components/Header';
 import HeaderAvatar from '../../components/HeaderAvatar';
 // Import Asset
-import { COLORS, STYLES } from '../../styles';
-import { container, shadowCard } from '../../styles/layoutStyle';
+import { COLORS } from '../../styles';
+import { container } from '../../styles/layoutStyle';
 import { getAvatarFromUser, getNameFromUser } from '../../utils/avatarUltis';
 import banner from './../../assets/images/customer_home.png';
-import nothing_img from './../../assets/images/nothing.png';
-import InfoCard from './components/InfoCard';
-import { useTranslation } from 'react-i18next';
-import orderApi from '../../api/orderApi';
-import { convertOrderState } from '../../utils/order';
-import { joinAddress, simplifyString } from '../../utils/address';
-import moment from 'moment';
 import BenefitSection from './components/BenefitSection';
+import Feedback from './components/Feedback';
+import InfoCard from './components/InfoCard';
+import TracingOrder from './components/TracingOrder';
 
 function HomeScreen({ navigation, userInfo, noties, ...props }) {
   const [badge, setBadge] = useState(null);
@@ -85,6 +83,8 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
       Promise.all([
         orderApi.getList({
           state_in: [0, 1, 2, 3],
+          _limit: 5,
+          _sort: 'createdAt:DESC',
         }),
         orderApi.getList({
           state: 4,
@@ -209,222 +209,10 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
           </View>
 
           {/* Tracing section */}
-          <View style={{ paddingHorizontal: 15, marginTop: 15 }}>
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginBottom: 15,
-              }}>
-              <Text
-                style={{
-                  fontSize: 19,
-                  fontWeight: '800',
-                  letterSpacing: 1,
-                }}>
-                {t('homeScreen.tracing')}
-              </Text>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('HomeOrderHistory')}>
-                <View
-                  style={{
-                    padding: 6,
-                    backgroundColor: COLORS.gray,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    display: 'flex',
-                    flexDirection: 'row',
-                    borderRadius: 10,
-                  }}>
-                  <Text style={{ fontWeight: '800' }}>
-                    {t('homeScreen.detail')}
-                  </Text>
-                  <Icon name="chevron-right" />
-                </View>
-              </TouchableOpacity>
-            </View>
-            {orders.length ? (
-              orders.map(item => {
-                let { icon, neutralColor, color } = item.style;
-                return (
-                  <View key={item.id} style={homeStyle.trackItem}>
-                    <View
-                      style={[
-                        homeStyle.trackItemIcon,
-                        { backgroundColor: neutralColor },
-                      ]}>
-                      <Icon name={icon} color={color} />
-                    </View>
-                    <View
-                      style={{
-                        flex: 1,
-                        paddingLeft: 15,
-                      }}>
-                      <Text
-                        style={{
-                          fontSize: 17,
-                          fontWeight: 'bold',
-                          letterSpacing: 1,
-                        }}>
-                        {item.name || 'Chưa đặt tên'}
-                      </Text>
-                      <Text
-                        style={{
-                          opacity: 0.5,
-                        }}>
-                        {t('homeScreen.to')}:{' '}
-                        {simplifyString(joinAddress(item.to_address), 22)}
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'flex-start',
-                      }}>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                        }}>
-                        <View
-                          style={{
-                            borderRadius: 5,
-                            padding: 3,
-                            marginRight: 6,
-                            backgroundColor: neutralColor,
-                          }}></View>
-                        <Text
-                          style={{
-                            textAlign: 'right',
-                            fontWeight: 'bold',
-                            color: color,
-                          }}>
-                          {t(convertOrderState(item.state))}
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                );
-              })
-            ) : (
-              <View style={homeStyle.nothing}>
-                <Image source={nothing_img} style={homeStyle.nothingImg} />
-                <Text style={{ opacity: 0.5 }}>{t('homeScreen.noOrder')}</Text>
-              </View>
-            )}
-          </View>
+          <TracingOrder orders={orders} />
 
           {/* Await feedback section */}
-          <View style={{ paddingHorizontal: 15, marginTop: 25 }}>
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginBottom: 15,
-              }}>
-              <Text
-                style={{
-                  fontSize: 19,
-                  fontWeight: '800',
-                  letterSpacing: 1,
-                }}>
-                {t('homeScreen.feedback')}
-              </Text>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('HomeOrderHistory')}>
-                <View
-                  style={{
-                    padding: 6,
-                    backgroundColor: COLORS.gray,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    display: 'flex',
-                    flexDirection: 'row',
-                    borderRadius: 10,
-                  }}>
-                  <Text style={{ fontWeight: '800' }}>
-                    {t('homeScreen.detail')}
-                  </Text>
-                  <Icon name="chevron-right" />
-                </View>
-              </TouchableOpacity>
-            </View>
-
-            {awaitFeedback.length ? (
-              awaitFeedback.map(item => {
-                let { icon, neutralColor, color } = mapStateToStyle(item.state);
-                return (
-                  <View key={item.id} style={homeStyle.trackItem}>
-                    <View
-                      style={[
-                        homeStyle.trackItemIcon,
-                        { backgroundColor: neutralColor },
-                      ]}>
-                      <Icon name={icon} color={color} />
-                    </View>
-                    <View
-                      style={{
-                        flex: 1,
-                        paddingLeft: 15,
-                      }}>
-                      <Text
-                        style={{
-                          fontSize: 17,
-                          fontWeight: 'bold',
-                          letterSpacing: 1,
-                        }}>
-                        {item.name || 'Chưa đặt tên'}
-                      </Text>
-                      <Text
-                        style={{
-                          opacity: 0.5,
-                        }}>
-                        Đến: {simplifyString(joinAddress(item.to_address), 22)}
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'flex-start',
-                      }}>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                        }}>
-                        <View
-                          style={{
-                            borderRadius: 5,
-                            padding: 3,
-                            marginRight: 6,
-                            backgroundColor: neutralColor,
-                          }}></View>
-                        <Text
-                          style={{
-                            textAlign: 'right',
-                            fontWeight: 'bold',
-                            color: color,
-                          }}>
-                          {t('homeScreen.await')}
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                );
-              })
-            ) : (
-              <View style={homeStyle.nothing}>
-                <Image source={nothing_img} style={homeStyle.nothingImg} />
-                <Text style={{ opacity: 0.5 }}>
-                  {t('homeScreen.noFeedback')}
-                </Text>
-              </View>
-            )}
-          </View>
+          <Feedback awaitFeedback={awaitFeedback} />
         </ScrollView>
       </SafeAreaView>
     </>
