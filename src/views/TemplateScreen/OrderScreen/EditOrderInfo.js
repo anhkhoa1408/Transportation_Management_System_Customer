@@ -159,7 +159,7 @@ const EditOrderInfo = ({ navigation, route }) => {
               from_address && simplifyString(joinAddress(from_address), 30)
             }
             editable={false}
-            title={t("templateScreen.placeOfDelivery")}
+            title={t("templateScreen.from")}
             placeholder={t("templateScreen.tapToAdd")}
             afterComponent={<ListItem.Chevron size={25} />}
           />
@@ -176,7 +176,7 @@ const EditOrderInfo = ({ navigation, route }) => {
           <TextField
             value={to_address && simplifyString(joinAddress(to_address), 30)}
             editable={false}
-            title={t("templateScreen.placeOfDelivery")}
+            title={t("templateScreen.to")}
             placeholder={t("templateScreen.tapToAdd")}
             afterComponent={<ListItem.Chevron size={25} />}
           />

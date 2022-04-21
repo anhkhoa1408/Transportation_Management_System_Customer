@@ -188,7 +188,7 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
                 fontWeight: '800',
                 letterSpacing: 1,
               }}>
-              Tùy chọn
+              {t("homeScreen.option")}
             </Text>
             <View style={homeStyle.listInfo}>
               <FlatList

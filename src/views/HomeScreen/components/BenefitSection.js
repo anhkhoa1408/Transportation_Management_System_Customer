@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Dimensions, Image, Pressable, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-elements';
 import Carousel from 'react-native-snap-carousel';
@@ -10,24 +11,25 @@ const { height, width } = Dimensions.get('window');
 
 const BenefitSection = props => {
   const ref = useRef(null);
+  const { t } = useTranslation("common")
   const data = [
     {
-      title: 'Tiết kiệm chi phí',
-      subTitle: 'Phí vận chuyển hợp lý',
+      title: "homeScreen.costSaving",
+      subTitle: "homeScreen.reasonable",
       color: COLORS.primary,
       neutral: COLORS.neutralPrimary,
       banner: money,
     },
     {
-      title: 'An toàn',
-      subTitle: 'Đảm bảo an toàn cho hàng hóa của bạn',
+      title: "homeScreen.safe",
+      subTitle: "homeScreen.safety",
       color: COLORS.primary,
       neutral: COLORS.neutralPrimary,
       banner: safe_img,
     },
     {
-      title: 'Tin cậy',
-      subTitle: 'Theo dõi thông tin đơn hàng mọi lúc mọi nơi',
+      title: "homeScreen.trust",
+      subTitle: "homeScreen.trace",
       color: COLORS.primary,
       neutral: COLORS.neutralPrimary,
       banner: trace,
@@ -43,8 +45,8 @@ const BenefitSection = props => {
     <Pressable onPress={() => onPressCarousel(index)}>
       <View style={[styles.itemContainer]}>
         <View style={{ flex: 1, paddingHorizontal: 12 }}>
-          <Text style={styles.textItem}>{item.title}</Text>
-          <Text style={styles.subTextItem}>{item.subTitle}</Text>
+          <Text style={styles.textItem}>{t(item.title)}</Text>
+          <Text style={styles.subTextItem}>{t(item.subTitle)}</Text>
         </View>
         <View style={{ flex: 0.4 }}>
           <Image
