@@ -4,12 +4,14 @@ import { Text, Icon } from 'react-native-elements';
 import { container } from '../../../styles/layoutStyle';
 import { COLORS, FONTS } from './../../../styles';
 import { InfoField } from '../../../components/InfoField';
-import { convertOrderState, formatCash } from '../../../utils/order';
+import { convertOrderState, formatCash, mapStateToStyle } from '../../../utils/order';
 import { joinAddress } from '../../../utils/address';
 import { useTranslation } from 'react-i18next';
 
 const Detail = ({ navigation, item, ...props }) => {
   const { t, i18n } = useTranslation("common")
+  const { color } = mapStateToStyle(item.state)
+
   const quantity = useMemo(() => {
     return item.packages ? item.packages.reduce(
       (total, item) => total + item.weight * item.quantity,
@@ -32,7 +34,7 @@ const Detail = ({ navigation, item, ...props }) => {
         <InfoField
           title={t("orderScreen.status")}
           content={
-            <Text style={{ color: COLORS.success, fontWeight: 'bold' }}>
+            <Text style={{ color: color, fontWeight: 'bold' }}>
               {t(convertOrderState(item.state))}
             </Text>
           }

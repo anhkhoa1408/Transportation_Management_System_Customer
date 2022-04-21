@@ -139,6 +139,7 @@ const EditPackage = ({ route, navigation }) => {
           type: 'success',
           message: t("templateScreen.successfullyAddTemplate"),
         });
+        navigation.goBack()
       })
       .catch(error => {
         setLoading(null);
