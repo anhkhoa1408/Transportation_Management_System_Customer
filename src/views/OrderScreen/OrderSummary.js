@@ -24,7 +24,7 @@ import { joinAddress } from './../../utils/address';
 import { useTranslation } from 'react-i18next';
 
 const OrderSummary = ({ route, navigation }) => {
-  const { t, i18n } = useTranslation("common")
+  const { t, i18n } = useTranslation('common');
   const [loading, setLoading] = useState(null);
   const [alert, setAlert] = useState(null);
   const [fee, setFee] = useState(1000000);
@@ -68,19 +68,19 @@ const OrderSummary = ({ route, navigation }) => {
       payer_phone = '';
 
     switch (payment.title) {
-      case t("orderScreen.payBySender"):
+      case t('orderScreen.payBySender'):
         payer_name = userInfo.name;
         payer_phone = userInfo.phone;
         break;
-      case t("orderScreen.momoE-wallet"):
+      case t('orderScreen.momoE-wallet'):
         payer_name = userInfo.name;
         payer_phone = userInfo.phone;
         break;
-      case t("orderScreen.bankCard"):
+      case t('orderScreen.bankCard'):
         payer_name = userInfo.name;
         payer_phone = userInfo.phone;
         break;
-      case t("orderScreen.payByReceiver"):
+      case t('orderScreen.payByReceiver'):
         payer_name = receiver_name;
         payer_phone = receiver_phone;
         break;
@@ -113,19 +113,23 @@ const OrderSummary = ({ route, navigation }) => {
             id: response.id,
           });
           if (payment.value === 'momo') {
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'HomeScreen' }],
+            });
             return handleRequestPayment(1000, orderIdForMomo, id);
           } else {
             setAlert({
               type: 'success',
-              message: t("orderScreen.ordersuccess"),
-              btnText: t("orderScreen.goToHomepage"),
+              message: t('orderScreen.ordersuccess'),
+              btnText: t('orderScreen.goToHomepage'),
             });
             if (alert) navigation.navigate('HomeScreen');
           }
         } else {
           setAlert({
             type: 'danger',
-            message: t("orderScreen.orderFailed"),
+            message: t('orderScreen.orderFailed'),
           });
         }
       })
@@ -133,7 +137,7 @@ const OrderSummary = ({ route, navigation }) => {
         console.log(error);
         setAlert({
           type: 'danger',
-          message: t("orderScreen.orderFailed"),
+          message: t('orderScreen.orderFailed'),
         });
         setLoading(null);
       });
@@ -141,7 +145,11 @@ const OrderSummary = ({ route, navigation }) => {
 
   const setAlertDeco = _alert => {
     setAlert(_alert);
-    if (alert.type === 'success') navigation.navigate('HomeScreen');
+    if (alert.type === 'success')
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'HomeScreen' }],
+      });
   };
 
   useEffect(() => {
@@ -178,7 +186,7 @@ const OrderSummary = ({ route, navigation }) => {
         leftElement={
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
         }
-        headerText={t("orderScreen.shipment")}
+        headerText={t('orderScreen.shipment')}
       />
       <OrderStep current={payment ? 2 : 1} />
 
@@ -197,23 +205,25 @@ const OrderSummary = ({ route, navigation }) => {
                 opacity: 0.6,
               },
             ]}>
-            {t("orderScreen.pleaseCheckYourOrder'sShipmentInformationAndClickConfirmToProceedWithPayment")}
+            {t(
+              "orderScreen.pleaseCheckYourOrder'sShipmentInformationAndClickConfirmToProceedWithPayment",
+            )}
           </Text>
           <View style={[style.rowContainer]}>
             <InfoField
-              title={t("orderScreen.expected")}
+              title={t('orderScreen.expected')}
               content="Thứ 6, 20 tháng 3"
               style={{ flex: 1 }}
             />
             <InfoField
-              title={t("orderScreen.receiver")}
-              content={receiver_name || t("orderScreen.notYet")}
+              title={t('orderScreen.receiver')}
+              content={receiver_name || t('orderScreen.notYet')}
               style={{ flex: 1 }}
             />
           </View>
           <View style={[style.rowContainer]}>
             <InfoField
-              title={t("orderScreen.from")}
+              title={t('orderScreen.from')}
               content={from_address && joinAddress(from_address)}
               style={{ flex: 1 }}
             />
@@ -225,42 +235,44 @@ const OrderSummary = ({ route, navigation }) => {
           </View>
           <View style={[style.rowContainer]}>
             <InfoField
-              title={t("orderScreen.to")}
+              title={t('orderScreen.to')}
               content={to_address && joinAddress(to_address)}
               style={{ flex: 1 }}
             />
             <InfoField
-              title={t("orderScreen.totalWeight")}
+              title={t('orderScreen.totalWeight')}
               content={total_weight + ' kg'}
               style={{ flex: 1 }}
             />
           </View>
           <View style={[style.rowContainer]}>
             <InfoField
-              title={t("orderScreen.totalTypeOfGoods")}
+              title={t('orderScreen.totalTypeOfGoods')}
               content={packages.length}
               style={{ flex: 1 }}
             />
             <InfoField
-              title={t("orderScreen.totalOfGoods")}
-              content={total_quantity + ' '+ t("orderScreen.package")}
+              title={t('orderScreen.totalOfGoods')}
+              content={total_quantity + ' ' + t('orderScreen.package')}
               style={{ flex: 1 }}
             />
           </View>
           <View style={{ marginVertical: 8 }}>
-            <Text style={[FONTS.BigBold]}>{t("orderScreen.paymentMethods")}</Text>
+            <Text style={[FONTS.BigBold]}>
+              {t('orderScreen.paymentMethods')}
+            </Text>
             <TouchableOpacity
               onPress={() => navigation.navigate('Payment', route.params)}>
               <View style={[style.select, style.rowContainer]}>
                 <Text style={[{ flex: 1 }]}>
-                  {payment ? payment.title : t("orderScreen.tapToSelect")}
+                  {payment ? payment.title : t('orderScreen.tapToSelect')}
                 </Text>
                 <ListItem.Chevron size={30} />
               </View>
             </TouchableOpacity>
           </View>
           <View style={{ marginVertical: 8 }}>
-            <Text style={[FONTS.BigBold]}>{t("orderScreen.voucher")}</Text>
+            <Text style={[FONTS.BigBold]}>{t('orderScreen.voucher')}</Text>
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('VoucherScreen', {
@@ -271,7 +283,9 @@ const OrderSummary = ({ route, navigation }) => {
               }>
               <View style={[style.select, style.rowContainer]}>
                 <Text style={[{ flex: 1 }]}>
-                  {voucher && voucher.title ? voucher.title : t("orderScreen.tapToSelect")}
+                  {voucher && voucher.title
+                    ? voucher.title
+                    : t('orderScreen.tapToSelect')}
                 </Text>
                 <ListItem.Chevron size={30} />
               </View>
@@ -285,11 +299,13 @@ const OrderSummary = ({ route, navigation }) => {
             width={2}
           />
           <View style={[style.rowContainer]}>
-            <Text style={[{ flex: 1 }, FONTS.Big]}>{t("orderScreen.total")}</Text>
+            <Text style={[{ flex: 1 }, FONTS.Big]}>
+              {t('orderScreen.total')}
+            </Text>
             <Text style={[FONTS.BigBold]}>{formatCash(fee.toString())}</Text>
           </View>
           <PrimaryButton
-            title={t("orderScreen.confirm")}
+            title={t('orderScreen.confirm')}
             disabled={payment ? false : true}
             disabledStyle={{
               backgroundColor: COLORS.gray,

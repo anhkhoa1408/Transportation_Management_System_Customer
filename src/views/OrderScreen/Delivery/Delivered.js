@@ -1,10 +1,9 @@
-import React, { memo } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Text, Icon, ListItem, Rating } from 'react-native-elements';
-import { FONTS, COLORS } from '../../../styles';
-import { convertOrderState } from '../../../utils/order';
 import moment from 'moment';
+import React, { memo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Icon, ListItem, Rating, Text } from 'react-native-elements';
+import { COLORS, FONTS } from '../../../styles';
 
 const Delivered = ({ item, navigation }) => {
   const { t, i18n } = useTranslation('common');
