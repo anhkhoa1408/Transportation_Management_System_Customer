@@ -20,6 +20,8 @@ import orderApi from '../../api/orderApi';
 import { useTranslation } from 'react-i18next';
 import { handleRequestPayment } from '../../services/momo';
 import { v4 } from 'uuid';
+import Confirm from '../../components/Confirm';
+import ModalMess from '../../components/ModalMess';
 
 export default function OrderDetail({ navigation, route }) {
   const { t, i18n } = useTranslation('common');
@@ -27,6 +29,8 @@ export default function OrderDetail({ navigation, route }) {
   const [option, setOption] = useState(false);
   const [rating, setRating] = useState(false);
   const [trace, setTrace] = useState(null);
+  const [confirm, setConfirm] = useState(null);
+  const [alert, setAlert] = useState(null);
   const [item, setItem] = useState(route?.params.item);
 
   useEffect(() => {
@@ -54,6 +58,7 @@ export default function OrderDetail({ navigation, route }) {
   }, []);
 
   const handleCancel = () => {
+    setConfirm(null);
     if (item.state === 0) {
       orderApi
         .update(item.id, {
@@ -63,15 +68,61 @@ export default function OrderDetail({ navigation, route }) {
           navigation.goBack();
         })
         .catch(err => console.log(err));
+    } else {
+      setAlert({
+        type: 'danger',
+        message: 'Đơn hàng đã được nhận, không thể hủy',
+      });
     }
   };
 
   const handlePayment = () => {
-    handleRequestPayment(1000, v4(), item.id);
+    setConfirm(null);
+    let id = JSON.stringify({
+      id: item.id,
+    });
+    // console.log(id)
+    // return
+    handleRequestPayment(1000, v4(), id);
+  };
+
+  const handleConfirm = type => {
+    if (type === 'pay') {
+      setConfirm({
+        type: 'warning',
+        message: 'Bạn có muốn thanh toán toàn bộ chi phí còn lại theo Momo?',
+        confirmBtnText: 'Thanh toán',
+        onConfirm: handlePayment,
+      });
+    } else if (type === 'cancel') {
+      setConfirm({
+        type: 'warning',
+        message: 'Bạn có muốn hủy đơn hàng ?',
+        confirmBtnText: 'Đồng ý',
+        onConfirm: handleCancel,
+      });
+    }
   };
 
   return (
     <SafeAreaView style={styles.container}>
+      {confirm && (
+        <Confirm
+          type={confirm.type}
+          message={confirm.message}
+          onCancel={() => setConfirm(null)}
+          onConfirm={confirm.onConfirm}
+          confirmBtnText={confirm.confirmBtnText}
+        />
+      )}
+      {alert && (
+        <ModalMess
+          type={alert.type}
+          message={alert.message}
+          alert={alert}
+          setAlert={setAlert}
+        />
+      )}
       <Header
         leftElement={
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
@@ -164,7 +215,7 @@ export default function OrderDetail({ navigation, route }) {
           />
           <Button
             disabled={!item.remain_fee || item.state === 5}
-            onPress={handlePayment}
+            onPress={() => handleConfirm('pay')}
             title={t('orderIndicator.pay')}
             containerStyle={[styles.btnOption]}
             buttonStyle={[{ backgroundColor: COLORS.warning, borderRadius: 8 }]}
@@ -173,7 +224,7 @@ export default function OrderDetail({ navigation, route }) {
             disabled={item.state === 5}
             title={t('orderScreen.cancelOrder')}
             type="outline"
-            onPress={handleCancel}
+            onPress={() => handleConfirm('cancel')}
             containerStyle={[styles.btnOption]}
             titleStyle={[{ color: COLORS.danger }]}
             buttonStyle={[
