@@ -1,3 +1,5 @@
+import { COLORS } from '../styles';
+
 function convertOrderState(state) {
   switch (state) {
     case 0:
@@ -28,7 +30,7 @@ function convertTracingState(state) {
     case 4:
       return 'utils.transporting';
     default:
-      return 'utils.importing'
+      return 'utils.importing';
   }
 }
 
@@ -43,4 +45,45 @@ function formatCash(cash) {
     .concat(' VND');
 }
 
-export { convertOrderState, convertTracingState, formatCash };
+function mapStateToStyle(state) {
+  switch (state) {
+    case 0:
+      return {
+        icon: 'shopping-cart',
+        color: COLORS.warning,
+        neutralColor: COLORS.neutralWarning,
+      };
+    case 1:
+      return {
+        icon: 'inventory',
+        color: COLORS.primary,
+        neutralColor: COLORS.neutralPrimary,
+      };
+    case 2:
+      return {
+        icon: 'local-shipping',
+        color: COLORS.success,
+        neutralColor: COLORS.neutralSuccess,
+      };
+    case 3:
+      return {
+        icon: 'storefront',
+        color: COLORS.bolderGray,
+        neutralColor: COLORS.gray,
+      };
+    case 4:
+      return {
+        icon: 'thumb-up-alt',
+        color: COLORS.warning,
+        neutralColor: COLORS.neutralWarning,
+      };
+    default:
+      return {
+        icon: 'storefront',
+        color: COLORS.bolderGray,
+        neutralColor: COLORS.gray,
+      };
+  }
+}
+
+export { convertOrderState, convertTracingState, formatCash, mapStateToStyle };

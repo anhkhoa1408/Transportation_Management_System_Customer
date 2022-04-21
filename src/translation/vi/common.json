@@ -97,7 +97,14 @@
     "detail": "Chi tiết",
     "await": "Chưa đánh giá",
     "noFeedback": "Chưa có đánh giá",
-    "noOrder": "Chưa có đơn hàng"
+    "noOrder": "Chưa có đơn hàng",
+    "costSaving": "Tiết kiệm chi phí",
+    "reasonable": "Phí vận chuyển hợp lý",
+    "safe": "An toàn",
+    "safety": "Đảm bảo an toàn cho hàng hóa của bạn",
+    "trust": "Tin cậy",
+    "trace": "Theo dõi thông tin đơn hàng mọi lúc mọi nơi",
+    "option": "Tùy chọn"
   },
   "mapScreen": {
     "searchForAPlace": "Tìm kiếm một địa điểm",
@@ -262,7 +269,8 @@
     "updateFailure": "Cập nhật thất bại",
     "name(optional)": "Tên (không bắt buộc)",
     "enterPackageInformation": "Nhập thông tin kiện hàng",
-    "placeOfDelivery": "Nơi gửi hàng",
+    "from": "Nơi gửi hàng",
+    "to": "Nơi nhận hàng",
     "tapToAdd": "Nhấn để thêm",
     "receiver'sName": "Tên người nhận",
     "receiver'sPhone": "SDT người nhận",

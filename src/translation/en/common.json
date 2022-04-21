@@ -97,7 +97,14 @@
     "detail": "Detail",
     "await": "Await feedback",
     "noFeedback": "No feedback yet",
-    "noOrder": "No order yet"
+    "noOrder": "No order yet",
+    "costSaving": "Cost savings",
+    "reasonable": "Reasonable shipping fee",
+    "safe": "Safe",
+    "safety": "Ensure the safety of your goods",
+    "trust": "Trust",
+    "trace": "Track your order information anytime, anywhere",
+    "option": "Option"
   },
   "mapScreen": {
     "searchForAPlace": "Search for a place",
@@ -262,7 +269,8 @@
     "updateFailure": "Update failed",
     "name(optional)": "Name (optional)",
     "enterPackageInformation": "Enter package information",
-    "placeOfDelivery": "Place of delivery",
+    "from": "From",
+    "to": "To",
     "tapToAdd": "Tap to add",
     "receiver'sName": "Receiver's name",
     "receiver'sPhone": "Receiver's phone",
