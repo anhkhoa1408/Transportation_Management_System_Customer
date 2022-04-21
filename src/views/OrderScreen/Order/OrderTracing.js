@@ -21,22 +21,36 @@ const OrderTracing = props => {
     {
       title: t('orderScreen.order'),
       subTitle: t('orderScreen.ordersAreBeingReceivedAndPending'),
-      content: t('orderScreen.orderProcessing'),
+      content:
+        current >= 1
+          ? t('orderScreen.handle')
+          : t('orderScreen.orderProcessing'),
+      color: current >= 1 ? COLORS.success : COLORS.warning,
+      icon: current >= 1 ? 'check-circle' : 'hourglass-bottom',
     },
     {
       title: t('orderScreen.moveToInnerCityWarehouse'),
       subTitle: t('orderScreen.packagesAreBeingPrepared'),
-      content: t('orderScreen.preparingForShipping'),
+      content:
+        current >= 2
+          ? t('orderScreen.collect')
+          : t('orderScreen.preparingForShipping'),
+      color: COLORS.success,
+      icon: 'check-circle',
     },
     {
       title: t('orderScreen.delivery'),
       subTitle: t('orderScreen.packagesWillBeDeliveredToRecipientsToday'),
       content: t('orderScreen.readyToDeliver'),
+      color: COLORS.success,
+      icon: 'check-circle',
     },
     {
       title: t('orderScreen.deliverySccessful'),
       subTitle: t('orderScreen.packagesWillBeDeliveredToTheReceiver'),
       content: t('orderScreen.receivedGoodsSuccessfully'),
+      color: COLORS.success,
+      icon: 'check-circle',
     },
   ]);
 
@@ -69,12 +83,18 @@ const OrderTracing = props => {
                 convertTracingState(trace.tracingResult[index].status),
               )} ${
                 Object.values(trace.tracingResult[index])[2]
-                  ? '-' +
+                  ? '- ' +
                     moment(Object.values(trace.tracingResult[index])[2]).format(
                       'DD/MM/YYYY HH:mm',
                     )
                   : ''
               }`,
+              color: [0, 2].includes(trace.tracingResult[index].status)
+                ? COLORS.warning
+                : COLORS.success,
+              icon: [0, 2].includes(trace.tracingResult[index].status)
+                ? 'hourglass-bottom'
+                : 'check-circle',
             };
           },
         );
@@ -92,12 +112,18 @@ const OrderTracing = props => {
                 convertTracingState(trace.tracingResult[index].status),
               )} ${
                 Object.values(trace.tracingResult[index])[2]
-                  ? '-' +
+                  ? '- ' +
                     moment(Object.values(trace.tracingResult[index])[2]).format(
                       'DD/MM/YYYY HH:mm',
                     )
                   : ''
               }`,
+              color: [0, 2].includes(trace.tracingResult[index].status)
+                ? COLORS.warning
+                : COLORS.success,
+              icon: [0, 2].includes(trace.tracingResult[index].status)
+                ? 'hourglass-bottom'
+                : 'check-circle',
             };
           },
         );
@@ -117,6 +143,8 @@ const OrderTracing = props => {
               trace.tracingResult[trace.tracingResult.length - 1],
             )[2],
           ).format('DD/MM/YYYY HH:mm')}`,
+          color: COLORS.success,
+          icon: 'check-circle',
         });
         setData([...step.slice(0, 2), ...temp, step[2]]);
       }
@@ -175,11 +203,11 @@ const OrderTracing = props => {
                 <Text style={[FONTS.Big]}>{data[index]?.subTitle}</Text>
                 {data[index]?.content && (
                   <View style={{ flexDirection: 'row', marginTop: 10 }}>
-                    <Icon name="check-circle" color={COLORS.success} />
+                    <Icon name={data[index].icon} color={data[index].color} />
                     <Text
                       style={[
                         FONTS.BigBold,
-                        { color: COLORS.success, marginLeft: 10 },
+                        { color: data[index].color, marginLeft: 10 },
                       ]}>
                       {data[index]?.content}
                     </Text>

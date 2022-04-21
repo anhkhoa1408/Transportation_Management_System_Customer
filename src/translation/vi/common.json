@@ -174,9 +174,9 @@
 
     "ordersAreBeingReceivedAndPending": "Đơn đặt hàng đang được nhận và đang chờ xử lý",
     "orderProcessing": "Đang xử lý đơn hàng",
-    "moveToInnerCityWarehouse": "Chuyển vào kho nội thành",
-    "packagesAreBeingPrepared": "Các kiện hàng đang được chuẩn bị",
-    "preparingForShipping": "Chuẩn bị vận chuyển",
+    "moveToInnerCityWarehouse": "Tiến hành thu gom hàng",
+    "packagesAreBeingPrepared": "Các kiện hàng đang được chuẩn bị thu gom",
+    "preparingForShipping": "Chuẩn bị gom hàng",
     "delivery": "Vận chuyển",
     "packagesWillBeDeliveredToRecipientsToday": "Các gói hàng sẽ được chuyển đến người nhận ngay hôm nay",
     "readyToDeliver": "Sẵn sàng giao hàng",
@@ -188,6 +188,8 @@
     "packagesAreBeingShippedTo": "Các kiện hàng đang được trung chuyển đến",
     "shippingToInnerCityWarehouse": "Vận chuyển đến kho nội thành",
     "packagesWillArrive": "Các kiện hàng sẽ đến",
+    "handle": "Xử lý thành công",
+    "collect": "Gom hàng thành công",
 
     "package": " Kiện hàng",
     "currentLocation": "Vị trí hiện tại",

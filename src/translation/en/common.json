@@ -174,9 +174,9 @@
 
     "ordersAreBeingReceivedAndPending": "Order is being received and pending",
     "orderProcessing": "Order processing",
-    "moveToInnerCityWarehouse": "Move to inner city warehouse",
-    "packagesAreBeingPrepared": "Packages are being prepared",
-    "preparingForShipping": "Preparing for shipping",
+    "moveToInnerCityWarehouse": "Collecting goods",
+    "packagesAreBeingPrepared": "Packages are being prepared for collection",
+    "preparingForShipping": "Preparing for collecting",
     "delivery": "Delivery",
     "packagesWillBeDeliveredToRecipientsToday": "Packages will be delivered to receiver today",
     "readyToDeliver": "Ready to deliver",
@@ -188,6 +188,8 @@
     "packagesAreBeingShippedTo": "Packages are being shipped to",
     "shippingToInnerCityWarehouse": "Shipping to inner city warehouse",
     "packagesWillArrive": "Packages will arrive",
+    "handle": "Successful handling",
+    "collect": "Successful collecting",
 
     "package": " Package",
     "currentLocation": "Current location",
