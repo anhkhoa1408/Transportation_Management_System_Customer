@@ -1,27 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, SafeAreaView } from 'react-native';
-import {
-  Text,
-  Icon,
-  Avatar,
-  Button,
-  Overlay,
-  Tab,
-  TabView,
-} from 'react-native-elements';
-import { container } from '../../styles/layoutStyle';
-import Header from '../../components/Header';
-import { COLORS, FONTS } from '../../styles';
-import OrderRating from './Order/OrderRating';
-import Detail from './Order/Detail';
-import PackageList from './Order/PakageList';
-import OrderTracing from './Order/OrderTracing';
-import orderApi from '../../api/orderApi';
 import { useTranslation } from 'react-i18next';
-import { handleRequestPayment } from '../../services/momo';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
+import {
+  Avatar,
+  Button, Icon, Overlay,
+  Tab,
+  TabView, Text
+} from 'react-native-elements';
 import { v4 } from 'uuid';
+import orderApi from '../../api/orderApi';
 import Confirm from '../../components/Confirm';
+import Header from '../../components/Header';
 import ModalMess from '../../components/ModalMess';
+import { handleRequestPayment } from '../../services/momo';
+import { COLORS, FONTS } from '../../styles';
+import { container } from '../../styles/layoutStyle';
+import Detail from './Order/Detail';
+import OrderRating from './Order/OrderRating';
+import OrderTracing from './Order/OrderTracing';
+import PackageList from './Order/PakageList';
 
 export default function OrderDetail({ navigation, route }) {
   const { t, i18n } = useTranslation('common');
@@ -81,8 +78,6 @@ export default function OrderDetail({ navigation, route }) {
     let id = JSON.stringify({
       id: item.id,
     });
-    // console.log(id)
-    // return
     handleRequestPayment(1000, v4(), id);
   };
 
