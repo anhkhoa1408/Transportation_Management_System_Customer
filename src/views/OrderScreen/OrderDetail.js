@@ -18,6 +18,8 @@ import PackageList from './Order/PakageList';
 import OrderTracing from './Order/OrderTracing';
 import orderApi from '../../api/orderApi';
 import { useTranslation } from 'react-i18next';
+import { handleRequestPayment } from '../../services/momo';
+import { v4 } from 'uuid';
 
 export default function OrderDetail({ navigation, route }) {
   const { t, i18n } = useTranslation('common');
@@ -36,6 +38,21 @@ export default function OrderDetail({ navigation, route }) {
     }
   }, []);
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      orderApi
+        .orderInfo(item.id)
+        .then(response => {
+          setItem(response);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    });
+
+    return unsubscribe;
+  }, []);
+
   const handleCancel = () => {
     if (item.state === 0) {
       orderApi
@@ -47,6 +64,10 @@ export default function OrderDetail({ navigation, route }) {
         })
         .catch(err => console.log(err));
     }
+  };
+
+  const handlePayment = () => {
+    handleRequestPayment(1000, v4(), item.id);
   };
 
   return (
@@ -141,12 +162,15 @@ export default function OrderDetail({ navigation, route }) {
             containerStyle={[styles.btnOption]}
             buttonStyle={[{ backgroundColor: COLORS.success, borderRadius: 8 }]}
           />
-          {/* <Button
-            title={t("orderScreen.edit")}
-            containerStyle={[styles.btnOption]}
-            buttonStyle={[{ backgroundColor: COLORS.warning }]}
-          /> */}
           <Button
+            disabled={!item.remain_fee || item.state === 5}
+            onPress={handlePayment}
+            title={t('orderIndicator.pay')}
+            containerStyle={[styles.btnOption]}
+            buttonStyle={[{ backgroundColor: COLORS.warning, borderRadius: 8 }]}
+          />
+          <Button
+            disabled={item.state === 5}
             title={t('orderScreen.cancelOrder')}
             type="outline"
             onPress={handleCancel}
