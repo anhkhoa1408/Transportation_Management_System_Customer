@@ -9,7 +9,7 @@ import nothing_img from './../../../assets/images/nothing.png';
 
 const Feedback = ({ awaitFeedback }) => {
   const { t } = useTranslation('common');
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
   return (
     <View style={{ paddingHorizontal: 15, marginTop: 25 }}>
@@ -30,10 +30,12 @@ const Feedback = ({ awaitFeedback }) => {
           {t('homeScreen.feedback')}
         </Text>
         <TouchableOpacity
-          onPress={() => navigation.navigate('HomeOrderHistory', {
-            homeNav: true,
-            tab: 1
-          })}>
+          onPress={() =>
+            navigation.navigate('HomeOrderHistory', {
+              homeNav: true,
+              tab: 1,
+            })
+          }>
           <View
             style={{
               padding: 6,
@@ -52,7 +54,11 @@ const Feedback = ({ awaitFeedback }) => {
 
       {awaitFeedback.length ? (
         awaitFeedback.map(item => {
-          let { icon, neutralColor, color } = mapStateToStyle(item.state);
+          let { icon, neutralColor, color } = {
+            icon: 'thumb-up-alt',
+            color: COLORS.warning,
+            neutralColor: COLORS.neutralWarning,
+          };
           return (
             <View key={item.id} style={styles.trackItem}>
               <View

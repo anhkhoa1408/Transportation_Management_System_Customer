@@ -32,47 +32,6 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
   const [orders, setOrders] = useState([]);
   const [awaitFeedback, setFeedbacks] = useState([]);
 
-  const mapStateToStyle = state => {
-    switch (state) {
-      case 0:
-        return {
-          icon: 'shopping-cart',
-          color: COLORS.warning,
-          neutralColor: COLORS.neutralWarning,
-        };
-      case 1:
-        return {
-          icon: 'inventory',
-          color: COLORS.primary,
-          neutralColor: COLORS.neutralPrimary,
-        };
-      case 2:
-        return {
-          icon: 'local-shipping',
-          color: COLORS.success,
-          neutralColor: COLORS.neutralSuccess,
-        };
-      case 3:
-        return {
-          icon: 'storefront',
-          color: COLORS.bolderGray,
-          neutralColor: COLORS.gray,
-        };
-      case 4:
-        return {
-          icon: 'thumb-up-alt',
-          color: COLORS.warning,
-          neutralColor: COLORS.neutralWarning,
-        };
-      default:
-        return {
-          icon: 'storefront',
-          color: COLORS.bolderGray,
-          neutralColor: COLORS.gray,
-        };
-    }
-  };
-
   useEffect(() => {
     setBadge(Badge(Object.keys(noties).length));
   }, [noties]);
@@ -97,14 +56,7 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
         }),
       ])
         .then(response => {
-          setOrders(
-            response[0].map(item => {
-              return {
-                ...item,
-                style: mapStateToStyle(item.state),
-              };
-            }),
-          );
+          setOrders(response[0]);
           setFeedbacks(response[1]);
         })
         .catch(error => console.log(error));
@@ -188,16 +140,11 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
                 fontWeight: '800',
                 letterSpacing: 1,
               }}>
-              {t("homeScreen.option")}
+              {t('homeScreen.option')}
             </Text>
-            <View style={homeStyle.listInfo}>
+            <View style={{ height: 108, marginBottom: 20 }}>
               <FlatList
-                contentContainerStyle={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'space-evenly',
-                  alignItems: 'center',
-                }}
+                contentContainerStyle={homeStyle.listInfo}
                 showsHorizontalScrollIndicator={false}
                 horizontal
                 data={listData}
@@ -225,16 +172,10 @@ const homeStyle = StyleSheet.create({
     ...container,
   },
   listInfo: {
-    width: '100%',
-    height: 108,
-    display: 'flex',
-    flexDirection: 'row',
+    height: '100%',
     backgroundColor: COLORS.gray,
-    borderTopLeftRadius: 50,
-    borderBottomLeftRadius: 50,
-    zIndex: 99,
-    paddingLeft: 12,
-    marginBottom: 25,
+    alignItems: 'center',
+    overflow: 'hidden',
   },
   banner: {
     width: '100%',
