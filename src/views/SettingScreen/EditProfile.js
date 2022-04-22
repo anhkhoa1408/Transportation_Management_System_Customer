@@ -22,9 +22,8 @@ import { MAIN_URL } from '../../api/config';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { getAvatarFromUser, getNameFromUser } from '../../utils/avatarUltis';
 
-
 const EditProfile = ({ navigation }) => {
-  const { t, i18n } = useTranslation("common")
+  const { t, i18n } = useTranslation('common');
   const [data, setData] = useState({
     name: '',
     email: '',
@@ -53,11 +52,11 @@ const EditProfile = ({ navigation }) => {
       city: data.address.city,
     },
     validationSchema: Bonk.object({
-      name: Bonk.string().required(t("settingScreen.requiredInformation")),
+      name: Bonk.string().required(t('settingScreen.requiredInformation')),
       email: Bonk.string()
-        .required(t("settingScreen.requiredInformation"))
-        .email(t("settingScreen.invalidEmail")),
-      phone: Bonk.string().required(t("settingScreen.requiredInformation")),
+        .required(t('settingScreen.requiredInformation'))
+        .email(t('settingScreen.invalidEmail')),
+      phone: Bonk.string().required(t('settingScreen.requiredInformation')),
     }),
     onSubmit: values => {
       handleSubmit(values);
@@ -94,19 +93,17 @@ const EditProfile = ({ navigation }) => {
         setData(response);
         setAlert({
           type: 'success',
-          message: t("settingScreen.successfullyUpdated"),
+          message: t('settingScreen.successfullyUpdated'),
         });
       })
       .catch(err => {
         setLoading(false);
         setAlert({
           type: 'error',
-          message: t("settingScreen.updateFailedInformation"),
+          message: t('settingScreen.updateFailedInformation'),
         });
       });
   };
-
-  // console.log(formik.values.birthday)
 
   return (
     <SafeAreaView style={styles.screen}>
@@ -118,142 +115,143 @@ const EditProfile = ({ navigation }) => {
           alert={alert}
         />
       )}
-      {loading && <Loading />}
-      <Header
-        leftElement={
-          <Icon name="west" size={30} onPress={() => navigation.goBack()} />
-        }
-        headerText={t("settingScreen.personalInformation")}
-      />
-
-      <KeyboardAwareScrollView
-        enableOnAndroid
-        enableAutomaticScroll
-        contentContainerStyle={{ paddingHorizontal: 25 }}>
-        <View style={{ alignItems: 'center' }}>
-          <Avatar
-            size={150}
-            source={{
-              uri: avatar,
-            }}
-            rounded>
-            <Avatar.Accessory
-              underlayColor="#CCC"
-              style={{ backgroundColor: COLORS.primary }}
-              color={COLORS.white}
-              size={35}
-              onPress={() =>
-                launchImageLibrary({
-                  mediaTypes: 'photo',
-                  quality: 1,
-                }).then(data => {
-                  if (data.assets && data.assets.length > 0) {
-                    setLoading(true);
-                    authApi
-                      .updateAvatar(data.assets[0])
-                      .then(response => {
-                        setLoading(false);
-                        dispatch(saveInfo({ user: response }));
-                        setAlert({
-                          type: 'success',
-                          message: 'Cập nhật ảnh đại diện thành công',
-                        });
-                        setAvatar(MAIN_URL + response.avatar.url);
-                      })
-                      .catch(err => {
-                        console.error(err);
-                        setLoading(false);
-                        setAlert({
-                          type: 'danger',
-                          message: 'Cập nhật ảnh đại diện thất bại',
-                        });
-                      });
-                  }
-                })
-              }
-            />
-          </Avatar>
-        </View>
-
-        <TextField
-          title={t("settingScreen.name")}
-          onChangeText={text => {
-            formik.setFieldValue('name', text);
-          }}
-          value={formik.values.name}
-          error={formik.touched.name && formik.errors.name}
-          errorMessage={formik.errors.name}
-          onBlur={() => formik.setFieldTouched('name')}
-        />
-
-        <TextField
-          title="Email"
-          value={formik.values.email}
-          onChangeText={text => formik.setFieldValue('email', text)}
-          error={formik.touched.email && formik.errors.email}
-          errorMessage={formik.errors.email}
-          onBlur={() => formik.setFieldTouched('email')}
-        />
-
-        <TextField
-          keyboardType="numeric"
-          title={t("settingScreen.phoneNumber")}
-          value={formik.values.phone}
-          onChangeText={text => formik.setFieldValue('phone', text)}
-          error={formik.touched.phone && formik.errors.phone}
-          errorMessage={formik.errors.phone}
-          onBlur={() => formik.setFieldTouched('phone')}
-        />
-
-
-
-        {formik.values.birthday && (
-          <DatePicker
-            title={t("settingScreen.yourBirthday")}
-            date={formik.values.birthday}
-            setDate={date => formik.setFieldValue('birthday', date)}
+      {loading || !formik.values.birthday ? (
+        <Loading />
+      ) : (
+        <>
+          <Header
+            leftElement={
+              <Icon name="west" size={30} onPress={() => navigation.goBack()} />
+            }
+            headerText={t('settingScreen.personalInformation')}
           />
-        )}
 
-        <TextField
-          title={t("orderScreen.street")}
-          value={formik.values.street}
-          onChangeText={text => formik.setFieldValue('address', text)}
-          error={formik.touched.street && formik.errors.street}
-          errorMessage={formik.errors.street}
-          onBlur={() => formik.setFieldTouched('street')}
-        />
-        <TextField
-          title={t("orderScreen.wards")}
-          value={formik.values.ward}
-          onChangeText={text => formik.setFieldValue('ward', text)}
-          error={formik.touched.ward && formik.errors.ward}
-          errorMessage={formik.errors.ward}
-          onBlur={() => formik.setFieldTouched('ward')}
-        />
-        
-        <TextField
-          title={t("orderScreen.province")}
-          value={formik.values.province}
-          onChangeText={text => formik.setFieldValue('province', text)}
-          error={formik.touched.province && formik.errors.province}
-          errorMessage={formik.errors.province}
-          onBlur={() => formik.setFieldTouched('province')}
-        />
-        <TextField
-          title={t("orderScreen.city")}
-          value={formik.values.city}
-          onChangeText={text => formik.setFieldValue('city', text)}
-          error={formik.touched.city && formik.errors.city}
-          errorMessage={formik.errors.city}
-          onBlur={() => formik.setFieldTouched('city')}
-        />
+          <KeyboardAwareScrollView
+            enableOnAndroid
+            enableAutomaticScroll
+            contentContainerStyle={{ paddingHorizontal: 25 }}>
+            <View style={{ alignItems: 'center' }}>
+              <Avatar
+                size={150}
+                source={{
+                  uri: avatar,
+                }}
+                rounded>
+                <Avatar.Accessory
+                  underlayColor="#CCC"
+                  style={{ backgroundColor: COLORS.primary }}
+                  color={COLORS.white}
+                  size={35}
+                  onPress={() =>
+                    launchImageLibrary({
+                      mediaTypes: 'photo',
+                      quality: 1,
+                    }).then(data => {
+                      if (data.assets && data.assets.length > 0) {
+                        setLoading(true);
+                        authApi
+                          .updateAvatar(data.assets[0])
+                          .then(response => {
+                            setLoading(false);
+                            dispatch(saveInfo({ user: response }));
+                            setAlert({
+                              type: 'success',
+                              message: 'Cập nhật ảnh đại diện thành công',
+                            });
+                            setAvatar(MAIN_URL + response.avatar.url);
+                          })
+                          .catch(err => {
+                            console.error(err);
+                            setLoading(false);
+                            setAlert({
+                              type: 'danger',
+                              message: 'Cập nhật ảnh đại diện thất bại',
+                            });
+                          });
+                      }
+                    })
+                  }
+                />
+              </Avatar>
+            </View>
 
-        <PrimaryButton
-          title="Cập nhật"
-          backgroundColor={COLORS.success}
-          onPress={formik.submitForm}></PrimaryButton>
-      </KeyboardAwareScrollView>
+            <TextField
+              title={t('settingScreen.name')}
+              onChangeText={text => {
+                formik.setFieldValue('name', text);
+              }}
+              value={formik.values.name}
+              error={formik.touched.name && formik.errors.name}
+              errorMessage={formik.errors.name}
+              onBlur={() => formik.setFieldTouched('name')}
+            />
+
+            <TextField
+              title="Email"
+              value={formik.values.email}
+              onChangeText={text => formik.setFieldValue('email', text)}
+              error={formik.touched.email && formik.errors.email}
+              errorMessage={formik.errors.email}
+              onBlur={() => formik.setFieldTouched('email')}
+            />
+
+            <TextField
+              keyboardType="numeric"
+              title={t('settingScreen.phoneNumber')}
+              value={formik.values.phone}
+              onChangeText={text => formik.setFieldValue('phone', text)}
+              error={formik.touched.phone && formik.errors.phone}
+              errorMessage={formik.errors.phone}
+              onBlur={() => formik.setFieldTouched('phone')}
+            />
+
+            <DatePicker
+              title={t('settingScreen.yourBirthday')}
+              date={formik.values.birthday}
+              setDate={date => formik.setFieldValue('birthday', date)}
+            />
+
+            <TextField
+              title={t('orderScreen.street')}
+              value={formik.values.street}
+              onChangeText={text => formik.setFieldValue('address', text)}
+              error={formik.touched.street && formik.errors.street}
+              errorMessage={formik.errors.street}
+              onBlur={() => formik.setFieldTouched('street')}
+            />
+            <TextField
+              title={t('orderScreen.wards')}
+              value={formik.values.ward}
+              onChangeText={text => formik.setFieldValue('ward', text)}
+              error={formik.touched.ward && formik.errors.ward}
+              errorMessage={formik.errors.ward}
+              onBlur={() => formik.setFieldTouched('ward')}
+            />
+
+            <TextField
+              title={t('orderScreen.province')}
+              value={formik.values.province}
+              onChangeText={text => formik.setFieldValue('province', text)}
+              error={formik.touched.province && formik.errors.province}
+              errorMessage={formik.errors.province}
+              onBlur={() => formik.setFieldTouched('province')}
+            />
+            <TextField
+              title={t('orderScreen.city')}
+              value={formik.values.city}
+              onChangeText={text => formik.setFieldValue('city', text)}
+              error={formik.touched.city && formik.errors.city}
+              errorMessage={formik.errors.city}
+              onBlur={() => formik.setFieldTouched('city')}
+            />
+
+            <PrimaryButton
+              title="Cập nhật"
+              backgroundColor={COLORS.success}
+              onPress={formik.submitForm}></PrimaryButton>
+          </KeyboardAwareScrollView>
+        </>
+      )}
     </SafeAreaView>
   );
 };

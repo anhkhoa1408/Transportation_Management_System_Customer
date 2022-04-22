@@ -179,9 +179,9 @@ export default function OrderDetail({ navigation, route }) {
             backgroundColor: COLORS.white,
             borderRadius: 8,
             elevation: 8,
-            paddingHorizontal: 20,
+            paddingHorizontal: 10,
             paddingVertical: 10,
-            width: 220,
+            width: 200,
           }}
           backdropStyle={{
             backgroundColor: COLORS.backdropColor,
@@ -208,7 +208,7 @@ export default function OrderDetail({ navigation, route }) {
             onPress={() => handleConfirm('pay')}
             title={t('orderIndicator.pay')}
             containerStyle={[styles.btnOption]}
-            buttonStyle={[{ backgroundColor: COLORS.warning, borderRadius: 8 }]}
+            buttonStyle={[{ backgroundColor: COLORS.primary, borderRadius: 8 }]}
           />
           <Button
             disabled={item.state === 5}

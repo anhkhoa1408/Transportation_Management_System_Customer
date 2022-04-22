@@ -86,16 +86,14 @@ const InputPackage = ({ route, navigation }) => {
               flexDirection: 'row',
             }}>
             <Button
-              type="outline"
               title={t("orderScreen.addPackages")}
               titleStyle={{ color: COLORS.success }}
               buttonStyle={{
-                borderColor: COLORS.success,
-                borderWidth: 2,
                 padding: 14,
                 borderRadius: 8,
+                backgroundColor: COLORS.neutralSuccess
               }}
-              containerStyle={{ flex: 1, marginRight: 10, marginVertical: 15 }}
+              containerStyle={{ flex: 1, marginRight: 5, marginVertical: 15 }}
               onPress={() =>
                 navigation.navigate('EditPackage', {
                   ...route.params,
@@ -104,16 +102,14 @@ const InputPackage = ({ route, navigation }) => {
               }
             />
             <Button
-              type="outline"
               title={t("orderScreen.packageSample")}
               titleStyle={{ color: COLORS.header }}
               buttonStyle={{
-                borderColor: COLORS.header,
-                borderWidth: 2,
                 padding: 14,
                 borderRadius: 8,
+                backgroundColor: COLORS.neutralHeader
               }}
-              containerStyle={{ flex: 1, marginLeft: 10, marginVertical: 15 }}
+              containerStyle={{ flex: 1, marginLeft: 5, marginVertical: 15 }}
               onPress={() =>
                 navigation.navigate('PackageTemplateList', {
                   ...route.params,
