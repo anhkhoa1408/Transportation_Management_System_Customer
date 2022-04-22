@@ -5,7 +5,7 @@ import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Icon, Text } from 'react-native-elements';
 import { COLORS } from '../../../styles';
 import { joinAddress, simplifyString } from '../../../utils/address';
-import { convertOrderState } from '../../../utils/order';
+import { convertOrderState, mapStateToStyle } from '../../../utils/order';
 import nothing_img from './../../../assets/images/nothing.png';
 
 const TracingOrder = ({ orders }) => {
@@ -53,7 +53,8 @@ const TracingOrder = ({ orders }) => {
       </View>
       {orders.length ? (
         orders.map(item => {
-          let { icon, neutralColor, color } = item.style;
+          console.log(item)
+          let { icon, neutralColor, color } = mapStateToStyle(item.state);
           return (
             <View key={item.id} style={styles.trackItem}>
               <View

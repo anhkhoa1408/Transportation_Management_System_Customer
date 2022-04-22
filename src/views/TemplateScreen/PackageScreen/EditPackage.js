@@ -248,7 +248,7 @@ const EditPackage = ({ route, navigation }) => {
             selected={selected}
             setSelected={setSelected}
           />
-          <CustomInput title={t("templateScreen.note")} />
+          {/* <CustomInput title={t("templateScreen.note")} /> */}
         </View>
       </KeyboardAwareScrollView>
     </SafeAreaView>

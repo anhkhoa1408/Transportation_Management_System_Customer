@@ -8,6 +8,7 @@ import {
   View,
 } from 'react-native';
 import { Icon, Text } from 'react-native-elements';
+import Confirm from '../../../components/Confirm';
 import CustomSearch from '../../../components/CustomSearch/CustomSearch';
 import Header from '../../../components/Header';
 import Loading from '../../../components/Loading';
@@ -24,6 +25,7 @@ const PackageTemplateList = ({ route, navigation }) => {
   const [loading, setLoading] = useState(null);
   const [field, setField] = useState('_q');
   const [value, setValue] = useState('');
+  const [confirm, setConfirm] = useState(null);
 
   const [check, setCheck] = useState(
     Array.from({ length: data.length }, (_, index) => false),
@@ -57,6 +59,7 @@ const PackageTemplateList = ({ route, navigation }) => {
   };
 
   const handleDelete = () => {
+    setConfirm(null)
     templateApi
       .deletePackage({ deleteList: deleteList })
       .then(response => {
@@ -95,6 +98,15 @@ const PackageTemplateList = ({ route, navigation }) => {
       });
   };
 
+  const handleConfirm = () => {
+    setConfirm({
+      type: 'warning',
+      message: 'Bạn có chắc chắn xóa mẫu đơn hàng này không',
+      onCancel: () => setConfirm(null),
+      onConfirm: handleDelete,
+    });
+  };
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       setLoading(<Loading />);
@@ -127,6 +139,7 @@ const PackageTemplateList = ({ route, navigation }) => {
   return (
     <SafeAreaView style={style.container}>
       {loading}
+      {confirm && <Confirm {...confirm} />}
       <Header
         leftElement={
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
@@ -192,7 +205,7 @@ const PackageTemplateList = ({ route, navigation }) => {
         <View style={{ padding: 20 }}>
           <PrimaryButton
             title={t('templateScreen.delete')}
-            onPress={handleDelete}
+            onPress={handleConfirm}
             backgroundColor={COLORS.danger}
           />
         </View>
