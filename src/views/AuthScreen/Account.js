@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
 import { Avatar, Icon, Slider } from 'react-native-elements';
 import { connect } from 'react-redux';
@@ -220,18 +220,27 @@ const Account = ({ navigation, userInfo }) => {
   }, [progress, max, min, toggle]);
 
   useEffect(() => {
-    authApi.getPointLevel().then(response => {
-      let max = Object.values(response.point)
-        .filter(level => level >= progress)
-        .sort((a, b) => a - b > 0)[0];
-      setMax(max);
-      let min = Object.values(response.point)
-        .filter(level => level < progress)
-        .sort((a, b) => b - a > 0)[0];
-      min = !min || min === 500 ? 0 : min;
-      setMin(min);
-      setProgress(userInfo?.user?.point);
-    });
+    authApi
+      .getPointLevel()
+      .then(response => {
+        let max = Object.values(response.point)
+          .filter(level => level >= progress)
+          .sort((a, b) => a - b > 0)[0];
+        setMax(max);
+        let min = Object.values(response.point)
+          .filter(level => level < progress)
+          .sort((a, b) => b - a > 0)[0];
+        min = !min || min === 500 ? 0 : min;
+        setMin(min);
+        if (response.user_point) {
+          setProgress(response.user_point);
+        } else {
+          setProgress(userInfo?.user?.point);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }, []);
 
   return (
