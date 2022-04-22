@@ -53,7 +53,6 @@ const TracingOrder = ({ orders }) => {
       </View>
       {orders.length ? (
         orders.map(item => {
-          console.log(item)
           let { icon, neutralColor, color } = mapStateToStyle(item.state);
           return (
             <View key={item.id} style={styles.trackItem}>

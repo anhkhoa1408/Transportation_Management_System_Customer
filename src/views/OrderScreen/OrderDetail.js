@@ -139,31 +139,23 @@ export default function OrderDetail({ navigation, route }) {
             alignItems: 'center',
           },
         ]}>
-        <Avatar
-          size="medium"
-          rounded
-          source={{
-            uri: 'https://res.cloudinary.com/dfnoohdaw/image/upload/v1638692549/avatar_default_de42ce8b3d.png',
-          }}
-        />
-        <View style={{ flex: 1, marginLeft: 10 }}>
-          <Text style={[FONTS.BigBold]}>{item.sender_name}</Text>
-          <Text style={[FONTS.Smol]}>{item.sender_phone}</Text>
-        </View>
         <Icon
-          name="chat"
-          color={COLORS.primary}
           size={30}
+          name="inventory"
+          color={COLORS.primary}
           containerStyle={{
             padding: 10,
             backgroundColor: '#FFF',
             elevation: 8,
             shadowColor: COLORS.primary,
             borderRadius: 10,
-            marginRight: 10,
             justifyContent: 'center',
           }}
         />
+        <View style={{ flex: 1, marginLeft: 12 }}>
+          <Text style={[FONTS.BigBold]}>{item.name || 'Đơn hàng'}</Text>
+          <Text style={[FONTS.Smol]}>{item.id}</Text>
+        </View>
         <Icon
           size={30}
           name="more-horiz"
