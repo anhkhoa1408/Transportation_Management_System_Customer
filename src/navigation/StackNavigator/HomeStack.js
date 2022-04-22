@@ -22,6 +22,7 @@ import Account from '../../views/AuthScreen/Account';
 import OrderHistory from '../../views/OrderScreen/OrderHistory';
 import OrderDetail from '../../views/OrderScreen/OrderDetail';
 import MessageScreen from '../../views/ChatScreen/MessageScreen';
+import EditProfile from '../../views/SettingScreen/EditProfile';
 
 const HomeStack = createStackNavigator();
 
@@ -59,6 +60,7 @@ const HomeStackScreen = () => {
       <HomeStack.Screen name="HomeOrderHistory" component={OrderHistory} />
       <HomeStack.Screen name="OrderDetail" component={OrderDetail} />
       <HomeStack.Screen name="MessageScreen" component={MessageScreen} />
+      <HomeStack.Screen name="EditProfile" component={EditProfile} />
     </HomeStack.Navigator>
   );
 };

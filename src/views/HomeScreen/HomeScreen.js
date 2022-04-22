@@ -111,7 +111,7 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
           rightElement={
             <HeaderAvatar
               url={getAvatarFromUser(userInfo?.user)}
-              onPressAction={() => navigation.navigate('Account')}
+              onPressAction={() => navigation.navigate('EditProfile')}
             />
           }
         />
