@@ -85,7 +85,7 @@ const OrderRating = ({ visible, onSwipeComplete, item, onChangeItem, ...props })
           h4
           h4Style={{
             color: '#000',
-            fontSize: 28,
+            fontSize: 20,
             textAlign: 'center',
             fontWeight: '600',
             marginBottom: 15,
@@ -126,9 +126,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFF',
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
     paddingVertical: 25,
-    paddingHorizontal: 50,
+    paddingHorizontal: 35,
   },
 });

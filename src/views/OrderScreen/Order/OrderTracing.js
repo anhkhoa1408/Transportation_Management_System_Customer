@@ -22,11 +22,11 @@ const OrderTracing = props => {
       title: t('orderScreen.order'),
       subTitle: t('orderScreen.ordersAreBeingReceivedAndPending'),
       content:
-        current >= 1
+        current >= 1 && current !== 5
           ? t('orderScreen.handle')
           : t('orderScreen.orderProcessing'),
-      color: current >= 1 ? COLORS.success : COLORS.warning,
-      icon: current >= 1 ? 'check-circle' : 'hourglass-bottom',
+      color: current >= 1 && current !== 5 ? COLORS.success : COLORS.warning,
+      icon: current >= 1 && current !== 5 ? 'check-circle' : 'hourglass-bottom',
     },
     {
       title: t('orderScreen.moveToInnerCityWarehouse'),
@@ -146,10 +146,25 @@ const OrderTracing = props => {
           color: COLORS.success,
           icon: 'check-circle',
         });
-        setData([...step.slice(0, 2), ...temp, step[2]]);
+        if (current === 4) {
+          setData([...step.slice(0, 2), ...temp, ...step.slice(2, 4)]);
+        } else {
+          setData([...step.slice(0, 2), ...temp, step[2]]);
+        }
       }
     } else {
       if (current < 2) setData(step.slice(0, current + 1));
+      else if (current === 5)
+        setData([
+          step[0],
+          {
+            title: 'Hủy đơn hàng',
+            subTitle: 'Đơn hàng đã được người dùng tiến hành hủy',
+            content: 'Hủy đơn hàng thành công',
+            icon: 'cancel',
+            color: COLORS.danger,
+          },
+        ]);
     }
   }, [trace]);
 

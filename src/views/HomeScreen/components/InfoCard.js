@@ -8,7 +8,7 @@ import { primary } from '../../../styles/color';
 import { useTranslation } from 'react-i18next';
 
 const InfoCard = ({ item, navigation }) => {
-  const { t, i18n } = useTranslation("common")
+  const { t, i18n } = useTranslation('common');
   const ref = useRef(null);
   const handlePress = async navigate => {
     await ref.current.animate({
@@ -34,7 +34,7 @@ const InfoCard = ({ item, navigation }) => {
     <Animatable.View ref={ref} duration={500} easing="ease">
       <TouchableWithoutFeedback onPress={() => handlePress(item.navigate)}>
         <ListItem containerStyle={styles.listItem}>
-        <View
+          <View
             style={{
               padding: 5,
               borderRadius: 50,
@@ -52,7 +52,7 @@ const InfoCard = ({ item, navigation }) => {
             style={{
               color: '#000',
               fontSize: 13,
-              marginTop: 5,
+              marginTop: 2,
             }}>
             {t(item.title)}
           </Text>
@@ -71,7 +71,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     borderColor: '#000',
     backgroundColor: 'transparent',
-    zIndex: -999,
   },
   container: {
     display: 'flex',

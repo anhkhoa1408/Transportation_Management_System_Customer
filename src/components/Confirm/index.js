@@ -69,6 +69,7 @@ const Confirm = props => {
             type="solid"
             titleStyle={{
               color: modalType.color,
+              textTransform: 'uppercase'
             }}
             onPress={props.onConfirm}
           />
@@ -77,6 +78,7 @@ const Confirm = props => {
             containerStyle={[style.buttonContainer]}
             titleStyle={{
               color: COLORS.danger,
+              textTransform: 'uppercase'
             }}
             title={props?.cancelBtnText ? props.cancelBtnText : 'Hủy'}
             type="solid"

@@ -56,26 +56,32 @@ function mapStateToStyle(state) {
     case 1:
       return {
         icon: 'inventory',
-        color: COLORS.primary,
-        neutralColor: COLORS.neutralPrimary,
+        color: COLORS.purple,
+        neutralColor: COLORS.neutralPurple,
       };
     case 2:
       return {
         icon: 'local-shipping',
-        color: COLORS.success,
-        neutralColor: COLORS.neutralSuccess,
+        color: COLORS.bolderGray,
+        neutralColor: COLORS.gray,
       };
     case 3:
       return {
         icon: 'storefront',
-        color: COLORS.bolderGray,
-        neutralColor: COLORS.gray,
+        color: COLORS.primary,
+        neutralColor: COLORS.neutralPrimary,
       };
     case 4:
       return {
-        icon: 'thumb-up-alt',
-        color: COLORS.warning,
-        neutralColor: COLORS.neutralWarning,
+        icon: 'home',
+        color: COLORS.success,
+        neutralColor: COLORS.neutralSuccess,
+      };
+    case 5:
+      return {
+        icon: 'close',
+        color: COLORS.danger,
+        neutralColor: COLORS.neutralDanger,
       };
     default:
       return {

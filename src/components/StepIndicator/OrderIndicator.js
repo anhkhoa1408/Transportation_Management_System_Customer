@@ -37,7 +37,7 @@ const getStepIndicatorIconConfig = (props, current) => {
   };
   switch (props.position) {
     case 0: {
-      iconConfig.name = 'shopping-cart';
+      iconConfig.name = 'assignment';
       break;
     }
     case 1: {
