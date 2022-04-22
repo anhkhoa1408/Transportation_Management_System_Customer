@@ -3,9 +3,12 @@ import { useTranslation } from 'react-i18next';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
 import {
   Avatar,
-  Button, Icon, Overlay,
+  Button,
+  Icon,
+  Overlay,
   Tab,
-  TabView, Text
+  TabView,
+  Text,
 } from 'react-native-elements';
 import { v4 } from 'uuid';
 import orderApi from '../../api/orderApi';
@@ -298,13 +301,18 @@ export default function OrderDetail({ navigation, route }) {
 
       <TabView value={index} onChange={setIndex} animationType="spring">
         <TabView.Item
+          onMoveShouldSetResponder={e => e.stopPropagation()}
           style={{ width: '100%', paddingHorizontal: 20, paddingVertical: 10 }}>
           <OrderTracing current={item.state} trace={trace} />
         </TabView.Item>
-        <TabView.Item style={{ width: '100%', paddingHorizontal: 20 }}>
+        <TabView.Item
+          onMoveShouldSetResponder={e => e.stopPropagation()}
+          style={{ width: '100%', paddingHorizontal: 20 }}>
           <Detail item={item} />
         </TabView.Item>
-        <TabView.Item style={{ width: '100%', paddingHorizontal: 20 }}>
+        <TabView.Item
+          onMoveShouldSetResponder={e => e.stopPropagation()}
+          style={{ width: '100%', paddingHorizontal: 20 }}>
           <PackageList item={item} />
         </TabView.Item>
       </TabView>

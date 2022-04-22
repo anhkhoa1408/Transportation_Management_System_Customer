@@ -97,9 +97,10 @@ export default function OrderHistory({ navigation, route }) {
       </View>
 
       <TabView value={index} onChange={setIndex} animationType="spring">
-        <TabView.Item style={{ width: '100%', height: '100%' }}>
-          {/* <VirtualizedList
-            keyboardShouldPersistTaps="always"
+        <TabView.Item
+          onMoveShouldSetResponder={e => e.stopPropagation()}
+          style={{ width: '100%', height: '100%' }}>
+          <VirtualizedList
             initialNumToRender={3}
             data={deliveringList}
             contentContainerStyle={styles.flatContent}
@@ -114,14 +115,11 @@ export default function OrderHistory({ navigation, route }) {
                 <Text>{t('orderScreen.noShippingHistoryYet')}</Text>
               </View>
             }
-          /> */}
-          <FlatList
-            keyExtractor={item => `${item.id}`}
-            data={deliveringList}
-            renderItem={renderDeliveringItem}
           />
         </TabView.Item>
-        <TabView.Item style={{ width: '100%', height: '100%' }}>
+        <TabView.Item
+          onMoveShouldSetResponder={e => e.stopPropagation()}
+          style={{ width: '100%', height: '100%' }}>
           <VirtualizedList
             initialNumToRender={3}
             contentContainerStyle={styles.flatContent}
