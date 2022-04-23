@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "909748338181-e42d7bojost6mlm5gn906mdsren9gkf5.apps.googleusercontent.com",
+          "client_id": "909748338181-l0q78849pcqnrbljbvkvn31af98pdubu.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.tms.customer",
-            "certificate_hash": "da9707b0e2bc7647734c6d466752b7bfcc37a002"
+            "certificate_hash": "c2e940a750c7dae3909bb56160c549bc2eda0f32"
           }
         },
         {
@@ -51,11 +51,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "909748338181-6i57ttf3rpejulk8ov767g2vllgknsiu.apps.googleusercontent.com",
+          "client_id": "909748338181-b2jnhstf2ssae01lk8vhff18un1r8kcr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.tms.driver",
-            "certificate_hash": "a30fbc352640696024cefa18cfedd530e12af083"
+            "certificate_hash": "13357936e81b6760ec61619af11e64c68e06d265"
           }
         },
         {
@@ -88,11 +88,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "909748338181-c1v8mhj489fqa4v0emd3qhk9jukhofm3.apps.googleusercontent.com",
+          "client_id": "909748338181-o2t24tlii427rjmaor416i133sgnl7k6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.tms.storekeeper",
-            "certificate_hash": "b0efc94edda394203ddedd937f3aee87ea90fb4c"
+            "certificate_hash": "fd493cc58ee4f957a8fac57da003af91d574cf8a"
           }
         },
         {

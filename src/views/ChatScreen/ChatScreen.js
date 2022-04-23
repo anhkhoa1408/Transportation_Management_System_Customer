@@ -9,9 +9,11 @@ import { socket } from '../../config/socketIO';
 import { getAvatarFromUri, getAvatarFromUser } from '../../utils/avatarUltis';
 import { formatDate } from '../../utils/dateUtils';
 import { useTranslation } from 'react-i18next';
+import Header from '../../components/Header';
+import HeaderAvatar from '../../components/HeaderAvatar';
 
 const ChatScreen = props => {
-  const { t, i18n } = useTranslation("common")
+  const { t, i18n } = useTranslation('common');
   const { userInfo, messenger, navigation, customerInfo } = props;
 
   const [historyChatList, setHistoryChatList] = React.useState([]);
@@ -43,16 +45,15 @@ const ChatScreen = props => {
 
   return (
     <View style={chatScreenStyle.container}>
-      <View style={chatScreenStyle.header}>
-        <Text h4>{t("chatScreen.message")}</Text>
-        <Avatar
-          rounded
-          size="small"
-          source={{
-            uri: getAvatarFromUser(userInfo.user),
-          }}
-        />
-      </View>
+      <Header
+        headerText={t('chatScreen.message')}
+        rightElement={
+          <HeaderAvatar
+            url={getAvatarFromUser(userInfo?.user)}
+            onPressAction={() => navigation.navigate('EditProfile')}
+          />
+        }
+      />
 
       <View style={{ width: '100%', paddingHorizontal: 20 }}>
         <CustomSearch />
