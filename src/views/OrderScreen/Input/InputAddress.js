@@ -12,12 +12,13 @@ import { container } from '../../../styles/layoutStyle';
 import { useTranslation } from 'react-i18next';
 
 const InputAddress = ({ navigation, route, ...props }) => {
-  const { t, i18n } = useTranslation("common")
+  const { t, i18n } = useTranslation('common');
   const { type } = route?.params;
 
   useEffect(() => {
-    if (route.params[type]) formik.setValues(route.params[type]);
-  }, [route.params?.from_address, route.params?.to_address]);
+    let address = route?.params?.item?.[type] || route?.params?.[type]
+    if (address) formik.setValues(address);
+  }, [route.params]);
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -28,10 +29,18 @@ const InputAddress = ({ navigation, route, ...props }) => {
       city: '',
     },
     validationSchema: Bonk.object({
-      street: Bonk.string().required(t("orderScreen.youHaveNotEnteredTheStreetName")),
-      ward: Bonk.string().required(t("orderScreen.youHaveNotEnteredTheWardName")),
-      province: Bonk.string().required(t("orderScreen.youHaveNotEnteredTheProvinceName")),
-      city: Bonk.string().required(t("orderScreen.youHaveNotEnteredTheCityName")),
+      street: Bonk.string().required(
+        t('orderScreen.youHaveNotEnteredTheStreetName'),
+      ),
+      ward: Bonk.string().required(
+        t('orderScreen.youHaveNotEnteredTheWardName'),
+      ),
+      province: Bonk.string().required(
+        t('orderScreen.youHaveNotEnteredTheProvinceName'),
+      ),
+      city: Bonk.string().required(
+        t('orderScreen.youHaveNotEnteredTheCityName'),
+      ),
     }),
     onSubmit: values => {
       handleSubmit(values);
@@ -69,7 +78,7 @@ const InputAddress = ({ navigation, route, ...props }) => {
         leftElement={
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
         }
-        headerText={t("orderScreen.address")}
+        headerText={t('orderScreen.address')}
         rightElement={
           <Icon
             name="map"
@@ -89,11 +98,14 @@ const InputAddress = ({ navigation, route, ...props }) => {
         enableOnAndroid
         contentContainerStyle={[style.form]}>
         <Text style={[FONTS.SmolBold, { marginBottom: 15 }]}>
-          {t("orderScreen.enterAddress")} {type === 'from_address' ? t("orderScreen.send") : t("orderScreen.receive")}
+          {t('orderScreen.enterAddress')}{' '}
+          {type === 'from_address'
+            ? t('orderScreen.send')
+            : t('orderScreen.receive')}
         </Text>
 
         <TextField
-          title={t("orderScreen.houseNumber,StreetName")}
+          title={t('orderScreen.houseNumber,StreetName')}
           value={formik.values.street}
           onChangeText={text => formik.setFieldValue('street', text)}
           error={formik.touched.street && formik.errors.street}
@@ -101,7 +113,7 @@ const InputAddress = ({ navigation, route, ...props }) => {
         />
 
         <TextField
-          title={t("orderScreen.wards")}
+          title={t('orderScreen.wards')}
           value={formik.values.ward}
           error={formik.touched.ward && formik.errors.ward}
           errorMessage={formik.errors.ward}
@@ -110,7 +122,7 @@ const InputAddress = ({ navigation, route, ...props }) => {
         />
 
         <TextField
-          title={t("orderScreen.province")}
+          title={t('orderScreen.province')}
           value={formik.values.province}
           error={formik.touched.province && formik.errors.province}
           errorMessage={formik.errors.province}
@@ -119,7 +131,7 @@ const InputAddress = ({ navigation, route, ...props }) => {
         />
 
         <TextField
-          title={t("orderScreen.city")}
+          title={t('orderScreen.city')}
           value={formik.values.city}
           error={formik.touched.city && formik.errors.city}
           errorMessage={formik.errors.city}
@@ -128,7 +140,7 @@ const InputAddress = ({ navigation, route, ...props }) => {
         />
 
         <PrimaryButton
-          title={t("orderScreen.add")}
+          title={t('orderScreen.add')}
           onPress={formik.submitForm}
           containerStyle={{ marginTop: 30 }}
         />
