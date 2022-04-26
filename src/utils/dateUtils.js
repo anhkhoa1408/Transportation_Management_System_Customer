@@ -1,4 +1,6 @@
-export const formatDate = dateString => {
+import moment from 'moment';
+
+const formatDate = dateString => {
   if (dateString === undefined) return '';
   const today = new Date();
   const date = new Date(dateString);
@@ -21,3 +23,13 @@ export const formatDate = dateString => {
     day: 'numeric',
   });
 };
+
+const getPredictDate = (predict = 6, current = '') => {
+  let date = new Date();
+  let predictDate = !current
+    ? new Date(date.getFullYear(), date.getMonth(), date.getDate() + predict)
+    : new Date(current.getFullYear(), current.getMonth(), current.getDate() + predict);
+  return moment(predictDate).format('DD/MM/YYYY');
+};
+
+export { formatDate, getPredictDate };
