@@ -1,27 +1,21 @@
-import React, { useMemo, memo } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text, Icon } from 'react-native-elements';
-import { container } from '../../../styles/layoutStyle';
-import { COLORS, FONTS } from './../../../styles';
+import React, { memo, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { StyleSheet, View } from 'react-native';
+import { Text } from 'react-native-elements';
 import { InfoField } from '../../../components/InfoField';
+import { container } from '../../../styles/layoutStyle';
+import { joinAddress } from '../../../utils/address';
+import { getPredictDate } from '../../../utils/dateUtils';
 import {
   convertOrderState,
   formatCash,
   mapStateToStyle,
 } from '../../../utils/order';
-import { joinAddress } from '../../../utils/address';
-import { useTranslation } from 'react-i18next';
-import moment from 'moment';
+import { COLORS } from './../../../styles';
 
 const Detail = ({ navigation, item, ...props }) => {
   const { t, i18n } = useTranslation('common');
   const { color } = mapStateToStyle(item.state);
-  let date = new Date(item.createdAt.toString());
-  let expected = new Date(
-    date.getFullYear(),
-    date.getMonth(),
-    date.getDate() + 6,
-  );
 
   const quantity = useMemo(() => {
     return item.packages
@@ -41,7 +35,7 @@ const Detail = ({ navigation, item, ...props }) => {
       <View style={[styles.rowContainer, { paddingRight: 10 }]}>
         <InfoField
           title={t('orderScreen.expected')}
-          content={moment(expected).format("DD/MM/YYYY")}
+          content={getPredictDate(5, new Date(item.createdAt))}
           style={{ flex: 1 }}
         />
         <InfoField

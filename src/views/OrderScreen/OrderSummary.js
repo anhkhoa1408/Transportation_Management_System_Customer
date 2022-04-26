@@ -15,13 +15,14 @@ import { InfoField } from '../../components/InfoField';
 import OrderStep from '../../components/StepIndicator/OrderStep';
 import { store } from '../../config/configureStore';
 import { handleRequestPayment } from '../../services/momo';
-import { COLORS, FONTS } from '../../styles';
+import styles, { COLORS, FONTS } from '../../styles';
 import { container } from '../../styles/layoutStyle';
 import { formatCash } from '../../utils/order';
 import Loading from './../../components/Loading';
 import ModalMess from './../../components/ModalMess';
 import { joinAddress } from './../../utils/address';
 import { useTranslation } from 'react-i18next';
+import { getPredictDate } from '../../utils/dateUtils';
 
 const OrderSummary = ({ route, navigation }) => {
   const { t, i18n } = useTranslation('common');
@@ -209,53 +210,60 @@ const OrderSummary = ({ route, navigation }) => {
               "orderScreen.pleaseCheckYourOrder'sShipmentInformationAndClickConfirmToProceedWithPayment",
             )}
           </Text>
-          <View style={[style.rowContainer]}>
-            <InfoField
-              title={t('orderScreen.expected')}
-              content="Thứ 6, 20 tháng 3"
-              style={{ flex: 1 }}
-            />
-            <InfoField
-              title={t('orderScreen.receiver')}
-              content={receiver_name || t('orderScreen.notYet')}
-              style={{ flex: 1 }}
-            />
-          </View>
-          <View style={[style.rowContainer]}>
-            <InfoField
-              title={t('orderScreen.from')}
-              content={from_address && joinAddress(from_address)}
-              style={{ flex: 1 }}
-            />
-            <InfoField
-              title={t("orderScreen.receiver'sPhoneNumber")}
-              content={receiver_phone}
-              style={{ flex: 1 }}
-            />
-          </View>
-          <View style={[style.rowContainer]}>
-            <InfoField
-              title={t('orderScreen.to')}
-              content={to_address && joinAddress(to_address)}
-              style={{ flex: 1 }}
-            />
-            <InfoField
-              title={t('orderScreen.totalWeight')}
-              content={total_weight + ' kg'}
-              style={{ flex: 1 }}
-            />
-          </View>
-          <View style={[style.rowContainer]}>
-            <InfoField
-              title={t('orderScreen.totalTypeOfGoods')}
-              content={packages.length}
-              style={{ flex: 1 }}
-            />
-            <InfoField
-              title={t('orderScreen.totalOfGoods')}
-              content={total_quantity + ' ' + t('orderScreen.package')}
-              style={{ flex: 1 }}
-            />
+          <View>
+            <Text style={[FONTS.BigBold, { marginBottom: 8 }]}>
+              {t('Thông tin đơn hàng')}
+            </Text>
+            <View style={style.infoWrap}>
+              <View style={[style.rowContainer]}>
+                <InfoField
+                  title={t('orderScreen.expected')}
+                  content={<>{getPredictDate()}</>}
+                  style={{ flex: 1 }}
+                />
+                <InfoField
+                  title={t('orderScreen.receiver')}
+                  content={receiver_name || t('orderScreen.notYet')}
+                  style={{ flex: 1 }}
+                />
+              </View>
+              <View style={[style.rowContainer]}>
+                <InfoField
+                  title={t('orderScreen.from')}
+                  content={from_address && joinAddress(from_address)}
+                  style={{ flex: 1 }}
+                />
+                <InfoField
+                  title={t("orderScreen.receiver'sPhoneNumber")}
+                  content={receiver_phone}
+                  style={{ flex: 1 }}
+                />
+              </View>
+              <View style={[style.rowContainer]}>
+                <InfoField
+                  title={t('orderScreen.to')}
+                  content={to_address && joinAddress(to_address)}
+                  style={{ flex: 1 }}
+                />
+                <InfoField
+                  title={t('orderScreen.totalWeight')}
+                  content={total_weight + ' kg'}
+                  style={{ flex: 1 }}
+                />
+              </View>
+              <View style={[style.rowContainer]}>
+                <InfoField
+                  title={t('orderScreen.totalTypeOfGoods')}
+                  content={packages.length}
+                  style={{ flex: 1 }}
+                />
+                <InfoField
+                  title={t('orderScreen.totalOfGoods')}
+                  content={total_quantity + ' ' + t('orderScreen.package')}
+                  style={{ flex: 1 }}
+                />
+              </View>
+            </View>
           </View>
           <View style={{ marginVertical: 8 }}>
             <Text style={[FONTS.BigBold]}>
@@ -349,6 +357,13 @@ const style = StyleSheet.create({
     shadowColor: COLORS.primary,
     borderRadius: 0,
     backgroundColor: COLORS.gray,
+  },
+  infoWrap: {
+    borderRadius: 8,
+    backgroundColor: COLORS.gray,
+    paddingVertical: 20,
+    paddingHorizontal: 15,
+    marginBottom: 10,
   },
 });
 
