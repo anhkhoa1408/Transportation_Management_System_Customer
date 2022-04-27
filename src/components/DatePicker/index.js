@@ -4,6 +4,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Button, Text } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native';
 import moment from 'moment';
+import { COLORS } from '../../styles';
 
 export const DatePicker = ({ type, ...props }) => {
   const [date, setDate] = useState(
@@ -16,7 +17,7 @@ export const DatePicker = ({ type, ...props }) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
-    props.setDate && props.setDate(selectedDate)
+    props.setDate && props.setDate(currentDate)
   };
 
   const showMode = currentMode => {
@@ -49,7 +50,7 @@ export const DatePicker = ({ type, ...props }) => {
           icon={{
             name: 'event',
             size: 20,
-            color: '#000',
+            color: COLORS.primary,
           }}
           iconContainerStyle={{
             alignSelf: 'flex-end',
@@ -90,9 +91,10 @@ const style = StyleSheet.create({
     justifyContent: 'space-between',
   },
   title: {
-    color: '#000',
+    color: 'rgba(0,0,0,0.8)',
     textAlign: 'left',
     fontSize: 15,
+    fontWeight: '200'
   },
   containerTitle: {
     fontSize: 15,
