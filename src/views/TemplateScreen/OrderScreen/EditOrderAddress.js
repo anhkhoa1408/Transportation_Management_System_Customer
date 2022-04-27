@@ -11,9 +11,10 @@ import { provinces } from '../../../constants/province';
 import { COLORS, FONTS } from '../../../styles';
 import { container } from '../../../styles/layoutStyle';
 import { useTranslation } from 'react-i18next';
+import PrimaryButton from '../../../components/CustomButton/PrimaryButton';
 
 const EditOrderAddress = ({ navigation, route }) => {
-  const { t, i18n } = useTranslation("common")
+  const { t, i18n } = useTranslation('common');
   const { item = {}, type } = route?.params;
 
   const initializeAddress = useMemo(() => {
@@ -95,7 +96,9 @@ const EditOrderAddress = ({ navigation, route }) => {
       street: item[type]?.street || '',
     },
     validationSchema: Bonk.object({
-      street: Bonk.string().required(t("templateScreen.youHaveNotEnteredTheStreetName")),
+      street: Bonk.string().required(
+        t('templateScreen.youHaveNotEnteredTheStreetName'),
+      ),
     }),
     onSubmit: values => {
       handleSubmit(values);
@@ -121,19 +124,39 @@ const EditOrderAddress = ({ navigation, route }) => {
   };
 
   const handleSubmit = ({ street }) => {
-    navigation.navigate('EditOrderInfo', {
-      ...route.params,
-      item: {
-        ...route.params.item,
-        [type]: {
-          street: street,
-          ward: selectWard.label || initializeAddress.selectCity.name,
-          province:
-            selectDistrict.label || initializeAddress.selectDistrict.name,
-          city: selectCity.name || initializeAddress.selectWard,
-        },
-      },
-    });
+    if (route?.params?.previousScreen) {
+      const params =
+        route.params.previousScreen === 'EditOrderInfo'
+          ? {
+              ...route.params,
+              item: {
+                ...route.params.item,
+                [type]: {
+                  street: street,
+                  ward: selectWard.label || initializeAddress.selectCity.name,
+                  province:
+                    selectDistrict.label ||
+                    initializeAddress.selectDistrict.name,
+                  city: selectCity.name || initializeAddress.selectWard,
+                },
+              },
+            }
+          : {
+              [type]: {
+                street: street,
+                ward: selectWard.label || initializeAddress.selectCity.name,
+                province:
+                  selectDistrict.label || initializeAddress.selectDistrict.name,
+                city: selectCity.name || initializeAddress.selectWard,
+              },
+            };
+
+      navigation.navigate({
+        name: route.params?.previousScreen,
+        params: params,
+        merge: true,
+      });
+    }
   };
 
   useEffect(() => {
@@ -164,45 +187,55 @@ const EditOrderAddress = ({ navigation, route }) => {
         leftElement={
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
         }
-        headerText={t("templateScreen.orderForm")}
+        headerText={t('templateScreen.orderForm')}
         rightElement={
           <Icon
-            name="check"
+            name="map"
             size={30}
             color={COLORS.primary}
-            onPress={formik.submitForm}
+            onPress={() =>
+              navigation.navigate('MapScreen', {
+                ...route.params,
+                previousScreen: 'InputAddress',
+              })
+            }
           />
         }
       />
       <KeyboardAwareScrollView contentContainerStyle={style.form}>
         <Text style={[FONTS.BigBold, { marginBottom: 10 }]}>Nhập địa chỉ</Text>
         <Select
-          title={t("templateScreen.city")}
+          title={t('templateScreen.city')}
           selected={selectCity}
           setSelected={handleSelectCity}
           data={cities}
         />
         <Select
           disabled={!districts && !districts.length}
-          title={t("templateScreen.province")}
+          title={t('templateScreen.province')}
           selected={selectDistrict}
           setSelected={handleSelectDistrict}
           data={districts}
         />
         <Select
           disabled={!wards && !wards.length}
-          title={t("templateScreen.wards")}
+          title={t('templateScreen.wards')}
           selected={selectWard}
           setSelected={handleSelectWard}
           data={wards}
         />
         <TextField
-          title={t("templateScreen.houseNumber,StreetName")}
+          title={t('templateScreen.houseNumber,StreetName')}
           value={formik.values.street}
           error={formik.touched.street && formik.errors.street}
           errorMessage={formik.errors.street}
           onBlur={() => formik.setFieldTouched('street')}
           onChangeText={text => formik.setFieldValue('street', text)}
+        />
+        <PrimaryButton
+          title={t('orderScreen.add')}
+          onPress={formik.submitForm}
+          containerStyle={{ marginTop: 20 }}
         />
       </KeyboardAwareScrollView>
     </SafeAreaView>

@@ -49,7 +49,7 @@ const HomeStackScreen = () => {
       <HomeStack.Screen name="EditOrderAddress" component={EditOrderAddress} />
       <HomeStack.Screen name="InputInfo" component={InputInfo} />
       <HomeStack.Screen name="InputReceiver" component={InputReceiver} />
-      <HomeStack.Screen name="InputAddress" component={InputAddress} />
+      <HomeStack.Screen name="InputAddress" component={EditOrderAddress} />
       <HomeStack.Screen name="OrderSummary" component={OrderSummary} />
       <HomeStack.Screen name="Payment" component={Payment} />
       <HomeStack.Screen name="VoucherScreen" component={VoucherScreen} />
