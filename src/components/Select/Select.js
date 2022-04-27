@@ -21,7 +21,7 @@ const Select = props => {
         <Picker
           enabled={!disabled}
           mode="dropdown"
-          style={{ flex: 1, fontSize: 17, color: '#000' }}
+          style={{ flex: 1, fontSize: 15, color: '#000' }}
           dropdownIconColor={primary}
           selectedValue={selectedItem}
           onValueChange={(itemValue, itemIndex) => {
@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     flexDirection: 'column',
+    marginBottom: 15
   },
   texttitle: {
     fontSize: 15,
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   fsize: {
-    fontSize: 17,
+    fontSize: 15,
     color: '#000',
     paddingLeft: 20,
     paddingVertical: 8,

@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   fsize: {
     fontSize: 15,
     color: '#000',
-    paddingLeft: 20,
+    paddingLeft: 10,
     paddingVertical: 8,
   },
   textFocus: {
