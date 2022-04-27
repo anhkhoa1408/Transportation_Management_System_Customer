@@ -17,13 +17,13 @@ import PrimaryButton from '../../components/CustomButton/PrimaryButton';
 import { useTranslation } from 'react-i18next';
 
 const Payment = ({ navigation, route }) => {
-  const { t, i18n } = useTranslation("common")
+  const { t, i18n } = useTranslation('common');
   const [offlineExpand, setOffline] = useState(true);
   const [onlineExpand, setOnline] = useState(true);
   const [check, setCheck] = useState({
-    sender: false,
-    receiver: false,
-    momo: false,
+    sender: route?.params?.payment?.subValue === 'sender' ? true : false,
+    receiver: route?.params?.payment?.subValue === 'receiver' ? true : false,
+    momo: route?.params?.payment?.subValue === 'momo' ? true : false,
   });
 
   const handleCheck = name => {
@@ -42,21 +42,25 @@ const Payment = ({ navigation, route }) => {
           value = '';
         switch (ele) {
           case 'sender':
-            title = t("orderScreen.payBySender");
+            title = t('orderScreen.payBySender');
             value = 'direct';
+            subValue = "sender"
             break;
           case 'receiver':
-            title = t("orderScreen.payByReceiver");
+            title = t('orderScreen.payByReceiver');
             value = 'direct';
+            subValue = "receiver"
             break;
           case 'momo':
-            title = t("orderScreen.momoE-wallet");
+            title = t('orderScreen.momoE-wallet');
             value = 'momo';
+            subValue = "momo"
             break;
         }
         acc['payment'] = {
           value,
           title,
+          subValue
         };
       }
       return acc;
@@ -73,7 +77,7 @@ const Payment = ({ navigation, route }) => {
         leftElement={
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
         }
-        headerText={t("orderScreen.paymentMethods")}
+        headerText={t('orderScreen.paymentMethods')}
       />
       <Text
         style={[
@@ -83,7 +87,7 @@ const Payment = ({ navigation, route }) => {
             opacity: 0.6,
           },
         ]}>
-        {t("orderScreen.pleaseChooseOneOfTheFollowingPaymentMethods")}
+        {t('orderScreen.pleaseChooseOneOfTheFollowingPaymentMethods')}
       </Text>
       <ScrollView
         contentContainerStyle={{ paddingHorizontal: 20 }}
@@ -94,7 +98,7 @@ const Payment = ({ navigation, route }) => {
             content={
               <ListItem.Content>
                 <Text style={{ ...FONTS.Big, fontWeight: '600' }}>
-                  {t("orderScreen.offlinePayment")}
+                  {t('orderScreen.offlinePayment')}
                 </Text>
               </ListItem.Content>
             }
@@ -118,7 +122,7 @@ const Payment = ({ navigation, route }) => {
                   borderRadius: 15,
                 }}
               />
-              <Text style={{ flex: 1 }}>{t("orderScreen.payBySender")}</Text>
+              <Text style={{ flex: 1 }}>{t('orderScreen.payBySender')}</Text>
               <ListItem.CheckBox
                 checked={check.sender}
                 onPress={() => handleCheck('sender')}
@@ -141,7 +145,7 @@ const Payment = ({ navigation, route }) => {
                   borderRadius: 15,
                 }}
               />
-              <Text style={{ flex: 1 }}>{t("orderScreen.payByReceiver")}</Text>
+              <Text style={{ flex: 1 }}>{t('orderScreen.payByReceiver')}</Text>
               <ListItem.CheckBox
                 checked={check.receiver}
                 onPress={() => handleCheck('receiver')}
@@ -154,7 +158,7 @@ const Payment = ({ navigation, route }) => {
             content={
               <ListItem.Content>
                 <Text style={{ ...FONTS.Big, fontWeight: '600' }}>
-                  {t("orderScreen.onlinePayment")}
+                  {t('orderScreen.onlinePayment')}
                 </Text>
               </ListItem.Content>
             }
@@ -178,7 +182,7 @@ const Payment = ({ navigation, route }) => {
                   borderRadius: 15,
                 }}
               />
-              <Text style={{ flex: 1 }}>{t("orderScreen.momoE-wallet")}</Text>
+              <Text style={{ flex: 1 }}>{t('orderScreen.momoE-wallet')}</Text>
               <ListItem.CheckBox
                 checked={check.momo}
                 onPress={() => handleCheck('momo')}
@@ -189,10 +193,7 @@ const Payment = ({ navigation, route }) => {
         </View>
       </ScrollView>
       <View style={{ padding: 20 }}>
-        <PrimaryButton
-          title={t("orderScreen.agree")}
-          onPress={handleSubmit}
-        />
+        <PrimaryButton title={t('orderScreen.agree')} onPress={handleSubmit} />
       </View>
     </SafeAreaView>
   );

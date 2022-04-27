@@ -84,6 +84,13 @@ const Detail = ({ navigation, item, ...props }) => {
           style={{ flex: 1 }}
         />
       </View>
+      <View style={[styles.rowContainer, { paddingRight: 10 }]}>
+        <InfoField
+          title={t('orderScreen.note')}
+          content={item.note || "Không có ghi chú"}
+          style={{ flex: 1 }}
+        />
+      </View>
     </View>
   );
 };
