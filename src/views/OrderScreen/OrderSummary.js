@@ -23,9 +23,12 @@ import ModalMess from './../../components/ModalMess';
 import { joinAddress } from './../../utils/address';
 import { useTranslation } from 'react-i18next';
 import { getPredictDate } from '../../utils/dateUtils';
+import CustomInput from '../../components/CustomInput/CustomInput';
 
 const OrderSummary = ({ route, navigation }) => {
   const { t, i18n } = useTranslation('common');
+
+  const [note, setNote] = useState('');
   const [loading, setLoading] = useState(null);
   const [alert, setAlert] = useState(null);
   const [fee, setFee] = useState(1000000);
@@ -102,6 +105,7 @@ const OrderSummary = ({ route, navigation }) => {
       packages,
       payer_name,
       payer_phone,
+      note,
     };
 
     orderApi
@@ -275,7 +279,7 @@ const OrderSummary = ({ route, navigation }) => {
                 <Text style={[{ flex: 1 }]}>
                   {payment ? payment.title : t('orderScreen.tapToSelect')}
                 </Text>
-                <ListItem.Chevron size={30} />
+                <ListItem.Chevron size={25} />
               </View>
             </TouchableOpacity>
           </View>
@@ -295,9 +299,15 @@ const OrderSummary = ({ route, navigation }) => {
                     ? voucher.title
                     : t('orderScreen.tapToSelect')}
                 </Text>
-                <ListItem.Chevron size={30} />
+                <ListItem.Chevron size={25} />
               </View>
             </TouchableOpacity>
+          </View>
+          <View style={{ marginVertical: 8 }}>
+            <Text style={[FONTS.BigBold, { marginBottom: -15 }]}>
+              {t('orderScreen.note')}
+            </Text>
+            <CustomInput value={note} onChangeText={setNote} />
           </View>
         </ScrollView>
         <View style={{ paddingHorizontal: 15 }}>
@@ -355,7 +365,7 @@ const style = StyleSheet.create({
     padding: 15,
     alignItems: 'center',
     shadowColor: COLORS.primary,
-    borderRadius: 0,
+    borderRadius: 8,
     backgroundColor: COLORS.gray,
   },
   infoWrap: {
