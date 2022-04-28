@@ -52,7 +52,7 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
   };
 
   const handleStartTour = async () => {
-    await scrollViewRef.current.scrollTo({ y: scroll - 500 });
+    await scrollViewRef.current.scrollTo({ y: scroll - 520 });
     setConfirm(false);
     let appTourSequence = new AppTourSequence();
     tourList.forEach((appTourTarget, index) => {

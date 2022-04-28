@@ -5,6 +5,7 @@ import SignUp from '../../views/AuthScreen/Signup';
 import ForgotPass from '../../views/AuthScreen/ForgotPass';
 import InputOtp from '../../views/AuthScreen/InputOtp';
 import ResetPass from '../../views/AuthScreen/ResetPass';
+import OnboardScreen from '../../views/OnboardScreen/OnboardScreen';
 
 const authStack = createStackNavigator();
 
@@ -14,7 +15,8 @@ const AuthStack = () => {
       screenOptions={routes => ({
         headerShown: false,
       })}
-      initialRouteName="Signin">
+      initialRouteName="Onboard">
+      <authStack.Screen name="Onboard" component={OnboardScreen} />
       <authStack.Screen name="Signin" component={SignIn} />
       <authStack.Screen name="Signup" component={SignUp} />
       <authStack.Screen name="forgotPassword" component={ForgotPass} />
