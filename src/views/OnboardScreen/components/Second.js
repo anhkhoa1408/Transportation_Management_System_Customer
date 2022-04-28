@@ -11,8 +11,7 @@ const Second = props => {
   const { navigate } = useNavigation();
 
   return (
-    <View
-      style={[STYLES.container, { paddingHorizontal: 25, elevation: 9999 }]}>
+    <View style={[STYLES.container, { paddingHorizontal: 25 }]}>
       <View
         style={{
           width: '100%',
@@ -26,7 +25,7 @@ const Second = props => {
           <Icon name="west" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigate('Signin')}>
-          <Text style={styles.skipBtn}>Skip</Text>
+          <Text style={styles.skipBtn}>Bỏ qua</Text>
         </TouchableOpacity>
       </View>
       <View style={{ width: '100%', flex: 1 }}>
@@ -42,7 +41,7 @@ const Second = props => {
       <View style={{ alignSelf: 'flex-start', marginBottom: 30 }}>
         <Text style={styles.title}>Theo dõi nhanh chóng</Text>
         <Text style={styles.subTitle}>
-          Theo dõi đơn hàng của bạn ngay lập tức trên{'\n'}ứng dụng
+          Theo dõi đơn hàng của bạn ngay{'\n'}lập tức trên ứng dụng
         </Text>
       </View>
 

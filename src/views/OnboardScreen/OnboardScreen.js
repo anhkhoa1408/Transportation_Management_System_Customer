@@ -57,7 +57,7 @@ const OnboardScreen = () => {
           itemHeight={height}
           renderItem={renderItem}
           firstItem={active}
-          activeSlideOffset={40}
+          activeSlideOffset={30}
           onSnapToItem={index => {
             setActive(index);
           }}

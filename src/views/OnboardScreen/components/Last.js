@@ -22,7 +22,7 @@ const Last = (props) => {
           <Icon name="west" onPress={() => props.onSnap(1)} />
         </TouchableOpacity>
         <TouchableOpacity>
-          <Text style={styles.skipBtn}>Skip</Text>
+          <Text style={styles.skipBtn}>Bỏ qua</Text>
         </TouchableOpacity>
       </View>
 

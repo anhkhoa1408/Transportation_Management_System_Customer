@@ -15,12 +15,12 @@ const First = props => {
       <TouchableOpacity
         style={{ alignSelf: 'flex-end' }}
         onPress={() => navigate('Signin')}>
-        <Text style={styles.skipBtn}>Skip</Text>
+        <Text style={styles.skipBtn}>Bỏ qua</Text>
       </TouchableOpacity>
       <View style={{ alignSelf: 'flex-start' }}>
         <Text style={styles.title}>Tiết kiệm chi phí</Text>
         <Text style={styles.subTitle}>
-          Phí vận chuyển hợp lý và cố định, tặng ưu đãi {'\n'}mỗi tháng
+          Phí vận chuyển hợp lý và cố định,{'\n'}ưu đãi hấp dẫn
         </Text>
       </View>
       <View style={{ width: '100%', flex: 1 }}>
