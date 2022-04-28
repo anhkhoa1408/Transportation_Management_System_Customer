@@ -14,6 +14,8 @@ target 'ShoberDelivery' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  pod 'RNAppTour', :path => '../node_modules/react-native-app-tour'
+
   target 'ShoberDeliveryTests' do
     inherit! :complete
     # Pods for testing

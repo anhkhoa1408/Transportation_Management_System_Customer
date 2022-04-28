@@ -1,15 +1,16 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { Icon, ListItem, Text } from 'react-native-elements';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { COLORS } from '../../../styles';
-import { primary } from '../../../styles/color';
-import { useTranslation } from 'react-i18next';
+import { AppTourView, AppTour } from 'react-native-app-tour';
 
-const InfoCard = ({ item, navigation }) => {
+const InfoCard = ({ item, navigation, itemKey, ...props }) => {
   const { t, i18n } = useTranslation('common');
   const ref = useRef(null);
+
   const handlePress = async navigate => {
     await ref.current.animate({
       0: {
@@ -30,9 +31,26 @@ const InfoCard = ({ item, navigation }) => {
       item.useTemplate ? { useTemplate: true } : null,
     );
   };
+
+ 
+
   return (
     <Animatable.View ref={ref} duration={500} easing="ease">
-      <TouchableWithoutFeedback onPress={() => handlePress(item.navigate)}>
+      <TouchableWithoutFeedback
+        ref={tourRef => {
+          if (!tourRef) return;
+          let tourProps = {
+            order: itemKey,
+            mandatory: false,
+            title: item.tourTitle,
+            description: item.tourSubtitle,
+            outerCircleColor: COLORS.primary,
+            descriptionTextColor: COLORS.white,
+            descriptionTextSize: 16,
+          };
+          props.onTour(tourRef, tourProps);
+        }}
+        onPress={() => handlePress(item.navigate)}>
         <ListItem containerStyle={styles.listItem}>
           <View
             style={{

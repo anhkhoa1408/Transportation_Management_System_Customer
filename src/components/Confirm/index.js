@@ -4,7 +4,7 @@ import { View, StyleSheet } from 'react-native';
 import { Button, Icon, Text } from 'react-native-elements';
 import Modal from 'react-native-modal';
 import { COLORS } from '../../styles';
-import { danger, success, warning } from '../../styles/color';
+import { danger, primary, success, warning } from '../../styles/color';
 
 const Confirm = props => {
   const { alert } = props;
@@ -30,6 +30,13 @@ const Confirm = props => {
       color: danger,
       neutral: COLORS.neutralDanger,
       title: 'modalMess.fail',
+    },
+    {
+      type: 'question',
+      name: 'help',
+      color:  primary,
+      neutral: COLORS.neutralPrimary,
+      title: 'Gợi ý',
     },
   ];
   const modalType = iconStyle.find(element => element.type === props.type);

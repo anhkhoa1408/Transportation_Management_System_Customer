@@ -8,7 +8,7 @@ import { joinAddress, simplifyString } from '../../../utils/address';
 import { convertOrderState, mapStateToStyle } from '../../../utils/order';
 import nothing_img from './../../../assets/images/nothing.png';
 
-const TracingOrder = ({ orders }) => {
+const TracingOrder = ({ orders, ...props }) => {
   const { t } = useTranslation('common');
   const navigation = useNavigation();
 
@@ -37,6 +37,18 @@ const TracingOrder = ({ orders }) => {
             })
           }>
           <View
+            ref={tourRef => {
+              if (!tourRef) return;
+              let tourProps = {
+                order: 4,
+                title: t('homeScreen.tracing'),
+                description: 'Theo dõi thông tin đơn hàng của bạn nhanh chóng',
+                outerCircleColor: COLORS.primary,
+                descriptionTextColor: COLORS.white,
+                descriptionTextSize: 16,
+              };
+              props.onTour(tourRef, tourProps);
+            }}
             style={{
               padding: 6,
               backgroundColor: COLORS.gray,

@@ -7,7 +7,7 @@ import { COLORS } from '../../../styles';
 import { joinAddress, simplifyString } from '../../../utils/address';
 import nothing_img from './../../../assets/images/nothing.png';
 
-const Feedback = ({ awaitFeedback }) => {
+const Feedback = ({ awaitFeedback, ...props }) => {
   const { t } = useTranslation('common');
   const navigation = useNavigation();
 
@@ -37,6 +37,18 @@ const Feedback = ({ awaitFeedback }) => {
             })
           }>
           <View
+            ref={tourRef => {
+              if (!tourRef) return;
+              let tourProps = {
+                order: 5,
+                title: 'Đánh giá đơn hàng',
+                description: 'Hiển thị những đơn hàng chờ bạn đánh giá',
+                outerCircleColor: COLORS.primary,
+                descriptionTextColor: COLORS.white,
+                descriptionTextSize: 16,
+              };
+              props.onTour(tourRef, tourProps);
+            }}
             style={{
               padding: 6,
               backgroundColor: COLORS.gray,

@@ -1,6 +1,6 @@
 // Import Component
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   FlatList,
@@ -8,12 +8,15 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  View,
+  TouchableOpacity,
+  View
 } from 'react-native';
+import { AppTour, AppTourSequence, AppTourView } from 'react-native-app-tour';
 import { Icon, Text, withBadge } from 'react-native-elements';
 // Import Function
 import { connect } from 'react-redux';
 import orderApi from '../../api/orderApi';
+import Confirm from '../../components/Confirm';
 import Header from '../../components/Header';
 import HeaderAvatar from '../../components/HeaderAvatar';
 // Import Asset
@@ -31,6 +34,38 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
   const { t, i18n } = useTranslation('common');
   const [orders, setOrders] = useState([]);
   const [awaitFeedback, setFeedbacks] = useState([]);
+  const [confirm, setConfirm] = useState(false);
+  const [scroll, setScroll] = useState(0);
+  let tourList = [];
+
+  // Main scroll view ref
+  const scrollViewRef = useRef(null);
+
+  // Section ref
+  const optionRef = useRef(null);
+  const traceRef = useRef(null);
+  const feedbackRef = useRef(null);
+
+  const handleTourTarget = (ref, props) => {
+    let appTourView = AppTourView.for(ref, props);
+    tourList.push(appTourView);
+  };
+
+  const handleStartTour = async () => {
+    await scrollViewRef.current.scrollTo({ y: scroll - 500 });
+    setConfirm(false);
+    let appTourSequence = new AppTourSequence();
+    tourList.forEach((appTourTarget, index) => {
+      appTourSequence.add({
+        ...appTourTarget,
+        key: index,
+      });
+    });
+
+    setTimeout(() => {
+      AppTour.ShowSequence(appTourSequence);
+    }, 300);
+  };
 
   useEffect(() => {
     setBadge(Badge(Object.keys(noties).length));
@@ -82,29 +117,45 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
       icon: 'add',
       title: 'homeScreen.order',
       navigate: 'InputInfo',
+      tourTitle: 'Đặt hàng',
+      tourSubtitle: 'Tiến hành đặt vận chuyển',
     },
     {
       icon: 'event-available',
       title: 'homeScreen.useOrderForm',
       navigate: 'OrderTemplateList',
       useTemplate: true,
+      tourTitle: 'Sử dụng mẫu đơn hàng',
+      tourSubtitle:
+        'Lựa chọn mẫu đơn hàng sẵn có, tiết kiệm thời gian nhập thông tin',
     },
     {
       icon: 'assignment',
       title: 'homeScreen.manageOrderForm',
       navigate: 'OrderTemplateList',
+      tourTitle: 'Quản lý mẫu đơn hàng',
+      tourSubtitle: 'Quản lý mẫu đơn hàng bạn đã thêm vào',
     },
     {
       icon: 'inventory',
       title: 'homeScreen.manageParcelSamples',
       navigate: 'PackageTemplateList',
+      tourTitle: 'Quản lý mẫu kiện hàng',
+      tourSubtitle: 'Quản lý mẫu kiện hàng bạn đã thêm vào',
     },
   ]);
 
   return (
     <>
-      {/* {!listData.length && <Loading />} */}
       <SafeAreaView style={homeStyle.container}>
+        {confirm && (
+          <Confirm
+            type="question"
+            message="Bạn có muốn xem gợi ý dùng ứng dụng không"
+            onConfirm={handleStartTour}
+            onCancel={() => setConfirm(null)}
+          />
+        )}
         <Header
           leftElement={badge}
           headerText={t('homeScreen.hello') + getNameFromUser(userInfo?.user)}
@@ -117,6 +168,7 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
         />
 
         <ScrollView
+          ref={scrollViewRef}
           style={{ paddingBottom: 20 }}
           contentContainerStyle={{ width: '100%', paddingBottom: 30 }}>
           {/* Banner Section */}
@@ -132,16 +184,48 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
           <BenefitSection />
 
           {/* Info Cards Section */}
-          <View style={{ paddingLeft: 15 }}>
-            <Text
+          <View collapsable={false} style={{ paddingLeft: 15 }} ref={optionRef}>
+            <View
               style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
                 marginBottom: 15,
-                fontSize: 19,
-                fontWeight: '800',
-                letterSpacing: 1,
               }}>
-              {t('homeScreen.option')}
-            </Text>
+              <Text
+                style={{
+                  fontSize: 19,
+                  fontWeight: '800',
+                  letterSpacing: 1,
+                }}>
+                {t('homeScreen.option')}
+              </Text>
+              <TouchableOpacity onPress={() => setConfirm(true)}>
+                <View
+                  style={{
+                    padding: 6,
+                    backgroundColor: COLORS.gray,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    borderRadius: 10,
+                    marginRight: 15,
+                  }}>
+                  <Text style={{ fontWeight: '800' }}>{t('Hướng dẫn')}</Text>
+                  <Icon
+                    type="font-awesome"
+                    name="question"
+                    iconStyle={{
+                      fontWeight: 200,
+                      fontSize: 15,
+                      opacity: 0.75,
+                      marginLeft: 3,
+                    }}
+                  />
+                </View>
+              </TouchableOpacity>
+            </View>
             <View style={{ height: 108, marginBottom: 20 }}>
               <FlatList
                 contentContainerStyle={homeStyle.listInfo}
@@ -150,17 +234,29 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
                 data={listData}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item, index }) => (
-                  <InfoCard key={index} item={item} navigation={navigation} />
+                  <InfoCard
+                    itemKey={index}
+                    item={item}
+                    navigation={navigation}
+                    onTour={handleTourTarget}
+                  />
                 )}
               />
             </View>
           </View>
 
           {/* Tracing section */}
-          <TracingOrder orders={orders} />
+          <View collapsable={false} ref={traceRef}>
+            <TracingOrder orders={orders} onTour={handleTourTarget} />
+          </View>
 
           {/* Await feedback section */}
-          <Feedback awaitFeedback={awaitFeedback} />
+          <View
+            collapsable={false}
+            ref={feedbackRef}
+            onLayout={e => setScroll(e.nativeEvent.layout.y)}>
+            <Feedback awaitFeedback={awaitFeedback} onTour={handleTourTarget} />
+          </View>
         </ScrollView>
       </SafeAreaView>
     </>
