@@ -42,6 +42,10 @@ class OrderApi {
       },
     });
   };
+  getFee = data => {
+    const url = MAIN_URL.concat(`/fees`);
+    return axiosClient.post(url, data);
+  }
 }
 const orderApi = new OrderApi();
 export default orderApi;

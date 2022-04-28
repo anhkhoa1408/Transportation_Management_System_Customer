@@ -209,15 +209,22 @@ const VoucherScreen = ({ route, navigation }) => {
       if (route?.params?.fee) {
         voucherApi
           .getList({
+            _start: 0,
+            _limit: 100,
             minimum_order_lte: route.params.fee,
           })
           .then(response => {
             setData(response);
           });
       } else {
-        voucherApi.getList().then(response => {
-          setData(response);
-        });
+        voucherApi
+          .getList({
+            _start: 0,
+            _limit: 100,
+          })
+          .then(response => {
+            setData(response);
+          });
       }
     });
     return unsubscribe;

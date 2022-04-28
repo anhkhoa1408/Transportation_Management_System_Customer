@@ -1,29 +1,29 @@
 import React, { memo, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
 import { Divider, Icon, ListItem, Text } from 'react-native-elements';
 import { v4 as uuidv4 } from 'uuid';
 import orderApi from '../../api/orderApi';
 import PrimaryButton from '../../components/CustomButton/PrimaryButton';
+import CustomInput from '../../components/CustomInput/CustomInput';
 import Header from '../../components/Header';
 import { InfoField } from '../../components/InfoField';
 import OrderStep from '../../components/StepIndicator/OrderStep';
 import { store } from '../../config/configureStore';
 import { handleRequestPayment } from '../../services/momo';
-import styles, { COLORS, FONTS } from '../../styles';
+import { COLORS, FONTS } from '../../styles';
 import { container } from '../../styles/layoutStyle';
+import { getPredictDate } from '../../utils/dateUtils';
 import { formatCash } from '../../utils/order';
 import Loading from './../../components/Loading';
 import ModalMess from './../../components/ModalMess';
 import { joinAddress } from './../../utils/address';
-import { useTranslation } from 'react-i18next';
-import { getPredictDate } from '../../utils/dateUtils';
-import CustomInput from '../../components/CustomInput/CustomInput';
 
 const OrderSummary = ({ route, navigation }) => {
   const { t, i18n } = useTranslation('common');
@@ -31,8 +31,7 @@ const OrderSummary = ({ route, navigation }) => {
   const [note, setNote] = useState('');
   const [loading, setLoading] = useState(null);
   const [alert, setAlert] = useState(null);
-  const [fee, setFee] = useState(1000000);
-  const initialFee = 1000000;
+  const [fee, setFee] = useState(0);
 
   const {
     voucher,
@@ -66,7 +65,6 @@ const OrderSummary = ({ route, navigation }) => {
   }, [packages]);
 
   const handleOrder = () => {
-    // TODO: - calculate shipment fee service
     setLoading(<Loading />);
     let payer_name = '',
       payer_phone = '';
@@ -96,8 +94,8 @@ const OrderSummary = ({ route, navigation }) => {
       receiver_phone,
       receiver_name,
       method: payment.value,
-      fee: initialFee,
-      remain_fee: initialFee,
+      fee: fee,
+      remain_fee: fee,
       voucher: voucher?.data?.id,
       from_address,
       to_address,
@@ -158,23 +156,17 @@ const OrderSummary = ({ route, navigation }) => {
   };
 
   useEffect(() => {
-    if (voucher && voucher.data) {
-      let { sale_type, sale, sale_max } = voucher.data;
-      let tempFee = initialFee;
-      if (sale_type === 'value') {
-        if (tempFee > sale) {
-          tempFee = tempFee - sale;
-        }
-      } else if (sale_type === 'percentage') {
-        let discount = tempFee - (tempFee * sale) / 100;
-        if (discount > sale_max) {
-          discount = sale_max;
-        }
-        tempFee = tempFee - discount;
-      }
-      setFee(tempFee);
-    }
-  }, [voucher]);
+    orderApi
+      .getFee({
+        from_address,
+        to_address,
+        voucher: voucher?.data?.id,
+        packages,
+      })
+      .then(response => {
+        setFee(Math.ceil(response));
+      });
+  }, [voucher, packages, from_address, to_address]);
 
   return (
     <SafeAreaView style={style.container}>
@@ -290,7 +282,7 @@ const OrderSummary = ({ route, navigation }) => {
                 navigation.navigate('VoucherScreen', {
                   ...route.params,
                   useVoucher: true,
-                  fee: initialFee,
+                  fee: fee,
                 })
               }>
               <View style={[style.select, style.rowContainer]}>
