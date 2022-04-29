@@ -17,6 +17,7 @@ import { Icon, Text, withBadge } from 'react-native-elements';
 import { connect } from 'react-redux';
 import orderApi from '../../api/orderApi';
 import Confirm from '../../components/Confirm';
+import { FocusStatusBar } from '../../components/FocusStatusBar';
 import Header from '../../components/Header';
 import HeaderAvatar from '../../components/HeaderAvatar';
 // Import Asset

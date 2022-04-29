@@ -47,6 +47,7 @@ const InfoCard = ({ item, navigation, itemKey, ...props }) => {
             outerCircleColor: COLORS.primary,
             descriptionTextColor: COLORS.white,
             descriptionTextSize: 16,
+            dimColor: COLORS.backdropColor
           };
           props.onTour(tourRef, tourProps);
         }}
