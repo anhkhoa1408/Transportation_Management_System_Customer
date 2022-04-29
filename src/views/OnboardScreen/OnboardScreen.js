@@ -1,6 +1,10 @@
 import React, { useRef, useState } from 'react';
 import {
-  Dimensions, SafeAreaView, StyleSheet, TouchableWithoutFeedback, View
+  Dimensions,
+  SafeAreaView,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View
 } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { COLORS, STYLES } from '../../styles';
@@ -85,5 +89,9 @@ const styles = StyleSheet.create({
   },
   paginateDot: {
     backgroundColor: COLORS.primary,
+    width: 15,
+    height: 15,
+    borderRadius: 10,
+    marginRight: -10,
   },
 });

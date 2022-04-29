@@ -1,11 +1,9 @@
-import { StyleSheet, TouchableOpacity, View, Image } from 'react-native';
-import React from 'react';
-import { COLORS, FONTS, STYLES } from '../../../styles';
-import { Button, Icon, Text } from 'react-native-elements';
-import money from '../../../assets/images/cut_money.png';
-import safe_img from '../../../assets/images/safe.png';
-import trace from '../../../assets/images/trace.png';
 import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Button, Icon, Text } from 'react-native-elements';
+import trace from '../../../assets/images/trace.png';
+import { COLORS, FONTS, STYLES } from '../../../styles';
 
 const Second = props => {
   const { navigate } = useNavigation();
@@ -89,7 +87,7 @@ const styles = StyleSheet.create({
   },
   subTitle: {
     fontSize: 18,
-    fontWeight: '700',
+    fontWeight: '600',
     opacity: 1,
     color: '#889399',
     width: '70%',

@@ -2,10 +2,10 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Button, Icon, Text } from 'react-native-elements';
-import safe_img from '../../../assets/images/safe.jpg';
+import safe_img from '../../../assets/images/safe_2.jpg';
 import { COLORS, FONTS, STYLES } from '../../../styles';
 
-const Last = (props) => {
+const Last = props => {
   const { navigate } = useNavigation();
   return (
     <View style={[STYLES.container, { paddingHorizontal: 25 }]}>
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   },
   subTitle: {
     fontSize: 18,
-    fontWeight: '700',
+    fontWeight: '600',
     opacity: 1,
     color: '#889399',
     width: '70%',
