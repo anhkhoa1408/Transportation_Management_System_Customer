@@ -60,7 +60,7 @@ const ModalMess = props => {
         <Button
           buttonStyle={{ backgroundColor: modalType.color }}
           containerStyle={style.buttonContainer}
-          title={alert?.btnText ? alert.btnText : 'ĐÓNG'}
+          title={alert?.btnText ? t(alert.btnText) : t("modalMess.close")}
           type="solid"
           onPress={() => setAlert(null)}
         />

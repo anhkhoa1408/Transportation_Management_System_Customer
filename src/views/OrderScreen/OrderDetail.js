@@ -71,7 +71,7 @@ export default function OrderDetail({ navigation, route }) {
     } else {
       setAlert({
         type: 'danger',
-        message: 'Đơn hàng đã được nhận, không thể hủy',
+        message: t('orderScreen.cannotCancel'),
       });
     }
   };
@@ -88,15 +88,14 @@ export default function OrderDetail({ navigation, route }) {
     if (type === 'pay') {
       setConfirm({
         type: 'warning',
-        message: 'Bạn có muốn thanh toán toàn bộ chi phí còn lại theo Momo?',
-        confirmBtnText: 'Thanh toán',
+        message: t('orderScreen.payByMomo'),
+        confirmBtnText: 'orderScreen.pay',
         onConfirm: handlePayment,
       });
     } else if (type === 'cancel') {
       setConfirm({
         type: 'warning',
-        message: 'Bạn có muốn hủy đơn hàng ?',
-        confirmBtnText: 'Đồng ý',
+        message: t('orderScreen.wantCancelOrder'),
         onConfirm: handleCancel,
       });
     }
@@ -190,11 +189,7 @@ export default function OrderDetail({ navigation, route }) {
           visible={option}
           onBackdropPress={() => setOption(!option)}>
           <Button
-            title={
-              item.rating_note || item.rating_point
-                ? 'Đã đánh giá'
-                : t('orderScreen.rate')
-            }
+            title={t('orderScreen.rate')}
             disabled={item.rating_note || item.rating_point}
             onPress={() => {
               setRating(true);

@@ -226,7 +226,11 @@
     "offlinePayment": "Thanh toán offline",
     "onlinePayment": "Thanh toán online",
     "agree": "Đồng ý",
-    "sendFeedback": "Gửi đánh giá"
+    "sendFeedback": "Gửi đánh giá",
+    "cannotCancel": "Đơn hàng đã được nhận, không thể hủy",
+    "payByMomo": "Bạn có muốn thanh toán toàn bộ chi phí còn lại theo Momo?",
+    "wantCancelOrder": "Bạn có muốn hủy đơn hàng ?",
+    "pay": "Thanh toán"
   },
   "settingScreen": {
     "requiredInformation": "Thông tin bắt buộc",
@@ -323,7 +327,11 @@
   "modalMess": {
     "warning": "Cảnh báo",
     "fail": "Thất bại",
-    "success": "Thành công"
+    "success": "Thành công",
+    "hint": "Gợi ý",
+    "yes": "Đồng ý",
+    "no": "Hủy",
+    "close": "ĐÓNG"
   },
   "navigation": {
     "voucher": "Ưu đãi",
@@ -360,7 +368,7 @@
     "feedbackSub": "Hiển thị những đơn hàng chờ bạn đánh giá"
   },
   "skip": "Bỏ qua",
-  "next": "Tiếp tục",
+  "next": "Tiếp",
   "start": "Bắt đầu",
   "onboard": {
     "firstTitle": "Tiết kiệm chi phí",

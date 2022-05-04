@@ -226,7 +226,11 @@
     "offlinePayment": "Directly",
     "onlinePayment": "Pay online",
     "agree": "Agree",
-    "sendFeedback": "Send feedback"
+    "sendFeedback": "Send feedback",
+    "cannotCancel": "Order has been received, cannot be canceled",
+    "payByMomo": "Do you want to pay all remaining expenses according to Momo?",
+    "wantCancelOrder": "Do you want to cancel your order?",
+    "pay": "Pay"
   },
   "settingScreen": {
     "requiredInformation": "Required information",
@@ -323,7 +327,11 @@
   "modalMess": {
     "warning": "Warning",
     "fail": "Failed",
-    "success": "Success"
+    "success": "Success",
+    "hint": "Hint",
+    "yes": "Yes",
+    "no": "No",
+    "close": "CLOSE"
   },
   "navigation": {
     "voucher": "Voucher",
@@ -363,7 +371,7 @@
     "firstTitle": "Cost savings",
     "firstBen": "Reasonable and fixed shipping fees,\nattractive offers",
     "secondTitle": "Quick trace",
-    "secondBen": "Track your orders\ninstantly on the app",
+    "secondBen": "Track your orders instantly \non the app",
     "lastTitle": "Reliable shipping",
     "lastBen": "Ensure the safety of your goods\nall the way"
   },

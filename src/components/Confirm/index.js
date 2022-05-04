@@ -34,9 +34,9 @@ const Confirm = props => {
     {
       type: 'question',
       name: 'help',
-      color:  primary,
+      color: primary,
       neutral: COLORS.neutralPrimary,
-      title: 'Gợi ý',
+      title: 'modalMess.hint',
     },
   ];
   const modalType = iconStyle.find(element => element.type === props.type);
@@ -72,11 +72,13 @@ const Confirm = props => {
           <Button
             buttonStyle={{ backgroundColor: modalType.neutral }}
             containerStyle={[style.buttonContainer]}
-            title={props?.confirmBtnText ? props.confirmBtnText : 'Đồng ý'}
+            title={
+              props?.confirmBtnText ? t(props.confirmBtnText) : t('modalMess.yes')
+            }
             type="solid"
             titleStyle={{
               color: modalType.color,
-              textTransform: 'uppercase'
+              textTransform: 'uppercase',
             }}
             onPress={props.onConfirm}
           />
@@ -85,9 +87,11 @@ const Confirm = props => {
             containerStyle={[style.buttonContainer]}
             titleStyle={{
               color: COLORS.danger,
-              textTransform: 'uppercase'
+              textTransform: 'uppercase',
             }}
-            title={props?.cancelBtnText ? props.cancelBtnText : 'Hủy'}
+            title={
+              props?.cancelBtnText ? t(props.cancelBtnText) : t('modalMess.no')
+            }
             type="solid"
             onPress={props.onCancel}
           />
