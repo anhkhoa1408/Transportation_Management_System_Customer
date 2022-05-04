@@ -42,8 +42,8 @@ const InfoCard = ({ item, navigation, itemKey, ...props }) => {
           let tourProps = {
             order: itemKey,
             mandatory: false,
-            title: item.tourTitle,
-            description: item.tourSubtitle,
+            title: t(item.tourTitle),
+            description: t(item.tourSubtitle),
             outerCircleColor: COLORS.primary,
             descriptionTextColor: COLORS.white,
             descriptionTextSize: 16,

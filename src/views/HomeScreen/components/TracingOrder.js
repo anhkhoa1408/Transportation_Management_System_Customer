@@ -42,7 +42,7 @@ const TracingOrder = ({ orders, ...props }) => {
               let tourProps = {
                 order: 4,
                 title: t('homeScreen.tracing'),
-                description: 'Theo dõi thông tin đơn hàng của bạn nhanh chóng',
+                description: t("tour.traceSub"),
                 outerCircleColor: COLORS.primary,
                 descriptionTextColor: COLORS.white,
                 descriptionTextSize: 16,

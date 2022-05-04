@@ -41,8 +41,8 @@ const Feedback = ({ awaitFeedback, ...props }) => {
               if (!tourRef) return;
               let tourProps = {
                 order: 5,
-                title: 'Đánh giá đơn hàng',
-                description: 'Hiển thị những đơn hàng chờ bạn đánh giá',
+                title: t("homeScreen.feedback"),
+                description: t("tour.feedbackSub"),
                 outerCircleColor: COLORS.primary,
                 descriptionTextColor: COLORS.white,
                 descriptionTextSize: 16,

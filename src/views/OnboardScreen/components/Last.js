@@ -1,11 +1,13 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Button, Icon, Text } from 'react-native-elements';
 import safe_img from '../../../assets/images/safe_2.jpg';
 import { COLORS, FONTS, STYLES } from '../../../styles';
 
 const Last = props => {
+  const { t } = useTranslation("common")
   const { navigate } = useNavigation();
   return (
     <View style={[STYLES.container, { paddingHorizontal: 25 }]}>
@@ -21,15 +23,15 @@ const Last = props => {
         <TouchableOpacity>
           <Icon name="west" onPress={() => props.onSnap(1)} />
         </TouchableOpacity>
-        <TouchableOpacity>
-          <Text style={styles.skipBtn}>Bỏ qua</Text>
-        </TouchableOpacity>
+        {/* <TouchableOpacity>
+          <Text style={styles.skipBtn}>{t("skip")}</Text>
+        </TouchableOpacity> */}
       </View>
 
       <View style={{ alignSelf: 'flex-start' }}>
-        <Text style={styles.title}>Vận chuyển tin cậy</Text>
+        <Text style={styles.title}>{t("onboard.lastTitle")}</Text>
         <Text style={styles.subTitle}>
-          Đảm bảo an toàn cho hàng hóa của bạn{'\n'}trên mọi chặng đường
+          {t("onboard.lastBen")}
         </Text>
       </View>
 
@@ -54,7 +56,7 @@ const Last = props => {
           alignSelf: 'flex-end',
         }}>
         <Button
-          title="Bắt đầu"
+          title={t("start")}
           buttonStyle={{
             borderRadius: 40,
             width: 80,

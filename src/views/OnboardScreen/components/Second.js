@@ -1,11 +1,13 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Button, Icon, Text } from 'react-native-elements';
 import trace from '../../../assets/images/trace.png';
 import { COLORS, FONTS, STYLES } from '../../../styles';
 
 const Second = props => {
+  const { t } = useTranslation("common")
   const { navigate } = useNavigation();
 
   return (
@@ -23,7 +25,7 @@ const Second = props => {
           <Icon name="west" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigate('Signin')}>
-          <Text style={styles.skipBtn}>Bỏ qua</Text>
+          <Text style={styles.skipBtn}>{t("skip")}</Text>
         </TouchableOpacity>
       </View>
       <View style={{ width: '100%', flex: 1 }}>
@@ -37,9 +39,9 @@ const Second = props => {
         />
       </View>
       <View style={{ alignSelf: 'flex-start', marginBottom: 30 }}>
-        <Text style={styles.title}>Theo dõi nhanh chóng</Text>
+        <Text style={styles.title}>{t("onboard.secondTitle")}</Text>
         <Text style={styles.subTitle}>
-          Theo dõi đơn hàng của bạn ngay{'\n'}lập tức trên ứng dụng
+          {t("onboard.secondBen")}
         </Text>
       </View>
 
@@ -53,7 +55,7 @@ const Second = props => {
           alignSelf: 'flex-end',
         }}>
         <Button
-          title="Tiếp"
+          title={t("next")}
           buttonStyle={{
             borderRadius: 40,
             width: 70,

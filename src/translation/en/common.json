@@ -344,5 +344,30 @@
     "fragile": "Fragile",
     "explosive": "Explosive",
     "smell": "Smell"
-  }
+  },
+  "tour": {
+    "quest": "Would you like to see app suggestions?",
+    "tutorial": "Tutorial",
+    "order": "Order",
+    "startOrder": "Proceed to start delivery",
+    "useOrderTemplate": "Use order template",
+    "orderTemplateSub": "Choose an existing order form, save time entering information",
+    "orderTemp": "Manage order template",
+    "orderTempSub": "Manage the order template you've added",
+    "packageTemp": "Manage package template",
+    "packageTempSub": "Manage the package template you've added",
+    "traceSub": "Track your order information quickly",
+    "feedbackSub": "Show orders waiting for your feedback"
+  },
+  "onboard": {
+    "firstTitle": "Cost savings",
+    "firstBen": "Reasonable and fixed shipping fees,\nattractive offers",
+    "secondTitle": "Quick trace",
+    "secondBen": "Track your orders\ninstantly on the app",
+    "lastTitle": "Reliable shipping",
+    "lastBen": "Ensure the safety of your goods\nall the way"
+  },
+  "skip": "Skip",
+  "next": "Next",
+  "start": "Start"
 }

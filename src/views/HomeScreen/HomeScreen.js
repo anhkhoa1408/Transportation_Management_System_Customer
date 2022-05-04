@@ -118,31 +118,31 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
       icon: 'add',
       title: 'homeScreen.order',
       navigate: 'InputInfo',
-      tourTitle: 'Đặt hàng',
-      tourSubtitle: 'Tiến hành đặt vận chuyển',
+      tourTitle: "tour.order",
+      tourSubtitle: "tour.startOrder",
     },
     {
       icon: 'event-available',
       title: 'homeScreen.useOrderForm',
       navigate: 'OrderTemplateList',
       useTemplate: true,
-      tourTitle: 'Sử dụng mẫu đơn hàng',
+      tourTitle: "tour.useOrderTemplate",
       tourSubtitle:
-        'Lựa chọn mẫu đơn hàng sẵn có, tiết kiệm thời gian nhập thông tin',
+        "tour.orderTemplateSub",
     },
     {
       icon: 'assignment',
       title: 'homeScreen.manageOrderForm',
       navigate: 'OrderTemplateList',
-      tourTitle: 'Quản lý mẫu đơn hàng',
-      tourSubtitle: 'Quản lý mẫu đơn hàng bạn đã thêm vào',
+      tourTitle: "tour.orderTemp",
+      tourSubtitle: "tour.orderTempSub",
     },
     {
       icon: 'inventory',
       title: 'homeScreen.manageParcelSamples',
       navigate: 'PackageTemplateList',
-      tourTitle: 'Quản lý mẫu kiện hàng',
-      tourSubtitle: 'Quản lý mẫu kiện hàng bạn đã thêm vào',
+      tourTitle: "tour.packageTemp",
+      tourSubtitle: "tour.packageTempSub",
     },
   ]);
 
@@ -152,7 +152,7 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
         {confirm && (
           <Confirm
             type="question"
-            message="Bạn có muốn xem gợi ý dùng ứng dụng không"
+            message={t("tour.quest")}
             onConfirm={handleStartTour}
             onCancel={() => setConfirm(null)}
           />
@@ -213,7 +213,7 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
                     borderRadius: 10,
                     marginRight: 15,
                   }}>
-                  <Text style={{ fontWeight: '800' }}>{t('Hướng dẫn')}</Text>
+                  <Text style={{ fontWeight: '800' }}>{t('tour.tutorial')}</Text>
                   <Icon
                     type="font-awesome"
                     name="question"

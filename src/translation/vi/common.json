@@ -344,5 +344,30 @@
     "fragile": "Dễ vỡ",
     "explosive": "Dễ cháy nổ",
     "smell": "Có mùi"
+  },
+  "tour": {
+    "quest": "Bạn có muốn xem hướng dẫn sử dụng ứng dụng không?",
+    "tutorial": "Hướng dẫn",
+    "order": "Đặt hàng",
+    "startOrder": "Tiến hành đặt vận chuyển",
+    "useOrderTemplate": "Sử dụng mẫu đơn hàng",
+    "orderTemplateSub": "Lựa chọn mẫu đơn hàng sẵn có, tiết kiệm thời gian nhập thông tin",
+    "orderTemp": "Quản lý mẫu đơn hàng",
+    "orderTempSub": "Quản lý mẫu đơn hàng bạn đã thêm vào",
+    "packageTemp": "Quản lý mẫu kiện hàng",
+    "packageTempSub": "Quản lý mẫu kiện hàng bạn đã thêm vào",
+    "traceSub": "Theo dõi thông tin đơn hàng của bạn nhanh chóng",
+    "feedbackSub": "Hiển thị những đơn hàng chờ bạn đánh giá"
+  },
+  "skip": "Bỏ qua",
+  "next": "Tiếp tục",
+  "start": "Bắt đầu",
+  "onboard": {
+    "firstTitle": "Tiết kiệm chi phí",
+    "firstBen": "Phí vận chuyển hợp lý và cố định,\nưu đãi hấp dẫn",
+    "secondTitle": "Theo dõi nhanh chóng",
+    "secondBen": "Theo dõi đơn hàng của bạn ngay\nlập tức trên ứng dụng",
+    "lastTitle": "Vận chuyển tin cậy",
+    "lastBen": "Đảm bảo an toàn cho hàng hóa của bạn\ntrên mọi chặng đường"
   }
 }

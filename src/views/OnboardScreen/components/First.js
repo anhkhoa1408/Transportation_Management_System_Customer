@@ -1,11 +1,13 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Button, Text } from 'react-native-elements';
 import money from '../../../assets/images/cut_money.png';
 import { COLORS, FONTS, STYLES } from '../../../styles';
 
 const First = props => {
+  const { t } = useTranslation("common")
   const { navigate } = useNavigation();
 
   return (
@@ -13,12 +15,12 @@ const First = props => {
       <TouchableOpacity
         style={{ alignSelf: 'flex-end' }}
         onPress={() => navigate('Signin')}>
-        <Text style={styles.skipBtn}>Bỏ qua</Text>
+        <Text style={styles.skipBtn}>{t("skip")}</Text>
       </TouchableOpacity>
       <View style={{ alignSelf: 'flex-start' }}>
-        <Text style={styles.title}>Tiết kiệm chi phí</Text>
+        <Text style={styles.title}>{t("onboard.firstTitle")}</Text>
         <Text style={styles.subTitle}>
-          Phí vận chuyển hợp lý và cố định,{'\n'}ưu đãi hấp dẫn
+          {t("onboard.firstBen")}
         </Text>
       </View>
       <View style={{ width: '100%', flex: 1 }}>
@@ -41,7 +43,7 @@ const First = props => {
           alignSelf: 'flex-end',
         }}>
         <Button
-          title="Tiếp"
+          title={t("next")}
           buttonStyle={{
             borderRadius: 40,
             width: 70,
