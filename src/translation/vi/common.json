@@ -131,7 +131,7 @@
     "youHaveNotEnteredTheProvinceName": "Bạn chưa nhập tên huyện",
     "youHaveNotEnteredTheCityName": "Bạn chưa nhập tên thành phố",
     "address": "Địa chỉ",
-    "enterAddress": "",
+    "enterAddress": "Nhập địa chỉ",
     "send": "Nhập địa chỉ ngườI gửi",
     "receive": "Nhập địa chỉ người nhận",
     "houseNumber,StreetName": "Số nhà, tên đường",

@@ -203,7 +203,7 @@ const EditOrderAddress = ({ navigation, route }) => {
         }
       />
       <KeyboardAwareScrollView contentContainerStyle={style.form}>
-        <Text style={[FONTS.BigBold, { marginBottom: 10 }]}>Nhập địa chỉ</Text>
+        <Text style={[FONTS.BigBold, { marginBottom: 10 }]}>{t("orderScreen.enterAddress")}</Text>
         <Select
           title={t('templateScreen.city')}
           selected={selectCity}

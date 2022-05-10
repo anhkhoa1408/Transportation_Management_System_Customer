@@ -131,7 +131,7 @@
     "youHaveNotEnteredTheProvinceName": "Missing district name",
     "youHaveNotEnteredTheCityName": "Missing city name",
     "address": "Address",
-    "enterAddress": "",
+    "inputAddress": "Enter address",
     "send": "Enter sender's address",
     "receive": "Enter receiver's address",
     "houseNumber,StreetName": "House number, street name",
