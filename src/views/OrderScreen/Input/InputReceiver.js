@@ -10,21 +10,41 @@ import TextField from '../../../components/TextField';
 import { FONTS } from '../../../styles';
 import { container } from '../../../styles/layoutStyle';
 import { useTranslation } from 'react-i18next';
+import { store } from '../../../config/configureStore';
 
 const InputReceiver = ({ navigation, route }) => {
+  const userInfo = store.getState().userInfo.user;
   const { t, i18n } = useTranslation('common');
+  const _meta = route.params?.inputReceiver
+    ? {
+        bonkName: "orderScreen.youHaveNotEnteredTheReceiver'sName",
+        bonkPhone: "orderScreen.youHaveNotEnteredTheReceiver'sPhoneNumber",
+        title: 'orderScreen.enterReceiverInformation',
+        name: "orderScreen.receiver'sName",
+        nextButton: 'orderScreen.addPackages',
+      }
+    : {
+        bonkName: "orderScreen.youHaveNotEnteredTheSender'sName",
+        bonkPhone: "orderScreen.youHaveNotEnteredTheSender'sPhoneNumber",
+        title: 'orderScreen.enterSenderInformation',
+        name: "orderScreen.sender'sName",
+        nextButton: 'orderScreen.enterReceiverInformation',
+      };
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: {
-      receiverName: '',
-      receiverPhone: '',
-    },
+    initialValues: route.params?.inputReceiver
+      ? {
+          receiverName: '',
+          receiverPhone: '',
+        }
+      : {
+          receiverName: userInfo?.name ? userInfo?.name : '',
+          receiverPhone: userInfo?.phone ? userInfo?.phone : '',
+        },
     validationSchema: Bonk.object({
-      receiverName: Bonk.string().required(
-        t("orderScreen.youHaveNotEnteredTheReceiver'sName"),
-      ),
+      receiverName: Bonk.string().required(t(_meta.bonkName)),
       receiverPhone: Bonk.string()
-        .required(t("orderScreen.youHaveNotEnteredTheReceiver'sPhoneNumber"))
+        .required(t(_meta.bonkPhone))
         .test('phone-test', t('templateScreen.invalidPhone'), (value, ctx) => {
           let regex = new RegExp(
             /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/,
@@ -36,11 +56,19 @@ const InputReceiver = ({ navigation, route }) => {
         }),
     }),
     onSubmit: values => {
-      navigation.navigate('InputPackage', {
-        ...route.params,
-        receiver_name: values.receiverName,
-        receiver_phone: values.receiverPhone,
-      });
+      if (route.params?.inputReceiver)
+        navigation.navigate('InputPackage', {
+          ...route.params,
+          receiver_name: values.receiverName,
+          receiver_phone: values.receiverPhone,
+        });
+      else
+        navigation.navigate('InputReceiver', {
+          ...route.params,
+          sender_name: values.receiverName,
+          sender_phone: values.receiverPhone,
+          inputReceiver: true,
+        });
     },
   });
   return (
@@ -57,10 +85,10 @@ const InputReceiver = ({ navigation, route }) => {
         contentContainerStyle={{ padding: 30, flex: 1 }}>
         <View style={{ flex: 1 }}>
           <Text style={[FONTS.SmolBold, { marginVertical: 15 }]}>
-            {t("orderScreen.enterReceiver'sInformation")}
+            {t(_meta.title)}
           </Text>
           <TextField
-            title={t("orderScreen.receiver'sName")}
+            title={t(_meta.name)}
             value={formik.values.receiverName}
             onBlur={() => formik.setFieldTouched('receiverName')}
             onChangeText={text => formik.setFieldValue('receiverName', text)}
@@ -78,7 +106,7 @@ const InputReceiver = ({ navigation, route }) => {
           />
         </View>
         <PrimaryButton
-          title={t('orderScreen.addPackages')}
+          title={t(_meta.nextButton)}
           onPress={formik.submitForm}
           containerStyle={{ marginTop: '50%' }}
         />

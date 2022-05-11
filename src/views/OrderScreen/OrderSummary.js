@@ -5,7 +5,7 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
 import { Divider, Icon, ListItem, Text } from 'react-native-elements';
 import { v4 as uuidv4 } from 'uuid';
@@ -15,7 +15,6 @@ import CustomInput from '../../components/CustomInput/CustomInput';
 import Header from '../../components/Header';
 import { InfoField } from '../../components/InfoField';
 import OrderStep from '../../components/StepIndicator/OrderStep';
-import { store } from '../../config/configureStore';
 import { handleRequestPayment } from '../../services/momo';
 import { COLORS, FONTS } from '../../styles';
 import { container } from '../../styles/layoutStyle';
@@ -38,13 +37,13 @@ const OrderSummary = ({ route, navigation }) => {
     payment,
     from_address,
     to_address,
+    sender_phone,
+    sender_name,
     receiver_name,
     receiver_phone,
     packages,
     name,
   } = route?.params;
-
-  const userInfo = store.getState().userInfo.user;
 
   const orderIdForMomo = useMemo(() => {
     return uuidv4();
@@ -71,16 +70,16 @@ const OrderSummary = ({ route, navigation }) => {
 
     switch (payment.title) {
       case t('orderScreen.payBySender'):
-        payer_name = userInfo.name;
-        payer_phone = userInfo.phone;
+        payer_name = sender_name;
+        payer_phone = sender_phone;
         break;
       case t('orderScreen.momoE-wallet'):
-        payer_name = userInfo.name;
-        payer_phone = userInfo.phone;
+        payer_name = sender_name;
+        payer_phone = sender_phone;
         break;
       case t('orderScreen.bankCard'):
-        payer_name = userInfo.name;
-        payer_phone = userInfo.phone;
+        payer_name = sender_name;
+        payer_phone = sender_phone;
         break;
       case t('orderScreen.payByReceiver'):
         payer_name = receiver_name;
@@ -89,8 +88,8 @@ const OrderSummary = ({ route, navigation }) => {
     }
 
     let order = {
-      sender_phone: userInfo.phone,
-      sender_name: userInfo.name,
+      sender_phone,
+      sender_name,
       receiver_phone,
       receiver_name,
       method: payment.value,
@@ -213,13 +212,25 @@ const OrderSummary = ({ route, navigation }) => {
             <View style={style.infoWrap}>
               <View style={[style.rowContainer]}>
                 <InfoField
-                  title={t('orderScreen.expected')}
-                  content={<>{getPredictDate()}</>}
+                  title={t('orderScreen.sender')}
+                  content={sender_name || t('orderScreen.notYet')}
                   style={{ flex: 1 }}
                 />
                 <InfoField
+                  title={t("orderScreen.sender'sPhoneNumber")}
+                  content={sender_phone || t('orderScreen.notYet')}
+                  style={{ flex: 1 }}
+                />
+              </View>
+              <View style={[style.rowContainer]}>
+                <InfoField
                   title={t('orderScreen.receiver')}
                   content={receiver_name || t('orderScreen.notYet')}
+                  style={{ flex: 1 }}
+                />
+                <InfoField
+                  title={t("orderScreen.receiver'sPhoneNumber")}
+                  content={receiver_phone || t('orderScreen.notYet')}
                   style={{ flex: 1 }}
                 />
               </View>
@@ -230,15 +241,15 @@ const OrderSummary = ({ route, navigation }) => {
                   style={{ flex: 1 }}
                 />
                 <InfoField
-                  title={t("orderScreen.receiver'sPhoneNumber")}
-                  content={receiver_phone}
+                  title={t('orderScreen.to')}
+                  content={to_address && joinAddress(to_address)}
                   style={{ flex: 1 }}
                 />
               </View>
               <View style={[style.rowContainer]}>
                 <InfoField
-                  title={t('orderScreen.to')}
-                  content={to_address && joinAddress(to_address)}
+                  title={t('orderScreen.expected')}
+                  content={<>{getPredictDate()}</>}
                   style={{ flex: 1 }}
                 />
                 <InfoField
