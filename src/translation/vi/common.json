@@ -230,7 +230,9 @@
     "cannotCancel": "Đơn hàng đã được nhận, không thể hủy",
     "payByMomo": "Bạn có muốn thanh toán toàn bộ chi phí còn lại theo Momo?",
     "wantCancelOrder": "Bạn có muốn hủy đơn hàng ?",
-    "pay": "Thanh toán"
+    "pay": "Thanh toán",
+    "processing": "Đang xử lý",
+    "processed": "Đã xử lý"
   },
   "settingScreen": {
     "requiredInformation": "Thông tin bắt buộc",

@@ -66,7 +66,7 @@ export default function OrderHistory({ navigation, route }) {
             height: 0,
           }}>
           <Tab.Item
-            title={t('orderScreen.shipping')}
+            title={t('orderScreen.processing')}
             titleStyle={{ fontSize: 12, color: COLORS.primary }}
             containerStyle={{
               backgroundColor: COLORS.gray,
@@ -79,7 +79,7 @@ export default function OrderHistory({ navigation, route }) {
             ]}
           />
           <Tab.Item
-            title={t('orderScreen.shipped')}
+            title={t('orderScreen.processed')}
             titleStyle={{ fontSize: 12, color: COLORS.primary }}
             containerStyle={[
               {

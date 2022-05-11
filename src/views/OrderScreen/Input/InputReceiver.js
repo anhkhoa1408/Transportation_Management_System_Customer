@@ -12,7 +12,7 @@ import { container } from '../../../styles/layoutStyle';
 import { useTranslation } from 'react-i18next';
 
 const InputReceiver = ({ navigation, route }) => {
-  const { t, i18n } = useTranslation("common")
+  const { t, i18n } = useTranslation('common');
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -20,10 +20,20 @@ const InputReceiver = ({ navigation, route }) => {
       receiverPhone: '',
     },
     validationSchema: Bonk.object({
-      receiverName: Bonk.string().required(t("orderScreen.youHaveNotEnteredTheReceiver'sName")),
-      receiverPhone: Bonk.string().required(
-        t("orderScreen.youHaveNotEnteredTheReceiver'sPhoneNumber"),
+      receiverName: Bonk.string().required(
+        t("orderScreen.youHaveNotEnteredTheReceiver'sName"),
       ),
+      receiverPhone: Bonk.string()
+        .required(t("orderScreen.youHaveNotEnteredTheReceiver'sPhoneNumber"))
+        .test('phone-test', 'Số điện thoại không hợp lệ', (value, ctx) => {
+          let regex = new RegExp(
+            /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/,
+          );
+          if (regex.test(value)) {
+            return true;
+          }
+          return false;
+        }),
     }),
     onSubmit: values => {
       navigation.navigate('InputPackage', {
@@ -39,7 +49,7 @@ const InputReceiver = ({ navigation, route }) => {
         leftElement={
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
         }
-        headerText={t("orderScreen.transport")}
+        headerText={t('orderScreen.transport')}
       />
       <OrderStep current={0} />
       <View
@@ -58,7 +68,7 @@ const InputReceiver = ({ navigation, route }) => {
             errorMessage={formik.errors.receiverName}
           />
           <TextField
-            title={t("orderScreen.phoneNumber")}
+            title={t('orderScreen.phoneNumber')}
             keyboardType="numeric"
             value={formik.values.receiverPhone}
             onBlur={() => formik.setFieldTouched('receiverPhone')}
@@ -68,7 +78,7 @@ const InputReceiver = ({ navigation, route }) => {
           />
         </View>
         <PrimaryButton
-          title={t("orderScreen.addPackages")}
+          title={t('orderScreen.addPackages')}
           onPress={formik.submitForm}
           containerStyle={{ marginTop: '50%' }}
         />

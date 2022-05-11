@@ -187,7 +187,7 @@ const EditOrderAddress = ({ navigation, route }) => {
         leftElement={
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
         }
-        headerText={t('templateScreen.orderForm')}
+        headerText={t('orderScreen.enterAddress')}
         rightElement={
           <Icon
             name="map"

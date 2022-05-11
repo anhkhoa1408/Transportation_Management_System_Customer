@@ -230,7 +230,9 @@
     "cannotCancel": "Order has been received, cannot be canceled",
     "payByMomo": "Do you want to pay all remaining expenses according to Momo?",
     "wantCancelOrder": "Do you want to cancel your order?",
-    "pay": "Pay"
+    "pay": "Pay",
+    "processing": "Processing",
+    "processed": "Processed"
   },
   "settingScreen": {
     "requiredInformation": "Required information",
