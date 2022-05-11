@@ -16,6 +16,7 @@ import PrimaryButton from '../../../components/CustomButton/PrimaryButton';
 const EditOrderAddress = ({ navigation, route }) => {
   const { t, i18n } = useTranslation('common');
   const { item = {}, type } = route?.params;
+  const address = route?.params?.[type];
 
   const initializeAddress = useMemo(() => {
     let cities = provinces.map(item => ({
@@ -24,7 +25,9 @@ const EditOrderAddress = ({ navigation, route }) => {
     }));
 
     let selectCity = (
-      cities.find(city => city.label === item[type]?.city) || cities[0]
+      cities.find(
+        city => city.label === item[type]?.city || city.label === address?.city,
+      ) || cities[0]
     ).value;
 
     let districts =
@@ -37,8 +40,11 @@ const EditOrderAddress = ({ navigation, route }) => {
     let selectDistrict =
       districts &&
       (
-        districts.find(district => district.label === item[type]?.province) ||
-        districts[0]
+        districts.find(
+          district =>
+            district.label === item[type]?.province ||
+            district.label === address?.province,
+        ) || districts[0]
       ).value;
 
     let wards =
@@ -52,7 +58,9 @@ const EditOrderAddress = ({ navigation, route }) => {
       wards &&
       (
         wards.find(ward => {
-          return ward.label === item[type]?.ward;
+          return (
+            ward.label === item[type]?.ward || ward.label === address?.ward
+          );
         }) || wards[0]
       ).value;
 
@@ -93,7 +101,7 @@ const EditOrderAddress = ({ navigation, route }) => {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      street: item[type]?.street || '',
+      street: item[type]?.street || address?.street || '',
     },
     validationSchema: Bonk.object({
       street: Bonk.string().required(
@@ -203,7 +211,9 @@ const EditOrderAddress = ({ navigation, route }) => {
         }
       />
       <KeyboardAwareScrollView contentContainerStyle={style.form}>
-        <Text style={[FONTS.BigBold, { marginBottom: 10 }]}>{t("orderScreen.enterAddress")}</Text>
+        <Text style={[FONTS.BigBold, { marginBottom: 10 }]}>
+          {t('orderScreen.enterAddress')}
+        </Text>
         <Select
           title={t('templateScreen.city')}
           selected={selectCity}
