@@ -13,9 +13,12 @@ import Loading from './../../../components/Loading';
 import ModalMess from './../../../components/ModalMess';
 import { joinAddress, simplifyString } from './../../../utils/address.js';
 import { useTranslation } from 'react-i18next';
+import { store } from '../../../config/configureStore';
 
 const EditOrderInfo = ({ navigation, route }) => {
   const { t, i18n } = useTranslation('common');
+  const userInfo = store.getState().userInfo.user;
+
   const [from_address, setFrom] = useState(route?.params?.item?.from_address);
   const [to_address, setTo] = useState(route?.params?.item?.to_address);
 
@@ -24,6 +27,8 @@ const EditOrderInfo = ({ navigation, route }) => {
       name: '',
       receiver_name: '',
       receiver_phone: '',
+      sender_name: userInfo?.name ? userInfo?.name : '',
+      sender_phone: userInfo?.phone ? userInfo?.phone : '',
     },
   );
 
@@ -70,6 +75,8 @@ const EditOrderInfo = ({ navigation, route }) => {
       name: values.name,
       receiver_name: values.receiver_name,
       receiver_phone: values.receiver_phone,
+      sender_name: values.sender_name,
+      sender_phone: values.sendver_phone,
       from_address: {
         ...item.from_address,
         ...from_address,
@@ -191,6 +198,23 @@ const EditOrderInfo = ({ navigation, route }) => {
             afterComponent={<ListItem.Chevron size={25} />}
           />
         </TouchableOpacity>
+        <TextField
+          title={t("orderScreen.sender'sName")}
+          value={formik.values.sender_name}
+          onChangeText={text => formik.setFieldValue('sender_name', text)}
+          onBlur={() => formik.setFieldTouched('sender_name')}
+          error={formik.touched.sender_name && formik.errors.sender_name}
+          errorMessage={formik.errors.sender_name}
+        />
+        <TextField
+          title={t("orderScreen.sender'sPhoneNumber")}
+          keyboardType="numeric"
+          value={formik.values.sender_phone}
+          onChangeText={text => formik.setFieldValue('sender_phone', text)}
+          onBlur={() => formik.setFieldTouched('sender_phone')}
+          error={formik.touched.sender_phone && formik.errors.sender_phone}
+          errorMessage={formik.errors.sender_phone}
+        />
         <TextField
           title={t("templateScreen.receiver'sName")}
           value={formik.values.receiver_name}
