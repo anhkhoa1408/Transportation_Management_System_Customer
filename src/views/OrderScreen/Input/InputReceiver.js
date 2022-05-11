@@ -25,7 +25,7 @@ const InputReceiver = ({ navigation, route }) => {
       ),
       receiverPhone: Bonk.string()
         .required(t("orderScreen.youHaveNotEnteredTheReceiver'sPhoneNumber"))
-        .test('phone-test', 'Số điện thoại không hợp lệ', (value, ctx) => {
+        .test('phone-test', t('templateScreen.invalidPhone'), (value, ctx) => {
           let regex = new RegExp(
             /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/,
           );

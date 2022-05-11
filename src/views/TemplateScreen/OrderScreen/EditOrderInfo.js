@@ -15,7 +15,7 @@ import { joinAddress, simplifyString } from './../../../utils/address.js';
 import { useTranslation } from 'react-i18next';
 
 const EditOrderInfo = ({ navigation, route }) => {
-  const { t, i18n } = useTranslation("common")
+  const { t, i18n } = useTranslation('common');
   const [from_address, setFrom] = useState(route?.params?.item?.from_address);
   const [to_address, setTo] = useState(route?.params?.item?.to_address);
 
@@ -33,10 +33,20 @@ const EditOrderInfo = ({ navigation, route }) => {
     enableReinitialize: true,
     initialValues: item,
     validationSchema: Bonk.object({
-      receiver_name: Bonk.string().required(t("templateScreen.youNeedToEnterTheReceiver'sName")),
-      receiver_phone: Bonk.string().required(
-        t("templateScreen.youNeedToEnterTheReceiver'sPhoneNumber"),
+      receiver_name: Bonk.string().required(
+        t("templateScreen.youNeedToEnterTheReceiver'sName"),
       ),
+      receiver_phone: Bonk.string()
+        .required(t("templateScreen.youNeedToEnterTheReceiver'sPhoneNumber"))
+        .test('phone-test', t('templateScreen.invalidPhone'), (value, ctx) => {
+          let regex = new RegExp(
+            /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/,
+          );
+          if (regex.test(value)) {
+            return true;
+          }
+          return false;
+        }),
     }),
     onSubmit: values => handleSubmit(values),
   });
@@ -76,16 +86,16 @@ const EditOrderInfo = ({ navigation, route }) => {
           setLoading(null);
           setAlert({
             type: 'success',
-            message: t("templateScreen.successfullyAddTemplate"),
+            message: t('templateScreen.successfullyAddTemplate'),
           });
           setItem(response);
-          navigation.goBack()
+          navigation.goBack();
         })
         .catch(error => {
           setLoading(null);
           setAlert({
             type: 'danger',
-            message: t("templateScreen.failureAddedTemplate"),
+            message: t('templateScreen.failureAddedTemplate'),
           });
         });
     } else {
@@ -94,7 +104,7 @@ const EditOrderInfo = ({ navigation, route }) => {
           setLoading(null);
           setAlert({
             type: 'success',
-            message: t("templateScreen.updateSuccessful"),
+            message: t('templateScreen.updateSuccessful'),
           });
           setItem(response);
         })
@@ -102,7 +112,7 @@ const EditOrderInfo = ({ navigation, route }) => {
           setLoading(null);
           setAlert({
             type: 'error',
-            message: t("templateScreen.updateFailure"),
+            message: t('templateScreen.updateFailure'),
           });
         });
     }
@@ -123,7 +133,7 @@ const EditOrderInfo = ({ navigation, route }) => {
         leftElement={
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
         }
-        headerText={t("templateScreen.orderForm")}
+        headerText={t('templateScreen.orderForm')}
         rightElement={
           <Icon
             name="check"
@@ -138,10 +148,10 @@ const EditOrderInfo = ({ navigation, route }) => {
         enableOnAndroid
         contentContainerStyle={style.form}>
         <Text style={[FONTS.BigBold, { marginBottom: 10 }]}>
-          {t("templateScreen.enterPackageInformation")}
+          {t('templateScreen.enterPackageInformation')}
         </Text>
         <TextField
-          title={t("templateScreen.name(optional)")}
+          title={t('templateScreen.name(optional)')}
           value={formik.values.name}
           onChangeText={text => formik.setFieldValue('name', text)}
         />
@@ -159,8 +169,8 @@ const EditOrderInfo = ({ navigation, route }) => {
               from_address && simplifyString(joinAddress(from_address), 30)
             }
             editable={false}
-            title={t("templateScreen.from")}
-            placeholder={t("templateScreen.tapToAdd")}
+            title={t('templateScreen.from')}
+            placeholder={t('templateScreen.tapToAdd')}
             afterComponent={<ListItem.Chevron size={25} />}
           />
         </TouchableOpacity>
@@ -176,8 +186,8 @@ const EditOrderInfo = ({ navigation, route }) => {
           <TextField
             value={to_address && simplifyString(joinAddress(to_address), 30)}
             editable={false}
-            title={t("templateScreen.to")}
-            placeholder={t("templateScreen.tapToAdd")}
+            title={t('templateScreen.to')}
+            placeholder={t('templateScreen.tapToAdd')}
             afterComponent={<ListItem.Chevron size={25} />}
           />
         </TouchableOpacity>

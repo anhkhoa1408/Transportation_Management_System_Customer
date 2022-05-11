@@ -197,7 +197,7 @@
 
     "detail": "Detail",
     "edit": "Edit",
-    "cancelOrder": "Cancel order",
+    "cancelOrder": "Cancel Order",
     "follow": "Follow",
     "shipmenttHistory": "Shipments history",
     "shipping": "Shipping",
@@ -311,7 +311,8 @@
     "note": "Note",
 
     "templatePackage": "Package templates",
-    "addTemplatePackage": "Add package template"
+    "addTemplatePackage": "Add package template",
+    "invalidPhone": "Invalide phone number"
   },
   "voucherScreen": {
     "discount": "Discount",

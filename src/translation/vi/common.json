@@ -311,7 +311,8 @@
     "note": "Ghi chú",
 
     "templatePackage": "Mẫu kiện hàng",
-    "addTemplatePackage": "Thêm mẫu kiện hàng"
+    "addTemplatePackage": "Thêm mẫu kiện hàng",
+    "invalidPhone": "Số điện thoại không hợp lệ"
   },
   "voucherScreen": {
     "discount": "Giảm",
