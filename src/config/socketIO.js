@@ -1,5 +1,5 @@
 import io from 'socket.io-client';
-import { MAIN_URL } from '@env';
+import { MAIN_URL } from '../api/config';
 import {
   addMessage,
   addCustomer,

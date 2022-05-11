@@ -8,11 +8,11 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { socket } from '../../config/socketIO';
 import { addMessage } from '../../actions/actions';
 import { connect } from 'react-redux';
-import { getAvatarFromUri } from '../../utils/avatarUltis';
+import { getAvatarFromUri, getName } from '../../utils/avatarUltis';
 import { useTranslation } from 'react-i18next';
 
 const MessageScreen = props => {
-  const { t, i18n } = useTranslation("common")
+  const { t, i18n } = useTranslation('common');
   const { navigation, route, messenger, user, customerInfo } = props;
   const { room } = route.params;
 
@@ -42,7 +42,7 @@ const MessageScreen = props => {
             onPress={() => navigation.goBack()}
           />
         </TouchableOpacity>
-        <Text h4>{customer?.name}</Text>
+        <Text h4>{getName(customer?.name)}</Text>
         <Avatar
           rounded
           size="small"
@@ -64,7 +64,7 @@ const MessageScreen = props => {
           name: user.name,
           avatar: user.avatar?.url,
         }}
-        placeholder={t("chatScreen.enter")}
+        placeholder={t('chatScreen.enter')}
         textInputStyle={messagesScreenStyle.input}
         renderAvatar={null}
       />

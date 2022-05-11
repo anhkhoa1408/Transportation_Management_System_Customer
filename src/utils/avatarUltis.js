@@ -22,3 +22,7 @@ export function getNameFromUser(user) {
   else if (user?.phone) return user?.phone;
   else return 'Khách hàng';
 }
+
+export function getName(name) {
+  return name.split(' ').pop();
+}
