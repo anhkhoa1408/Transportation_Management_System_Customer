@@ -119,7 +119,7 @@ const OrderSummary = ({ route, navigation }) => {
               index: 0,
               routes: [{ name: 'HomeScreen' }],
             });
-            return handleRequestPayment(1000, orderIdForMomo, id);
+            return handleRequestPayment(fee, orderIdForMomo, id);
           } else {
             setAlert({
               type: 'success',

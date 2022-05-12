@@ -81,7 +81,7 @@ export default function OrderDetail({ navigation, route }) {
     let id = JSON.stringify({
       id: item.id,
     });
-    handleRequestPayment(1000, v4(), id);
+    handleRequestPayment(item.remain_fee, v4(), id);
   };
 
   const handleConfirm = type => {
