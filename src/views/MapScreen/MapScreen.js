@@ -20,19 +20,25 @@ const DELTA = {
 };
 
 const MapScreen = ({ navigation, route }) => {
-  const { t, i18n } = useTranslation("common")
+  const { t, i18n } = useTranslation('common');
   const [coord, setCoord] = useState(null);
-  const [name, setName] = useState('');
-  const [isGeoCodeNeeded, setIsGeoCodeNeeded] = useState(true);
   const mapRef = useRef(null);
+  const { type, previousScreen } = route.params;
 
   useEffect(() => {
-    Geolocation.getCurrentPosition(
-      info => setCoord(info.coords),
-      err => console.log(err),
-      { timeout: 5000, maximumAge: 5000, enableHighAccuracy: true },
-    );
-  }, []);
+    let address;
+    if (previousScreen === 'EditOrderInfo') address = route.params.item[type];
+    else address = route.params[type];
+    const merge_address = `${address.street}, ${address.ward}, ${address.province}, ${address.city}`;
+    Geocoder.from(merge_address)
+      .then(json => {
+        setCoord({
+          latitude: json.results[0].geometry.location.lat,
+          longitude: json.results[0].geometry.location.lng,
+        });
+      })
+      .catch(error => console.warn(error));
+  }, [route.params]);
 
   useEffect(() => {
     if (coord) {
@@ -45,62 +51,26 @@ const MapScreen = ({ navigation, route }) => {
     }
   }, [coord]);
 
-  const prepareAddress = address => {
-    const parsedAddress = address.split(',').map(item => item.trim());
-    parsedAddress.pop(); // Remove country
-    return {
-      city: parsedAddress.pop(),
-      province: parsedAddress.pop(),
-      ward: parsedAddress.pop(),
-      street: parsedAddress.reduce((pre, curr) => `${pre}, ${curr}`),
-    };
-  };
-
-  const navigateBack = data => {
-    if (route.params?.previousScreen) {
+  const onChooseAddress = () => {
+    if (previousScreen) {
+      if (previousScreen === 'EditOrderInfo')
+        route.params.item[type] = { ...route.params.item[type], ...coord };
+      else route.params[type] = { ...route.params[type], ...coord };
       navigation.navigate({
-        name: route.params?.previousScreen,
-        params: {
-          [route.params?.type]: {
-            ...data,
-          },
-        },
+        name: previousScreen,
+        params: route.params,
         merge: true,
       });
-    }
-  };
-
-  const onChooseAddress = () => {
-    if (isGeoCodeNeeded) {
-      Geocoder.from(coord)
-        .then(json => {
-          const address = prepareAddress(json.results[0].formatted_address);
-          navigateBack({ ...coord, ...address });
-        })
-        .catch(error => console.warn(error));
-    } else return navigateBack({ ...coord, ...prepareAddress(name) });
-  };
-
-  const handleAutoInputResult = (data, details) => {
-    if (data?.description && details?.geometry?.location) {
-      setName(data.description);
-      setCoord({
-        latitude: details.geometry.location.lat,
-        longitude: details.geometry.location.lng,
-      });
-      setIsGeoCodeNeeded(false);
     }
   };
 
   const handleMapPress = event => {
     const tempCoord = event.nativeEvent.coordinate;
     setCoord(tempCoord);
-    setIsGeoCodeNeeded(true);
   };
 
   return (
     <View style={styles.container}>
-      <GooglePlacesInput handleResult={handleAutoInputResult} />
       <MapView
         ref={mapRef}
         style={styles.map}
@@ -114,18 +84,20 @@ const MapScreen = ({ navigation, route }) => {
         {/* Map marker */}
         {coord && (
           <Marker
+            draggable
             coordinate={{
               latitude: coord.latitude,
               longitude: coord.longitude,
             }}
             title={''}
             identifier={'coord'}
+            onDragEnd={e => setCoord(e.nativeEvent.coordinate)}
           />
         )}
       </MapView>
       <PrimaryButton
         containerStyle={styles.button}
-        title={t("mapScreen.choosePlace")}
+        title={t('orderScreen.confirm')}
         onPress={onChooseAddress}
       />
     </View>
