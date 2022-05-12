@@ -189,19 +189,6 @@ const EditOrderAddress = ({ navigation, route }) => {
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
         }
         headerText={t('orderScreen.enterAddress')}
-        rightElement={
-          <Icon
-            name="map"
-            size={30}
-            color={COLORS.primary}
-            onPress={() =>
-              navigation.navigate('MapScreen', {
-                ...route.params,
-                previousScreen: 'InputAddress',
-              })
-            }
-          />
-        }
       />
       <KeyboardAwareScrollView contentContainerStyle={style.form}>
         <Text style={[FONTS.BigBold, { marginBottom: 10 }]}>
