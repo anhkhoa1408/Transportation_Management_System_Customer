@@ -11,6 +11,8 @@ import { formatDate } from '../../utils/dateUtils';
 import { useTranslation } from 'react-i18next';
 import Header from '../../components/Header';
 import HeaderAvatar from '../../components/HeaderAvatar';
+import { COLORS } from '../../styles';
+import { simplifyString } from '../../utils/address';
 
 const ChatScreen = props => {
   const { t, i18n } = useTranslation('common');
@@ -25,7 +27,9 @@ const ChatScreen = props => {
         room: room,
         avatar: customerInfo[room]?.avatar,
         name: customerInfo[room]?.name,
-        lastMessage: lastMessage?.text ? lastMessage.text : '',
+        lastMessage: lastMessage?.text
+          ? simplifyString(lastMessage.text, 25)
+          : '',
         time: formatDate(lastMessage?.createdAt),
       };
     });
@@ -96,11 +100,11 @@ const chatScreenStyle = StyleSheet.create({
   container: { ...container },
   header: { ...header },
   chatItem: {
-    paddingVertical: 25,
-    paddingHorizontal: 25,
-    marginVertical: 20,
-    backgroundColor: '#F0F1F5',
-    borderRadius: 15,
+    paddingVertical: 23,
+    paddingHorizontal: 20,
+    marginVertical: 15,
+    backgroundColor: COLORS.gray,
+    borderRadius: 8,
   },
   chatList: {
     width: '100%',
