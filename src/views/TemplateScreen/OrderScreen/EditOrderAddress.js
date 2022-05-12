@@ -133,34 +133,27 @@ const EditOrderAddress = ({ navigation, route }) => {
 
   const handleSubmit = ({ street }) => {
     if (route?.params?.previousScreen) {
-      const params =
+      const newAddress = {
+        street: street,
+        ward: selectWard.label || initializeAddress.selectCity.name,
+        province: selectDistrict.label || initializeAddress.selectDistrict.name,
+        city: selectCity.name || initializeAddress.selectWard,
+      };
+      let params =
         route.params.previousScreen === 'EditOrderInfo'
           ? {
-              ...route.params,
               item: {
                 ...route.params.item,
-                [type]: {
-                  street: street,
-                  ward: selectWard.label || initializeAddress.selectCity.name,
-                  province:
-                    selectDistrict.label ||
-                    initializeAddress.selectDistrict.name,
-                  city: selectCity.name || initializeAddress.selectWard,
-                },
+                [type]: newAddress,
               },
             }
           : {
-              [type]: {
-                street: street,
-                ward: selectWard.label || initializeAddress.selectCity.name,
-                province:
-                  selectDistrict.label || initializeAddress.selectDistrict.name,
-                city: selectCity.name || initializeAddress.selectWard,
-              },
+              [type]: newAddress,
             };
+      params = { ...route.params, ...params };
 
       navigation.navigate({
-        name: route.params?.previousScreen,
+        name: 'MapScreen',
         params: params,
         merge: true,
       });
@@ -196,19 +189,6 @@ const EditOrderAddress = ({ navigation, route }) => {
           <Icon name="west" size={30} onPress={() => navigation.goBack()} />
         }
         headerText={t('orderScreen.enterAddress')}
-        rightElement={
-          <Icon
-            name="map"
-            size={30}
-            color={COLORS.primary}
-            onPress={() =>
-              navigation.navigate('MapScreen', {
-                ...route.params,
-                previousScreen: 'InputAddress',
-              })
-            }
-          />
-        }
       />
       <KeyboardAwareScrollView contentContainerStyle={style.form}>
         <Text style={[FONTS.BigBold, { marginBottom: 10 }]}>
@@ -243,7 +223,7 @@ const EditOrderAddress = ({ navigation, route }) => {
           onChangeText={text => formik.setFieldValue('street', text)}
         />
         <PrimaryButton
-          title={t('orderScreen.add')}
+          title={t('orderScreen.confirm')}
           onPress={formik.submitForm}
           containerStyle={{ marginTop: 20 }}
         />
