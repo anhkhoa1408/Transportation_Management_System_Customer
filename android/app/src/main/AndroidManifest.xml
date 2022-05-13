@@ -34,7 +34,7 @@
       <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
       <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
       
-      <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBhDJukr-5ye-LsjOKRw8xeyWQcFDSESeo"/>
+      <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyC7tpTAUFVHe_jp-SEG6smd3A86l8MKH6E"/>
       <uses-library android:name="org.apache.http.legacy" android:required="false"/>
 
     </application>
