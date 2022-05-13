@@ -38,6 +38,20 @@ const EditOrderInfo = ({ navigation, route }) => {
     enableReinitialize: true,
     initialValues: item,
     validationSchema: Bonk.object({
+      sender_name: Bonk.string().required(
+        t("templateScreen.youNeedToEnterTheSender'sName"),
+      ),
+      sender_phone: Bonk.string()
+        .required(t("templateScreen.youNeedToEnterTheSender'sPhoneNumber"))
+        .test('phone-test', t('templateScreen.invalidPhone'), (value, ctx) => {
+          let regex = new RegExp(
+            /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/,
+          );
+          if (regex.test(value)) {
+            return true;
+          }
+          return false;
+        }),
       receiver_name: Bonk.string().required(
         t("templateScreen.youNeedToEnterTheReceiver'sName"),
       ),
@@ -76,7 +90,7 @@ const EditOrderInfo = ({ navigation, route }) => {
       receiver_name: values.receiver_name,
       receiver_phone: values.receiver_phone,
       sender_name: values.sender_name,
-      sender_phone: values.sendver_phone,
+      sender_phone: values.sender_phone,
       from_address: {
         ...item.from_address,
         ...from_address,

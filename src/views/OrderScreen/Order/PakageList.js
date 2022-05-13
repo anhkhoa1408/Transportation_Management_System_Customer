@@ -2,7 +2,7 @@ import React, { useState, memo } from 'react';
 import { View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Text, Icon } from 'react-native-elements';
 import { container } from '../../../styles/layoutStyle';
-import { joinAddress } from '../../../utils/address';
+import { joinAddress, simplifyString } from '../../../utils/address';
 import { COLORS, FONTS } from './../../../styles';
 import { useTranslation } from 'react-i18next';
 
@@ -41,7 +41,7 @@ const PackageList = ({ navigation, item, ...props }) => {
                   {t('orderScreen.currentLocation')}:{' '}
                   <Text style={{ ...styles.info }}>
                     {item?.current_address &&
-                      joinAddress(item?.current_address)}
+                      simplifyString(joinAddress(item?.current_address), 20)}
                   </Text>
                 </Text>
               </View>
