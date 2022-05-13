@@ -32,7 +32,7 @@ const Detail = ({ navigation, item, ...props }) => {
         styles.columnContainer,
         { padding: 20, backgroundColor: COLORS.gray, borderRadius: 10 },
       ]}>
-      <View style={[styles.rowContainer, { paddingRight: 10 }]}>
+      <View style={[styles.rowContainer]}>
         <InfoField
           title={t('orderScreen.expected')}
           content={getPredictDate(5, new Date(item.createdAt))}
@@ -48,22 +48,22 @@ const Detail = ({ navigation, item, ...props }) => {
           style={{ flex: 1 }}
         />
       </View>
-      <View style={[styles.rowContainer, { paddingRight: 10 }]}>
+      <View style={[styles.rowContainer]}>
         <InfoField
           title={t('orderScreen.from')}
           content={item?.from_address && joinAddress(item?.from_address)}
-          style={{ flex: 1 }}
+          style={{ flex: 1, paddingRight: 5 }}
         />
-        <InfoField
-          title={t('orderScreen.receiver')}
-          content={item?.receiver_name}
-          style={{ flex: 1 }}
-        />
-      </View>
-      <View style={[styles.rowContainer, { paddingRight: 10 }]}>
         <InfoField
           title={t('orderScreen.to')}
           content={item?.to_address && joinAddress(item?.to_address)}
+          style={{ flex: 1, paddingRight: 5 }}
+        />
+      </View>
+      <View style={[styles.rowContainer]}>
+        <InfoField
+          title={t('orderScreen.receiver')}
+          content={item?.receiver_name}
           style={{ flex: 1 }}
         />
         <InfoField
@@ -72,7 +72,7 @@ const Detail = ({ navigation, item, ...props }) => {
           style={{ flex: 1 }}
         />
       </View>
-      <View style={[styles.rowContainer, { paddingRight: 10 }]}>
+      <View style={[styles.rowContainer]}>
         <InfoField
           title={t('orderScreen.feesToBePaid')}
           content={formatCash(item?.remain_fee.toString())}
@@ -87,7 +87,7 @@ const Detail = ({ navigation, item, ...props }) => {
       <View style={[styles.rowContainer, { paddingRight: 10 }]}>
         <InfoField
           title={t('orderScreen.note')}
-          content={item.note || "Không có ghi chú"}
+          content={item.note || 'Không có ghi chú'}
           style={{ flex: 1 }}
         />
       </View>

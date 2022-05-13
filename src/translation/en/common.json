@@ -237,7 +237,8 @@
     "wantCancelOrder": "Do you want to cancel your order?",
     "pay": "Pay",
     "processing": "Processing",
-    "processed": "Processed"
+    "processed": "Processed",
+    "orderInfo": "Order Information"
   },
   "settingScreen": {
     "requiredInformation": "Required information",
@@ -277,6 +278,8 @@
 
     "youNeedToEnterTheReceiver'sName": "You need to enter the receiver's name",
     "youNeedToEnterTheReceiver'sPhoneNumber": "You need to enter the receiver's phone number",
+    "youNeedToEnterTheSender'sName": "You need to enter the sender's name",
+    "youNeedToEnterTheSender'sPhoneNumber": "You need to enter the sender's phone number",
     "successfullyAddTemplate": "Template added",
     "failureAddedTemplate": "Template added unsuccessfully",
     "updateSuccessful": "Update successfully",

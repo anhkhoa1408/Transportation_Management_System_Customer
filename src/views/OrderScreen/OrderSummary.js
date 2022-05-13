@@ -105,6 +105,8 @@ const OrderSummary = ({ route, navigation }) => {
       note,
     };
 
+    console.log(JSON.stringify(order, null ,2))
+
     orderApi
       .newOrder(order)
       .then(response => response)
@@ -207,7 +209,7 @@ const OrderSummary = ({ route, navigation }) => {
           </Text>
           <View>
             <Text style={[FONTS.BigBold, { marginBottom: 8 }]}>
-              {t('Thông tin đơn hàng')}
+              {t('orderScreen.orderInfo')}
             </Text>
             <View style={style.infoWrap}>
               <View style={[style.rowContainer]}>
@@ -238,12 +240,12 @@ const OrderSummary = ({ route, navigation }) => {
                 <InfoField
                   title={t('orderScreen.from')}
                   content={from_address && joinAddress(from_address)}
-                  style={{ flex: 1 }}
+                  style={{ flex: 1, paddingRight: 5 }}
                 />
                 <InfoField
                   title={t('orderScreen.to')}
                   content={to_address && joinAddress(to_address)}
-                  style={{ flex: 1 }}
+                  style={{ flex: 1, paddingRight: 5 }}
                 />
               </View>
               <View style={[style.rowContainer]}>

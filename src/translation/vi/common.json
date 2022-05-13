@@ -237,7 +237,8 @@
     "wantCancelOrder": "Bạn có muốn hủy đơn hàng ?",
     "pay": "Thanh toán",
     "processing": "Đang xử lý",
-    "processed": "Đã xử lý"
+    "processed": "Đã xử lý",
+    "orderInfo": "Thông tin đơn hàng"
   },
   "settingScreen": {
     "requiredInformation": "Thông tin bắt buộc",
@@ -277,6 +278,8 @@
 
     "youNeedToEnterTheReceiver'sName": "Bạn cần nhập tên người nhận",
     "youNeedToEnterTheReceiver'sPhoneNumber": "Bạn cần nhập số điện thoại người nhận",
+    "youNeedToEnterTheSender'sName": "Bạn cần nhập tên người gửi",
+    "youNeedToEnterTheSender'sPhoneNumber": "Bạn cần nhập số điện thoại người gửi",
     "successfullyAddTemplate": "Thêm mẫu thành công",
     "failureAddedTemplate": "Thêm mẫu thất bại",
     "updateSuccessful": "Cập nhật thành công",
