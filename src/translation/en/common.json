@@ -48,6 +48,7 @@
     "6-digitConfirmationCode": "6-digit confirmation code",
     "checkYourPhoneAndEnterTheOTPFromTheMessage": "Check your phone and enter the OTP from the message",
     "enterOTP": "Enter OTP",
+    "errorOTP": "Wrong OTP",
     "confirm": "Confirm",
     "or": "or",
     "resendCode": "Resend code",

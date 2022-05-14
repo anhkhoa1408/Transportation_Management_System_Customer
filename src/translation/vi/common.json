@@ -48,6 +48,7 @@
     "6-digitConfirmationCode": "Mã xác nhận gồm 6 chữ số",
     "checkYourPhoneAndEnterTheOTPFromTheMessage": "Kiểm tra điện thoại của bạn và nhập OTP từ tin nhắn",
     "enterOTP": "Nhận OTP",
+    "errorOTP": "Mã OTP sai",
     "confirm": "Xác nhận",
     "or": "hoặc",
     "resendCode": "Mã gửi lại",

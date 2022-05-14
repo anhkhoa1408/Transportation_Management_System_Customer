@@ -32,6 +32,14 @@ class AuthorApi {
     });
     return axiosClient.put(url, formData);
   };
+  changepassword = data => {
+    const url = MAIN_URL.concat(`/auth/password/update`);
+    return axiosClient.post(url, data);
+  };
+  resetPassword = data => {
+    const url = MAIN_URL.concat(`/auth/password/reset`);
+    return axiosClient.post(url, data);
+  };
   updateDeviceToken = async token => {
     const url = MAIN_URL.concat(`/users/device_token`);
     return axiosClient.put(url, { device_token: token });
@@ -39,7 +47,7 @@ class AuthorApi {
   getPointLevel = () => {
     const url = MAIN_URL.concat(`/config/point`);
     return axiosClient.get(url);
-  }
+  };
 }
 const authApi = new AuthorApi();
 export default authApi;
