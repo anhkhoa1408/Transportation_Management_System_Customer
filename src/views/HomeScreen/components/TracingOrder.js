@@ -87,7 +87,7 @@ const TracingOrder = ({ orders, ...props }) => {
                     fontWeight: 'bold',
                     letterSpacing: 1,
                   }}>
-                  {item.name || 'Chưa đặt tên'}
+                  {item.name && simplifyString(item.name, 15) || 'Chưa đặt tên'}
                 </Text>
                 <Text
                   style={{
@@ -151,6 +151,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   trackItemIcon: {
+    alignSelf: 'flex-start',
     padding: 20,
     borderRadius: 15,
   },
