@@ -51,6 +51,8 @@ const InputOtp = ({ navigation, route }) => {
           console.log(error);
           setAlert(true);
         });
+    } else {
+      setAlert(true);
     }
   };
 
@@ -79,7 +81,7 @@ const InputOtp = ({ navigation, route }) => {
       <ModalMess
         type={'danger'}
         message={t('authScreen.errorOTP')}
-        setAlert={() => setAlert(false)}
+        setAlert={setAlert}
         alert={alert}
       />
       {/* )} */}
