@@ -1,6 +1,6 @@
 import messaging from '@react-native-firebase/messaging';
 import authApi from '../api/authApi';
-import { addCustomer, addNotification } from '../actions/actions';
+import { addCustomer, addNotification, addMessage } from '../actions/actions';
 import { socket } from './socketIO';
 import { store } from './configureStore';
 import notifee from '@notifee/react-native';
@@ -51,6 +51,7 @@ export function initForegroundMessage() {
         socket.emit('join', room);
         break;
       case 'CHAT':
+        store.dispatch(addMessage(JSON.parse(data.data), room));
         notifee
           .createChannel({
             id: 'message',

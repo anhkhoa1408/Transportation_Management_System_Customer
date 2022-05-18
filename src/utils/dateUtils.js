@@ -5,6 +5,9 @@ const formatDate = dateString => {
   const today = new Date();
   const date = new Date(dateString);
   const dTimestamp = Date.parse(today) - Date.parse(date);
+  if (dTimestamp < 0) {
+    return 'Vừa xong';
+  }
   if (dTimestamp < 1000 * 60) {
     return `${Number.parseInt(dTimestamp / 1000)} giây trước`;
   }
@@ -28,7 +31,11 @@ const getPredictDate = (predict = 6, current = '') => {
   let date = new Date();
   let predictDate = !current
     ? new Date(date.getFullYear(), date.getMonth(), date.getDate() + predict)
-    : new Date(current.getFullYear(), current.getMonth(), current.getDate() + predict);
+    : new Date(
+        current.getFullYear(),
+        current.getMonth(),
+        current.getDate() + predict,
+      );
   return moment(predictDate).format('DD/MM/YYYY');
 };
 
