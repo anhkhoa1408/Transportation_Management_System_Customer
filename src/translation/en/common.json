@@ -128,9 +128,9 @@
     "unnamed": "Unnamed",
 
     "youHaveNotEnteredTheStreetName": "Missing street name",
-    "youHaveNotEnteredTheWardName": "Missing ward name",
-    "youHaveNotEnteredTheProvinceName": "Missing district name",
-    "youHaveNotEnteredTheCityName": "Missing city name",
+    "youHaveNotEnteredTheWardName": "Please choose ward",
+    "youHaveNotEnteredTheProvinceName": "Please choose district",
+    "youHaveNotEnteredTheCityName": "Please choose city",
     "address": "Address",
     "inputAddress": "Enter address",
     "send": "Enter sender's address",

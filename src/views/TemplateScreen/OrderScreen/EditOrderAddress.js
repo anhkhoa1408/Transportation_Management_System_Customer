@@ -1,109 +1,55 @@
 import { useFormik } from 'formik';
 import React, { memo, useEffect, useMemo, useState } from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet, View, ScrollView } from 'react-native';
 import { Icon, Text } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as Bonk from 'yup';
 import Header from '../../../components/Header';
-import Select from '../../../components/Select/Select';
+
+import SelectSearch from '../../../components/SelectSearch';
 import TextField from '../../../components/TextField';
-import { provinces } from '../../../constants/province';
+import cities from '../../../constants/citiesDict';
 import { COLORS, FONTS } from '../../../styles';
 import { container } from '../../../styles/layoutStyle';
 import { useTranslation } from 'react-i18next';
 import PrimaryButton from '../../../components/CustomButton/PrimaryButton';
+import { LogBox } from 'react-native';
 
 const EditOrderAddress = ({ navigation, route }) => {
+  useEffect(() => {
+    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+  }, []);
+
   const { t, i18n } = useTranslation('common');
   const { item = {}, type } = route?.params;
   const address = route?.params?.[type];
 
-  const initializeAddress = useMemo(() => {
-    let cities = provinces.map(item => ({
-      label: item.name,
-      value: item,
-    }));
+  useEffect(() => {
+    console.log(address);
+  }, []);
 
-    let selectCity = (
-      cities.find(
-        city => city.label === item[type]?.city || city.label === address?.city,
-      ) || cities[0]
-    ).value;
-
-    let districts =
-      selectCity &&
-      selectCity.districts.map(item => ({
-        label: item.name,
-        value: item,
-      }));
-
-    let selectDistrict =
-      districts &&
-      (
-        districts.find(
-          district =>
-            district.label === item[type]?.province ||
-            district.label === address?.province,
-        ) || districts[0]
-      ).value;
-
-    let wards =
-      selectDistrict &&
-      selectDistrict.wards.map(item => ({
-        label: item,
-        value: item,
-      }));
-
-    let selectWard =
-      wards &&
-      (
-        wards.find(ward => {
-          return (
-            ward.label === item[type]?.ward || ward.label === address?.ward
-          );
-        }) || wards[0]
-      ).value;
-
-    return {
-      cities,
-      selectCity,
-      districts,
-      selectDistrict,
-      wards,
-      selectWard,
-    };
-  }, [item]);
-
-  const [cities, setCities] = useState(initializeAddress.cities);
-  const [selectCity, setSelectCity] = useState(
-    initializeAddress.selectCity || {
-      label: '',
-      value: '',
-    },
-  );
-
-  const [districts, setDistricts] = useState(initializeAddress.districts || []);
-  const [selectDistrict, setSelectDistrict] = useState(
-    initializeAddress.selectDistrict || {
-      label: '',
-      value: '',
-    },
-  );
-
-  const [wards, setWards] = useState(initializeAddress.wards || []);
-  const [selectWard, setSelectWard] = useState(
-    initializeAddress.selectWard || {
-      label: '',
-      value: '',
-    },
-  );
+  const [city, setCity] = useState(address?.city || '');
+  const [district, setDistrict] = useState(address?.province || '');
+  const [ward, setWard] = useState(address?.ward || '');
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      street: item[type]?.street || address?.street || '',
+      city: address?.city || '',
+      district: address?.district || '',
+      ward: address?.ward || '',
+      street: address?.street || '',
     },
     validationSchema: Bonk.object({
+      city: Bonk.string().required(
+        t('templateScreen.youHaveNotEnteredTheCityName'),
+      ),
+      district: Bonk.string().required(
+        t('templateScreen.youHaveNotEnteredTheProvinceName'),
+      ),
+      ward: Bonk.string().required(
+        t('templateScreen.youHaveNotEnteredTheWardName'),
+      ),
       street: Bonk.string().required(
         t('templateScreen.youHaveNotEnteredTheStreetName'),
       ),
@@ -113,32 +59,9 @@ const EditOrderAddress = ({ navigation, route }) => {
     },
   });
 
-  const handleSelectCity = city => {
-    setSelectCity(city);
-  };
-
-  const handleSelectDistrict = district => {
-    setSelectDistrict({
-      label: district.name,
-      value: district,
-    });
-  };
-
-  const handleSelectWard = ward => {
-    setSelectWard({
-      label: ward,
-      value: ward,
-    });
-  };
-
-  const handleSubmit = ({ street }) => {
+  const handleSubmit = ({ city, district: province, ward, street }) => {
     if (route?.params?.previousScreen) {
-      const newAddress = {
-        street: street,
-        ward: selectWard.label || initializeAddress.selectCity.name,
-        province: selectDistrict.label || initializeAddress.selectDistrict.name,
-        city: selectCity.name || initializeAddress.selectWard,
-      };
+      const newAddress = { city, province, ward, street };
       let params =
         route.params.previousScreen === 'EditOrderInfo'
           ? {
@@ -151,7 +74,6 @@ const EditOrderAddress = ({ navigation, route }) => {
               [type]: newAddress,
             };
       params = { ...route.params, ...params };
-
       navigation.navigate({
         name: 'MapScreen',
         params: params,
@@ -159,28 +81,6 @@ const EditOrderAddress = ({ navigation, route }) => {
       });
     }
   };
-
-  useEffect(() => {
-    if (selectCity.name !== initializeAddress?.selectCity?.name) {
-      let districts = selectCity.districts.map(item => ({
-        label: item.name,
-        value: item,
-      }));
-      setDistricts(districts);
-      setSelectDistrict(districts[0]);
-    }
-  }, [selectCity]);
-
-  useEffect(() => {
-    if (selectDistrict.name !== initializeAddress?.selectDistrict?.name) {
-      let wards = selectDistrict.value.wards.map(item => ({
-        label: item,
-        value: item,
-      }));
-      setWards(wards);
-      setSelectWard(wards[0]);
-    }
-  }, [selectDistrict]);
 
   return (
     <SafeAreaView style={style.container}>
@@ -194,25 +94,53 @@ const EditOrderAddress = ({ navigation, route }) => {
         <Text style={[FONTS.BigBold, { marginBottom: 10 }]}>
           {t('orderScreen.enterAddress')}
         </Text>
-        <Select
+        <SelectSearch
           title={t('templateScreen.city')}
-          selected={selectCity}
-          setSelected={handleSelectCity}
-          data={cities}
+          data={cities.data}
+          error={formik.touched.city && formik.errors.city}
+          errorMessage={formik.errors.city}
+          onBlur={() => formik.setFieldTouched('city')}
+          value={city}
+          onChangeText={text => {
+            setCity(text);
+            setDistrict('');
+            setWard('');
+          }}
+          onChoose={text => {
+            setCity(text);
+            formik.setFieldValue('city', text);
+          }}
         />
-        <Select
-          disabled={!districts && !districts.length}
+        <SelectSearch
           title={t('templateScreen.province')}
-          selected={selectDistrict}
-          setSelected={handleSelectDistrict}
-          data={districts}
+          data={city && cities?.[city]?.data}
+          error={formik.touched.district && formik.errors.district}
+          errorMessage={formik.errors.district}
+          onBlur={() => formik.setFieldTouched('district')}
+          value={district}
+          onChangeText={text => {
+            setDistrict(text);
+            setWard('');
+          }}
+          onChoose={text => {
+            setDistrict(text);
+            formik.setFieldValue('district', text);
+          }}
         />
-        <Select
-          disabled={!wards && !wards.length}
+        <SelectSearch
           title={t('templateScreen.wards')}
-          selected={selectWard}
-          setSelected={handleSelectWard}
-          data={wards}
+          data={district && cities?.[city]?.[district]}
+          error={formik.touched.ward && formik.errors.ward}
+          errorMessage={formik.errors.ward}
+          onBlur={() => formik.setFieldTouched('ward')}
+          value={ward}
+          onChangeText={text => {
+            setWard(text);
+          }}
+          onChoose={text => {
+            setWard(text);
+            formik.setFieldValue('ward', text);
+          }}
         />
         <TextField
           title={t('templateScreen.houseNumber,StreetName')}
@@ -225,7 +153,7 @@ const EditOrderAddress = ({ navigation, route }) => {
         <PrimaryButton
           title={t('orderScreen.confirm')}
           onPress={formik.submitForm}
-          containerStyle={{ marginTop: 20 }}
+          containerStyle={{ marginVertical: 20 }}
         />
       </KeyboardAwareScrollView>
     </SafeAreaView>
@@ -236,6 +164,7 @@ const style = StyleSheet.create({
   container: {
     ...container,
     alignItems: 'stretch',
+    flex: 1,
   },
   input: {
     padding: 15,

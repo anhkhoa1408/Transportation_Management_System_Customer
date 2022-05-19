@@ -128,9 +128,9 @@
     "unnamed": "Chưa có tên",
 
     "youHaveNotEnteredTheStreetName": "Bạn chưa nhập tên đường",
-    "youHaveNotEnteredTheWardName": "Bạn chưa nhập tên phường",
-    "youHaveNotEnteredTheProvinceName": "Bạn chưa nhập tên huyện",
-    "youHaveNotEnteredTheCityName": "Bạn chưa nhập tên thành phố",
+    "youHaveNotEnteredTheWardName": "Bạn chưa chọn phường",
+    "youHaveNotEnteredTheProvinceName": "Bạn chưa chọn huyện",
+    "youHaveNotEnteredTheCityName": "Bạn chưa chọn thành phố",
     "address": "Địa chỉ",
     "enterAddress": "Nhập địa chỉ",
     "send": "Nhập địa chỉ ngườI gửi",
