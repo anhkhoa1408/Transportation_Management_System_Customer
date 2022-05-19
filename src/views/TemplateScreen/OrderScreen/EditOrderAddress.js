@@ -90,7 +90,10 @@ const EditOrderAddress = ({ navigation, route }) => {
         }
         headerText={t('orderScreen.enterAddress')}
       />
-      <KeyboardAwareScrollView contentContainerStyle={style.form}>
+      <KeyboardAwareScrollView
+        contentContainerStyle={style.form}
+        enableOnAndroid
+        enableAutomaticScroll>
         <Text style={[FONTS.BigBold, { marginBottom: 10 }]}>
           {t('orderScreen.enterAddress')}
         </Text>
