@@ -142,7 +142,7 @@ const VoucherScreen = ({ route, navigation }) => {
                 size="medium"
                 avatarStyle={{ borderRadius: 8 }}
                 source={{
-                  uri: MAIN_URL.concat(item.voucher_img.url),
+                  uri: item.voucher_img.url,
                 }}
               />
             ) : (
