@@ -22,7 +22,7 @@ const EditOrderAddress = ({ navigation, route }) => {
 
   const { t, i18n } = useTranslation('common');
   const { item = {}, type } = route?.params;
-  const address = route?.params?.[type];
+  const address = route?.params?.[type] || route?.params?.item?.[type];
 
   useEffect(() => {
     console.log(address);
@@ -36,7 +36,7 @@ const EditOrderAddress = ({ navigation, route }) => {
     enableReinitialize: true,
     initialValues: {
       city: address?.city || '',
-      district: address?.district || '',
+      district: address?.province || '',
       ward: address?.ward || '',
       street: address?.street || '',
     },
@@ -81,6 +81,8 @@ const EditOrderAddress = ({ navigation, route }) => {
       });
     }
   };
+
+  console.log(formik.values)
 
   return (
     <SafeAreaView style={style.container}>

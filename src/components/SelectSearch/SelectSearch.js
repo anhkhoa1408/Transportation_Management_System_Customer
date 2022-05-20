@@ -22,10 +22,14 @@ const SelectSearch = ({
   const { t } = useTranslation('common');
 
   function renderSelectableItem({ item }) {
+    // console.log(item)
     return (
       <TouchableOpacity
         style={styles.selectItem}
-        onPress={() => onChoose(item)}>
+        onPress={(e) => {
+          e.stopPropagation()
+          onChoose(item)
+        }}>
         <Text style={styles.fsize}>{item}</Text>
       </TouchableOpacity>
     );
@@ -36,8 +40,8 @@ const SelectSearch = ({
       ? data.filter(item => item.toLowerCase().search(value.toLowerCase()) >= 0)
       : [];
 
-  // const filterData = data.filter(
-  //   item => item.toLowerCase().search(text.toLowerCase()) >= 0,
+  // const filterData =   data.filter(
+  //   item => item.toLowerCase().search(value.toLowerCase()) >= 0,
   // );
 
   return (
@@ -52,7 +56,7 @@ const SelectSearch = ({
       <View style={styles.flatList}>
         <FlatList
           data={
-            filterData?.length === 1 && filterData[0] === value
+            filterData[0] === value
               ? []
               : filterData
           }
@@ -78,6 +82,7 @@ const styles = StyleSheet.create({
     top: -20,
     backgroundColor: '#F3F3FA',
     borderRadius: 8,
+    position: 'absolute'
   },
   selectItem: {
     paddingVertical: 3,
