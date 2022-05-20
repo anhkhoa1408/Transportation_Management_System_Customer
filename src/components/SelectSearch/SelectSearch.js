@@ -1,13 +1,9 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  SafeAreaView,
-  FlatList,
-} from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import {
+  FlatList, SafeAreaView, StyleSheet,
+  Text, TouchableOpacity, View
+} from 'react-native';
 import SelectSearchInput from './SelectSearchInput';
 
 const SelectSearch = ({
@@ -20,15 +16,16 @@ const SelectSearch = ({
   ...props
 }) => {
   const { t } = useTranslation('common');
+  const [selected, setSelected] = useState(true);
 
   function renderSelectableItem({ item }) {
-    // console.log(item)
     return (
       <TouchableOpacity
         style={styles.selectItem}
-        onPress={(e) => {
-          e.stopPropagation()
-          onChoose(item)
+        onPress={e => {
+          e.stopPropagation();
+          onChoose(item);
+          setSelected(true);
         }}>
         <Text style={styles.fsize}>{item}</Text>
       </TouchableOpacity>
@@ -36,13 +33,9 @@ const SelectSearch = ({
   }
 
   const filterData =
-    value && data
+    !selected && value && data
       ? data.filter(item => item.toLowerCase().search(value.toLowerCase()) >= 0)
       : [];
-
-  // const filterData =   data.filter(
-  //   item => item.toLowerCase().search(value.toLowerCase()) >= 0,
-  // );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -50,19 +43,21 @@ const SelectSearch = ({
         title={title}
         value={value}
         disabled={!data || data.length === 0}
-        onChangeText={text => onChangeText(text.replace(/[\\]/g, ''))}
+        onChangeText={text => {
+          onChangeText(text.replace(/[\\]/g, ''));
+        }}
+        onFocus={() => {
+          setSelected(false);
+        }}
         {...props}
       />
       <View style={styles.flatList}>
         <FlatList
-          data={
-            filterData[0] === value
-              ? []
-              : filterData
-          }
+          data={selected ? [] : filterData}
           nestedScrollEnabled
           keyExtractor={(_, idx) => idx}
           renderItem={renderSelectableItem}
+          persistentScrollbar
         />
       </View>
     </SafeAreaView>
@@ -81,8 +76,7 @@ const styles = StyleSheet.create({
     top: 0,
     top: -20,
     backgroundColor: '#F3F3FA',
-    borderRadius: 8,
-    position: 'absolute'
+    borderRadius: 7,
   },
   selectItem: {
     paddingVertical: 3,
