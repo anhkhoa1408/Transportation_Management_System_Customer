@@ -51,7 +51,7 @@ export function initForegroundMessage() {
         socket.emit('join', room);
         break;
       case 'CHAT':
-        store.dispatch(addMessage(JSON.parse(data.data), room));
+        // store.dispatch(addMessage(JSON.parse(data.data), room));
         notifee
           .createChannel({
             id: 'message',
