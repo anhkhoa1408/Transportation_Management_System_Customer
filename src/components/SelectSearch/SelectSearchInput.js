@@ -11,6 +11,7 @@ export default function SelectSearchInput({
   error,
   errorMessage,
   onBlur,
+  onFocus,
   onChangeText,
   value,
   title,
@@ -21,6 +22,7 @@ export default function SelectSearchInput({
 
   function handleFocus() {
     setFocus(true);
+    onFocus && onFocus();
   }
 
   function handleBlur() {
@@ -84,15 +86,16 @@ export default function SelectSearchInput({
           </Text>
         )}
       </View>
-      {/* {error ? (
+      {error ? (
         <Text
           style={{
             color: COLORS.danger,
             fontWeight: 'bold',
+            marginBottom: 10
           }}>
           {errorMessage}
         </Text>
-      ) : null} */}
+      ) : null}
     </View>
   );
 }

@@ -82,8 +82,6 @@ const EditOrderAddress = ({ navigation, route }) => {
     }
   };
 
-  console.log(formik.values)
-
   return (
     <SafeAreaView style={style.container}>
       <Header
@@ -104,9 +102,9 @@ const EditOrderAddress = ({ navigation, route }) => {
           data={cities.data}
           error={formik.touched.city && formik.errors.city}
           errorMessage={formik.errors.city}
-          onBlur={() => formik.setFieldTouched('city')}
           value={city}
           onChangeText={text => {
+            formik.setFieldError("city", "")
             setCity(text);
             setDistrict('');
             setWard('');
@@ -119,11 +117,12 @@ const EditOrderAddress = ({ navigation, route }) => {
         <SelectSearch
           title={t('templateScreen.province')}
           data={city && cities?.[city]?.data}
-          error={formik.touched.district && formik.errors.district}
+          error={!district && formik.touched.district && formik.errors.district}
           errorMessage={formik.errors.district}
           onBlur={() => formik.setFieldTouched('district')}
           value={district}
           onChangeText={text => {
+            formik.setFieldError("district", "")
             setDistrict(text);
             setWard('');
           }}
@@ -135,11 +134,12 @@ const EditOrderAddress = ({ navigation, route }) => {
         <SelectSearch
           title={t('templateScreen.wards')}
           data={district && cities?.[city]?.[district]}
-          error={formik.touched.ward && formik.errors.ward}
+          error={!ward && formik.touched.ward && formik.errors.ward}
           errorMessage={formik.errors.ward}
           onBlur={() => formik.setFieldTouched('ward')}
           value={ward}
           onChangeText={text => {
+            formik.setFieldError("ward", "")
             setWard(text);
           }}
           onChoose={text => {
