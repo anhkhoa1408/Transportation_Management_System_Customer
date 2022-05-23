@@ -31,6 +31,7 @@ const OrderSummary = ({ route, navigation }) => {
   const [loading, setLoading] = useState(null);
   const [alert, setAlert] = useState(null);
   const [fee, setFee] = useState(0);
+  const [initialFee, setInitial] = useState(0);
 
   const {
     voucher,
@@ -105,8 +106,6 @@ const OrderSummary = ({ route, navigation }) => {
       note,
     };
 
-    console.log(JSON.stringify(order, null ,2))
-
     orderApi
       .newOrder(order)
       .then(response => response)
@@ -165,7 +164,14 @@ const OrderSummary = ({ route, navigation }) => {
         packages,
       })
       .then(response => {
-        setFee(Math.ceil(response));
+        if (!voucher?.data?.id) {
+          setInitial(Math.ceil(response))
+        }
+        if (Number.isFinite(response)) {
+          setFee(Math.ceil(response));
+        } else {
+          setFee(0)
+        }
       });
   }, [voucher, packages, from_address, to_address]);
 
@@ -295,7 +301,7 @@ const OrderSummary = ({ route, navigation }) => {
                 navigation.navigate('VoucherScreen', {
                   ...route.params,
                   useVoucher: true,
-                  fee: fee,
+                  fee: initialFee,
                 })
               }>
               <View style={[style.select, style.rowContainer]}>
