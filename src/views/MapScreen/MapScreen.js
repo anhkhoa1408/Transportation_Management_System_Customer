@@ -1,9 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
-import Geolocation from '@react-native-community/geolocation';
 import { GOOGLE_MAPS_API_KEY } from '@env';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import { StyleSheet, Dimensions, View } from 'react-native';
-import GooglePlacesInput from './GooglePlaceInput';
 import PrimaryButton from '../../components/CustomButton/PrimaryButton';
 import Geocoder from 'react-native-geocoding';
 import { useTranslation } from 'react-i18next';
@@ -32,10 +30,13 @@ const MapScreen = ({ navigation, route }) => {
     const merge_address = `${address.street}, ${address.ward}, ${address.province}, ${address.city}`;
     Geocoder.from(merge_address)
       .then(json => {
-        setCoord({
-          latitude: json.results[0].geometry.location.lat,
-          longitude: json.results[0].geometry.location.lng,
-        });
+        console.log(JSON.stringify(json.results));
+        if (json.results[0]) {
+          setCoord({
+            latitude: json.results[0].geometry.location.lat,
+            longitude: json.results[0].geometry.location.lng,
+          });
+        }
       })
       .catch(error => console.warn(error));
   }, [route.params]);

@@ -13,20 +13,11 @@ import { COLORS, FONTS } from '../../../styles';
 import { container } from '../../../styles/layoutStyle';
 import { useTranslation } from 'react-i18next';
 import PrimaryButton from '../../../components/CustomButton/PrimaryButton';
-import { LogBox } from 'react-native';
 
 const EditOrderAddress = ({ navigation, route }) => {
-  useEffect(() => {
-    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
-  }, []);
-
   const { t, i18n } = useTranslation('common');
   const { item = {}, type } = route?.params;
   const address = route?.params?.[type] || route?.params?.item?.[type];
-
-  useEffect(() => {
-    console.log(address);
-  }, []);
 
   const [city, setCity] = useState(address?.city || '');
   const [district, setDistrict] = useState(address?.province || '');
@@ -104,7 +95,7 @@ const EditOrderAddress = ({ navigation, route }) => {
           errorMessage={formik.errors.city}
           value={city}
           onChangeText={text => {
-            formik.setFieldError("city", "")
+            formik.setFieldError('city', '');
             setCity(text);
             setDistrict('');
             setWard('');
@@ -122,7 +113,7 @@ const EditOrderAddress = ({ navigation, route }) => {
           onBlur={() => formik.setFieldTouched('district')}
           value={district}
           onChangeText={text => {
-            formik.setFieldError("district", "")
+            formik.setFieldError('district', '');
             setDistrict(text);
             setWard('');
           }}
@@ -139,7 +130,7 @@ const EditOrderAddress = ({ navigation, route }) => {
           onBlur={() => formik.setFieldTouched('ward')}
           value={ward}
           onChangeText={text => {
-            formik.setFieldError("ward", "")
+            formik.setFieldError('ward', '');
             setWard(text);
           }}
           onChoose={text => {
