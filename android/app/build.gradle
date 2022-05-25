@@ -147,19 +147,19 @@ android {
     }
     signingConfigs {
         debug {
-            if (project.hasProperty('UPLOAD_STORE_FILE')) {
-                storeFile file(UPLOAD_STORE_FILE)
-                storePassword UPLOAD_STORE_PASSWORD
-                keyAlias UPLOAD_KEY_ALIAS
-                keyPassword UPLOAD_KEY_PASSWORD
+            if (project.hasProperty('CUSTOMER_STORE_FILE')) {
+                storeFile file(CUSTOMER_STORE_FILE)
+                storePassword CUSTOMER_STORE_PASSWORD
+                keyAlias CUSTOMER_KEY_ALIAS
+                keyPassword CUSTOMER_KEY_PASSWORD
             }
         }
         release {
-            if (project.hasProperty('UPLOAD_STORE_FILE')) {
-                storeFile file(UPLOAD_STORE_FILE)
-                storePassword UPLOAD_STORE_PASSWORD
-                keyAlias UPLOAD_KEY_ALIAS
-                keyPassword UPLOAD_KEY_PASSWORD
+            if (project.hasProperty('CUSTOMER_STORE_FILE')) {
+                storeFile file(CUSTOMER_STORE_FILE)
+                storePassword CUSTOMER_STORE_PASSWORD
+                keyAlias CUSTOMER_KEY_ALIAS
+                keyPassword CUSTOMER_KEY_PASSWORD
             }
         }
     }
