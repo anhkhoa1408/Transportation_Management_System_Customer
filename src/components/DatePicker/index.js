@@ -53,7 +53,8 @@ export const DatePicker = ({ type, ...props }) => {
             color: COLORS.primary,
           }}
           iconContainerStyle={{
-            alignSelf: 'flex-end',
+            alignSelf: 'center',
+            marginRight: 0
           }}
           TouchableComponent={TouchableOpacity}
         />
