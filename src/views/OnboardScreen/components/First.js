@@ -3,7 +3,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Button, Text } from 'react-native-elements';
-import money from '../../../assets/images/cut_money.png';
+import money from '../../../assets/images/cut_money.jpg';
 import { COLORS, FONTS, STYLES } from '../../../styles';
 
 const First = props => {

@@ -1,19 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, SafeAreaView } from 'react-native';
-import { Text } from 'react-native-elements';
-import { COLORS, STYLES, FONTS } from '../../styles';
-import TextField from '../../components/TextField';
-import authApi from '../../api/authApi';
-import * as Bonk from 'yup';
 import { useFormik } from 'formik';
-import { danger, success } from '../../styles/color';
-import Loading from './../../components/Loading';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { SafeAreaView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Text } from 'react-native-elements';
+import * as Bonk from 'yup';
+import authApi from '../../api/authApi';
 import PrimaryButton from '../../components/CustomButton/PrimaryButton';
 import ModalMess from '../../components/ModalMess';
-import { useTranslation } from 'react-i18next';
+import TextField from '../../components/TextField';
+import { COLORS, FONTS, STYLES } from '../../styles';
+import Loading from './../../components/Loading';
 
 const ResetPass = ({ navigation, route }) => {
-  const { t, i18n } = useTranslation("common")
+  const { t, i18n } = useTranslation('common');
   const [data, setData] = useState({
     password: '',
     confirmPassword: '',
@@ -24,12 +23,12 @@ const ResetPass = ({ navigation, route }) => {
   const alertType = {
     error: {
       type: 'danger',
-      message: t("authScreen.passwordUpdateFailed"),
+      message: t('authScreen.passwordUpdateFailed'),
     },
     success: {
       type: 'success',
-      message: t("authScreen.passwordUpdateSuccessful"),
-      btnText: t("authScreen.logIn"),
+      message: t('authScreen.passwordUpdateSuccessful'),
+      btnText: t('authScreen.logIn'),
     },
   };
 
@@ -38,19 +37,21 @@ const ResetPass = ({ navigation, route }) => {
     initialValues: data,
     validationSchema: Bonk.object({
       password: Bonk.string()
-        .required(t("authScreen.requiredInformation"))
+        .required(t('authScreen.requiredInformation'))
         .matches(
           /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/,
-          t("authScreen.newPasswordMustBeAtLeast8Characters,IncludingCapitalLetters"),
+          t(
+            'authScreen.newPasswordMustBeAtLeast8Characters,IncludingCapitalLetters',
+          ),
         )
         .min(8, 't("authScreen.passwordMustBeAtLeast8Characters")'),
       confirmPassword: Bonk.string()
-        .required(t("authScreen.requiredInformation"))
+        .required(t('authScreen.requiredInformation'))
         .oneOf(
           [Bonk.ref('password'), null],
-          t("authScreen.passwordAndConfirmPasswordDoNotMatch"),
+          t('authScreen.passwordAndConfirmPasswordDoNotMatch'),
         )
-        .min(8, t("authScreen.passwordMustBeAtLeast8Characters")),
+        .min(8, t('authScreen.passwordMustBeAtLeast8Characters')),
     }),
     onSubmit: values => {
       handleSubmit(values.password);
@@ -90,17 +91,17 @@ const ResetPass = ({ navigation, route }) => {
         />
       )}
       <View style={{ paddingHorizontal: 20, marginTop: '40%', flex: 1 }}>
-        <Text style={styles.title}>{t("authScreen.changePassword")}</Text>
+        <Text style={styles.title}>{t('authScreen.changePassword')}</Text>
         <Text
           style={{
             marginBottom: 5,
             color: 'rgba(0,0,0,0.5)',
           }}>
-          {t("authScreen.enterANewPasswordForYourAccount")}
+          {t('authScreen.enterANewPasswordForYourAccount')}
         </Text>
         <TextField
           icon="https"
-          placeholder={t("authScreen.newPassword")}
+          placeholder={t('authScreen.newPassword')}
           secureTextEntry
           value={formik.values.password}
           onChangeText={text => formik.setFieldValue('password', text)}
@@ -110,7 +111,7 @@ const ResetPass = ({ navigation, route }) => {
 
         <TextField
           icon="https"
-          placeholder={t("authScreen.confirmPassword")}
+          placeholder={t('authScreen.confirmPassword')}
           value={formik.values.confirmPassword}
           secureTextEntry
           onChangeText={text => formik.setFieldValue('confirmPassword', text)}
@@ -120,13 +121,18 @@ const ResetPass = ({ navigation, route }) => {
           errorMessage={formik.errors.confirmPassword}
         />
 
-        <PrimaryButton title={t("authScreen.confirm")} onPress={formik.submitForm} />
+        <PrimaryButton
+          title={t('authScreen.confirm')}
+          onPress={formik.submitForm}
+        />
       </View>
       <View style={[styles.container1]}>
-        <Text style={[FONTS.Medium]}>{t("authScreen.changePasswordSuccessfully")}? </Text>
+        <Text style={[FONTS.Medium]}>
+          {t('authScreen.changePasswordSuccessfully')}?{' '}
+        </Text>
         <TouchableOpacity onPress={() => navigation.navigate('Signin')}>
           <Text style={{ ...FONTS.BigBold, color: COLORS.primary }}>
-            {t("authScreen.login")}
+            {t('authScreen.login')}
           </Text>
         </TouchableOpacity>
       </View>

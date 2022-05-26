@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import TextField from '../../components/TextField';
 import { useFormik } from 'formik';
 import * as Bonk from 'yup';
-import banner from '../../assets/images/password_banner.png';
+import banner from '../../assets/images/password_banner.jpg';
 import Loading from './../../components/Loading';
 import PrimaryButton from '../../components/CustomButton/PrimaryButton';
 import { COLORS, STYLES, FONTS } from '../../styles';
@@ -72,6 +72,7 @@ const ForgotPass = ({ navigation, route }) => {
         source={banner}
         style={{
           height: 220,
+          width: 200,
           marginBottom: 20,
         }}
       />

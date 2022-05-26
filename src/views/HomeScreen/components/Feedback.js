@@ -5,7 +5,7 @@ import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Icon, Text } from 'react-native-elements';
 import { COLORS } from '../../../styles';
 import { joinAddress, simplifyString } from '../../../utils/address';
-import nothing_img from './../../../assets/images/nothing.png';
+import nothing_img from './../../../assets/images/nothing.jpg';
 
 const Feedback = ({ awaitFeedback, ...props }) => {
   const { t } = useTranslation('common');

@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import * as Bonk from 'yup';
 import { useFormik } from 'formik';
 import { danger, success, warning } from '../../styles/color';
-import banner from './../../assets/images/otp_banner.png';
+import banner from './../../assets/images/otp_banner.jpg';
 import PrimaryButton from '../../components/CustomButton/PrimaryButton';
 import { Divider, Image, Text } from 'react-native-elements';
 import { getPhoneNumberVerificator, getPhoneToken } from '../../config/OAuth';

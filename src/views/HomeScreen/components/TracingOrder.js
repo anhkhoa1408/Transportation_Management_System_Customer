@@ -6,7 +6,7 @@ import { Icon, Text } from 'react-native-elements';
 import { COLORS } from '../../../styles';
 import { joinAddress, simplifyString } from '../../../utils/address';
 import { convertOrderState, mapStateToStyle } from '../../../utils/order';
-import nothing_img from './../../../assets/images/nothing.png';
+import nothing_img from './../../../assets/images/nothing.jpg';
 
 const TracingOrder = ({ orders, ...props }) => {
   const { t } = useTranslation('common');

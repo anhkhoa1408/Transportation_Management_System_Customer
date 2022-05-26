@@ -3,7 +3,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Button, Icon, Text } from 'react-native-elements';
-import trace from '../../../assets/images/trace.png';
+import trace from '../../../assets/images/trace.jpg';
 import { COLORS, FONTS, STYLES } from '../../../styles';
 
 const Second = props => {

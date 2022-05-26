@@ -4,9 +4,9 @@ import { Dimensions, Image, Pressable, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-elements';
 import Carousel from 'react-native-snap-carousel';
 import { COLORS } from '../../../styles';
-import money from './../../../assets/images/cut_money.png';
+import money from './../../../assets/images/cut_money.jpg';
 import safe_img from './../../../assets/images/safe_2.jpg';
-import trace from './../../../assets/images/trace.png';
+import trace from './../../../assets/images/trace.jpg';
 const { height, width } = Dimensions.get('window');
 
 const BenefitSection = props => {

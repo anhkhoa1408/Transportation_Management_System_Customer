@@ -24,7 +24,7 @@ import HeaderAvatar from '../../components/HeaderAvatar';
 import { COLORS } from '../../styles';
 import { container } from '../../styles/layoutStyle';
 import { getAvatarFromUser, getNameFromUser } from '../../utils/avatarUltis';
-import banner from './../../assets/images/customer_home.png';
+import banner from './../../assets/images/customer_home.jpg';
 import BenefitSection from './components/BenefitSection';
 import Feedback from './components/Feedback';
 import InfoCard from './components/InfoCard';
