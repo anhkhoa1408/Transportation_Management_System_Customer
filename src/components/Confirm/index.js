@@ -70,23 +70,23 @@ const Confirm = props => {
         </View>
         <View style={{ display: 'flex', flexDirection: 'row' }}>
           <Button
-            buttonStyle={{ backgroundColor: modalType.neutral }}
+            buttonStyle={{ backgroundColor: modalType.color }}
             containerStyle={[style.buttonContainer]}
             title={
               props?.confirmBtnText ? t(props.confirmBtnText) : t('modalMess.yes')
             }
             type="solid"
             titleStyle={{
-              color: modalType.color,
+              color: COLORS.white,
               textTransform: 'uppercase',
             }}
             onPress={props.onConfirm}
           />
           <Button
-            buttonStyle={{ backgroundColor: COLORS.neutralDanger }}
+            buttonStyle={{ backgroundColor: COLORS.danger }}
             containerStyle={[style.buttonContainer]}
             titleStyle={{
-              color: COLORS.danger,
+              color: COLORS.white,
               textTransform: 'uppercase',
             }}
             title={
