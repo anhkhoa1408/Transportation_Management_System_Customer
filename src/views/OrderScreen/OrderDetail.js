@@ -300,7 +300,7 @@ export default function OrderDetail({ navigation, route }) {
         <TabView.Item
           onMoveShouldSetResponder={e => e.stopPropagation()}
           style={{ width: '100%', paddingHorizontal: 20 }}>
-          <PackageList item={item} />
+          <PackageList item={item} trace={trace} navigation={navigation} />
         </TabView.Item>
       </TabView>
 
