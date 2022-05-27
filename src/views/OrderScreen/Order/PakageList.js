@@ -6,14 +6,22 @@ import { joinAddress, simplifyString } from '../../../utils/address';
 import { COLORS, FONTS } from './../../../styles';
 import { useTranslation } from 'react-i18next';
 
-const PackageList = ({ navigation, item, ...props }) => {
+const PackageList = ({ navigation, item, trace, ...props }) => {
   const { t, i18n } = useTranslation('common');
   const [data, setData] = useState(item.packages || []);
 
   return (
     <ScrollView contentContainerStyle={{ paddingHorizontal: 10 }}>
       {data.map((item, index) => (
-        <TouchableOpacity activeOpacity={1} key={item.id}>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          key={item.id}
+          onPress={() => {
+            navigation.navigate('PackageMap', {
+              trace,
+              id: item.id,
+            });
+          }}>
           <View key={item.id} style={styles.package}>
             <View style={{ ...styles.vehicle }}>
               <Icon
