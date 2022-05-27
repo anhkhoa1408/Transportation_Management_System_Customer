@@ -22,10 +22,14 @@ import { primary } from '../../styles/color';
 import { container } from '../../styles/layoutStyle';
 import { formatCash } from '../../utils/order';
 import voucherImg from './../../assets/images/voucher_alt.jpg';
+import { useSelector, useDispatch } from 'react-redux';
 
 const VoucherScreen = ({ route, navigation }) => {
   const { t, i18n } = useTranslation('common');
+  const userInfo = useSelector(state => state.userInfo.user);
+
   const useVoucher = route?.params?.useVoucher;
+  const fee = route?.params?.fee;
   const [field, setField] = useState('_q');
   const [value, setValue] = useState('');
 
@@ -75,134 +79,142 @@ const VoucherScreen = ({ route, navigation }) => {
       });
   };
 
-  const renderItem = ({ item, index }) => (
-    <Animatable.View
-      ref={ele => (ref[index] = ele)}
-      duration={500}
-      easing="ease">
-      <TouchableWithoutFeedback onPress={() => handlePress(index)}>
-        <ListItem containerStyle={style.storeItem}>
-          <ListItem.Content
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
-            <View style={{ flex: 1 }}>
-              <View style={{ width: '90%' }}>
-                <MaskedView
-                  maskElement={
-                    <Text style={[style.discountText]}>
-                      {t('voucherScreen.discount')}{' '}
-                      {item && item.sale_type === 'value'
-                        ? formatCash(item.sale.toString())
-                        : item.sale + ' %'}
-                    </Text>
-                  }>
-                  <LinearGradient
-                    colors={['#EF3D3D', '#FFB800']}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}>
-                    <Text style={[style.discountText, { opacity: 0 }]}>
-                      {t('voucherScreen.discount')}{' '}
-                      {item && item.sale_type === 'value'
-                        ? formatCash(item.sale.toString())
-                        : item.sale + ' %'}
-                    </Text>
-                  </LinearGradient>
-                </MaskedView>
-                <MaskedView
-                  maskElement={
-                    <Text>
-                      {t('voucherScreen.max')}:{' '}
-                      {formatCash(item.sale_max.toString())} -{' '}
-                      {t('voucherScreen.minimumOrder')}:{' '}
-                      {item.minimum_order &&
-                        formatCash(item.minimum_order.toString())}
-                    </Text>
-                  }>
-                  <LinearGradient
-                    colors={['#EF3D3D', '#FFB800']}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}>
-                    <Text style={[{ opacity: 0 }]}>
-                      {t('voucherScreen.max')}:{' '}
-                      {formatCash(item.sale_max.toString())} -{' '}
-                      {t('voucherScreen.minimumOrder')}:{' '}
-                      {item.minimum_order &&
-                        formatCash(item.minimum_order.toString())}
-                    </Text>
-                  </LinearGradient>
-                </MaskedView>
-              </View>
-            </View>
-            {item.voucher_img && item.voucher_img.url ? (
-              <Avatar
-                size="medium"
-                avatarStyle={{ borderRadius: 8 }}
-                source={{
-                  uri: item.voucher_img.url,
-                }}
-              />
-            ) : (
-              <Avatar
-                size="medium"
-                avatarStyle={{ borderRadius: 8 }}
-                source={voucherImg}
-              />
-            )}
-          </ListItem.Content>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              marginTop: 10,
-            }}>
-            <View style={{ flex: 1 }}>
-              {useVoucher && (
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('OrderSummary', {
-                      ...route.params,
-                      voucher: {
-                        title: `${t('voucherScreen.reducedShippingFees')} ${
-                          item.sale_type === 'value'
-                            ? formatCash(item.sale.toString())
-                            : item.sale + ' %'
-                        }`,
-                        data: item,
-                      },
-                    })
-                  }>
-                  <Text
-                    style={[
-                      {
-                        color: COLORS.primary,
-                        fontWeight: 'bold',
-                        fontSize: 15,
-                      },
-                    ]}>
-                    {t('voucherScreen.useItNow')}
-                  </Text>
-                </TouchableOpacity>
-              )}
-            </View>
-
-            <ListItem.Subtitle
+  const renderItem = ({ item, index }) => {
+    let disabled =
+      fee <= item.minimum_order ||
+      (item.customer_type !== 'All' && item.customer_type !== userInfo.type);
+    return (
+      <Animatable.View
+        ref={ele => (ref[index] = ele)}
+        duration={500}
+        easing="ease">
+        <TouchableWithoutFeedback onPress={() => handlePress(index)}>
+          <ListItem containerStyle={style.storeItem}>
+            <ListItem.Content
               style={{
-                alignSelf: 'flex-end',
-                color: primary,
-                fontWeight: 'bold',
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
               }}>
-              {t('voucherScreen.to')}{' '}
-              {moment(item.expired).format('DD/MM/YYYY')}
-            </ListItem.Subtitle>
-          </View>
-        </ListItem>
-      </TouchableWithoutFeedback>
-    </Animatable.View>
-  );
+              <View style={{ flex: 1 }}>
+                <View style={{ width: '90%' }}>
+                  <MaskedView
+                    maskElement={
+                      <Text style={[style.discountText]}>
+                        {t('voucherScreen.discount')}{' '}
+                        {item && item.sale_type === 'value'
+                          ? formatCash(item.sale.toString())
+                          : item.sale + ' %'}
+                      </Text>
+                    }>
+                    <LinearGradient
+                      colors={['#EF3D3D', '#FFB800']}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 0 }}>
+                      <Text style={[style.discountText, { opacity: 0 }]}>
+                        {t('voucherScreen.discount')}{' '}
+                        {item && item.sale_type === 'value'
+                          ? formatCash(item.sale.toString())
+                          : item.sale + ' %'}
+                      </Text>
+                    </LinearGradient>
+                  </MaskedView>
+                  <MaskedView
+                    maskElement={
+                      <Text>
+                        {t('voucherScreen.max')}:{' '}
+                        {formatCash(item.sale_max.toString())} -{' '}
+                        {t('voucherScreen.minimumOrder')}:{' '}
+                        {item.minimum_order &&
+                          formatCash(item.minimum_order.toString())}
+                      </Text>
+                    }>
+                    <LinearGradient
+                      colors={['#EF3D3D', '#FFB800']}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 0 }}>
+                      <Text style={[{ opacity: 0 }]}>
+                        {t('voucherScreen.max')}:{' '}
+                        {formatCash(item.sale_max.toString())} -{' '}
+                        {t('voucherScreen.minimumOrder')}:{' '}
+                        {item.minimum_order &&
+                          formatCash(item.minimum_order.toString())}
+                      </Text>
+                    </LinearGradient>
+                  </MaskedView>
+                </View>
+              </View>
+              {item.voucher_img && item.voucher_img.url ? (
+                <Avatar
+                  size="medium"
+                  avatarStyle={{ borderRadius: 8 }}
+                  source={{
+                    uri: item.voucher_img.url,
+                  }}
+                />
+              ) : (
+                <Avatar
+                  size="medium"
+                  avatarStyle={{ borderRadius: 8 }}
+                  source={voucherImg}
+                />
+              )}
+            </ListItem.Content>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                marginTop: 10,
+              }}>
+              <View style={{ flex: 1 }}>
+                {useVoucher && (
+                  <TouchableOpacity
+                    disabled={disabled}
+                    onPress={() =>
+                      navigation.navigate('OrderSummary', {
+                        ...route.params,
+                        voucher: {
+                          title: `${t('voucherScreen.reducedShippingFees')} ${
+                            item.sale_type === 'value'
+                              ? formatCash(item.sale.toString())
+                              : item.sale + ' %'
+                          }`,
+                          data: item,
+                        },
+                      })
+                    }>
+                    {
+                      disabled ? <Text style={style.disqualify}>Không đủ điều kiện</Text> : <Text
+                      style={[
+                        {
+                          color: COLORS.primary,
+                          fontWeight: 'bold',
+                          fontSize: 15,
+                        },
+                      ]}>
+                      {t('voucherScreen.useItNow')}
+                    </Text>
+                    }
+                  </TouchableOpacity>
+                )}
+              </View>
+
+              <ListItem.Subtitle
+                style={{
+                  alignSelf: 'flex-end',
+                  color: primary,
+                  fontWeight: 'bold',
+                }}>
+                {t('voucherScreen.to')}{' '}
+                {moment(item.expired).format('DD/MM/YYYY')}
+              </ListItem.Subtitle>
+            </View>
+          </ListItem>
+        </TouchableWithoutFeedback>
+      </Animatable.View>
+    );
+  };
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -211,7 +223,7 @@ const VoucherScreen = ({ route, navigation }) => {
           .getList({
             _start: 0,
             _limit: 100,
-            minimum_order_lte: route.params.fee,
+            // minimum_order_lte: route.params.fee,
           })
           .then(response => {
             setData(response);
@@ -289,7 +301,7 @@ const style = StyleSheet.create({
     flexDirection: 'column',
     padding: 20,
     marginHorizontal: 20,
-    borderRadius: 12,
+    borderRadius: 8,
     borderColor: 'rgba(0,0,0,0.5)',
     backgroundColor: '#F3F3FA',
     marginVertical: 15,
@@ -307,6 +319,10 @@ const style = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
   },
+  disqualify: {
+    color: COLORS.danger,
+    fontWeight: '700'
+  }
 });
 
 export default VoucherScreen;
