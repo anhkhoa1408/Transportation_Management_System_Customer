@@ -116,11 +116,20 @@ const OrderSummary = ({ route, navigation }) => {
             id: response.id,
           });
           if (payment.value === 'momo') {
-            navigation.reset({
-              index: 0,
-              routes: [{ name: 'HomeScreen' }],
-            });
-            return handleRequestPayment(fee, orderIdForMomo, id);
+            if (fee > 0) {
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'HomeScreen' }],
+              });
+              return handleRequestPayment(fee, orderIdForMomo, id);
+            } else {
+              setAlert({
+                type: 'success',
+                message: t('orderScreen.ordersuccess'),
+                btnText: t('orderScreen.goToHomepage'),
+              });
+              if (alert) navigation.navigate('HomeScreen');
+            }
           } else {
             setAlert({
               type: 'success',
@@ -165,12 +174,12 @@ const OrderSummary = ({ route, navigation }) => {
       })
       .then(response => {
         if (!voucher?.data?.id) {
-          setInitial(Math.ceil(response))
+          setInitial(Math.ceil(response));
         }
         if (Number.isFinite(response)) {
           setFee(Math.ceil(response));
         } else {
-          setFee(0)
+          setFee(0);
         }
       });
   }, [voucher, packages, from_address, to_address]);

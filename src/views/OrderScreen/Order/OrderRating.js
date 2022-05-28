@@ -17,8 +17,7 @@ const OrderRating = ({ visible, onSwipeComplete, item, onChangeItem, ...props })
   const [alert, setAlert] = useState(null);
   const { t, i18n } = useTranslation("common")
   const handleSubmit = () => {
-    setHeight(220);
-    Keyboard.dismiss();
+    handleEndTyping()
     orderApi
       .feedback(item.id, {
         rating_point: point,
@@ -34,10 +33,14 @@ const OrderRating = ({ visible, onSwipeComplete, item, onChangeItem, ...props })
   };
 
   const handleClosed = () => {
-    setHeight(220);
-    Keyboard.dismiss();
+    handleEndTyping()
     onSwipeComplete();
   };
+
+  const handleEndTyping = () => {
+    setHeight(220);
+    Keyboard.dismiss();
+  }
 
   const alertType = {
     error: {
@@ -107,7 +110,7 @@ const OrderRating = ({ visible, onSwipeComplete, item, onChangeItem, ...props })
         <CustomInput
           placeholder={t("orderScreen.yourFeeling")}
           onFocus={() => setHeight(0)}
-          onSubmitEditing={handleSubmit}
+          onSubmitEditing={handleEndTyping}
           onChangeText={text => setComment(text)}
         />
 
