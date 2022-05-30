@@ -53,7 +53,6 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
   };
 
   const handleStartTour = async () => {
-    await scrollViewRef.current.scrollTo({ y: scroll - 520 });
     setConfirm(false);
     let appTourSequence = new AppTourSequence();
     tourList.forEach((appTourTarget, index) => {
@@ -62,10 +61,7 @@ function HomeScreen({ navigation, userInfo, noties, ...props }) {
         key: index,
       });
     });
-
-    setTimeout(() => {
-      AppTour.ShowSequence(appTourSequence);
-    }, 300);
+    AppTour.ShowSequence(appTourSequence);
   };
 
   useEffect(() => {

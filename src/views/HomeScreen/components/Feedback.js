@@ -37,19 +37,19 @@ const Feedback = ({ awaitFeedback, ...props }) => {
             })
           }>
           <View
-            ref={tourRef => {
-              if (!tourRef) return;
-              let tourProps = {
-                order: 5,
-                title: t("homeScreen.feedback"),
-                description: t("tour.feedbackSub"),
-                outerCircleColor: COLORS.primary,
-                descriptionTextColor: COLORS.white,
-                descriptionTextSize: 16,
-                dimColor: COLORS.backdropColor,
-              };
-              props.onTour(tourRef, tourProps);
-            }}
+            // ref={tourRef => {
+            //   if (!tourRef) return;
+            //   let tourProps = {
+            //     order: 5,
+            //     title: t("homeScreen.feedback"),
+            //     description: t("tour.feedbackSub"),
+            //     outerCircleColor: COLORS.primary,
+            //     descriptionTextColor: COLORS.white,
+            //     descriptionTextSize: 16,
+            //     dimColor: COLORS.backdropColor,
+            //   };
+            //   props.onTour(tourRef, tourProps);
+            // }}
             style={{
               padding: 6,
               backgroundColor: COLORS.gray,
